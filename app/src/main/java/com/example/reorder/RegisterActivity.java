@@ -2,6 +2,7 @@ package com.example.reorder;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.reorder.api.JoinApi;
+
+import java.lang.reflect.GenericSignatureFormatError;
+import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -80,21 +92,52 @@ public class RegisterActivity extends AppCompatActivity {
         bt_sign_up_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(et_sign_up_password.getText().toString().equals("")||et_sign_up_password_check.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(),"패스워드를 입력하세요.",Toast.LENGTH_SHORT).show();
+                if(et_sign_up_password.getText().toString().equals("")||et_sign_up_password_check.getText().toString().equals("")
+                || et_sign_up_id.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(),"모든 항목을 입력해주세요.",Toast.LENGTH_SHORT).show();
                 }
+                if(et_sign_up_password.getText().toString().equals(et_sign_up_password_check.getText().toString())){
+                    Toast.makeText(RegisterActivity.this,"비밀번호가 다릅니다", Toast.LENGTH_SHORT).show();
+                }
+                try {
+                    HashMap<String, String> input = new HashMap<>();
+                    input.put("userId", et_sign_up_id.getText().toString());
+                    input.put("userPassword", et_sign_up_password.getText().toString());
+                    input.put("userPassword2", et_sign_up_password_check.getText().toString());
 
-                else if(et_sign_up_password.getText().toString().equals(et_sign_up_password_check.getText().toString()))
-                {
-                    Toast.makeText(getApplicationContext(),"가입 완료 되었습니다.",Toast.LENGTH_SHORT).show();
-                    Intent LoginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
-                    RegisterActivity.this.startActivity(LoginIntent);
-                }
 
-                else
-                {
-                    Toast.makeText(getApplicationContext(), "비밀번호가 맞지 않습니다. 다시 입력하세요.", Toast.LENGTH_SHORT).show();
-                }
+                    Retrofit retrofit = new Retrofit.Builder().baseUrl("http://13.125.62.155:9999/")
+                            .addConverterFactory(GsonConverterFactory.create()).build();
+
+                    JoinApi joinApi = retrofit.create(JoinApi.class);
+
+                    joinApi.postJoinUserInfo(input).enqueue(new Callback<JoinResult>() {
+                        @Override
+                        public void onResponse(Call<JoinResult> call, Response<JoinResult> response) {
+                            if (response.isSuccessful()) {
+                                JoinResult map = response.body();
+
+                                if (map != null) {
+                                    switch (map.getResult()) {
+                                        case 0:
+                                            Toast.makeText(RegisterActivity.this, "존재하는 아이디 입니다. 다른 아이디 사용해주세요!!.", Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case 1:
+                                            Toast.makeText(RegisterActivity.this, "회원 가입이 되었습니다~!", Toast.LENGTH_SHORT).show();
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<JoinResult> call, Throwable t) {
+
+                        }
+                    });
+                } catch(Exception e){
+                        e.printStackTrace();
+                    }
             }
         });
     }
