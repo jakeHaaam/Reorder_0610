@@ -119,6 +119,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 if (map != null) {
                                     switch (map.getResult()) {
+
                                         case 0:
                                             Toast.makeText(RegisterActivity.this, "존재하는 아이디 입니다. 다른 아이디 사용해주세요!!.", Toast.LENGTH_SHORT).show();
                                             break;
