@@ -55,11 +55,11 @@
 
         <ImageButton
             android:id="@+id/imageButton"
-            android:layout_width="59dp"
-            android:layout_height="59dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            app:srcCompat="@android:drawable/ic_menu_delete" />
+            android:src="@drawable/ic_shopping_cart" />
 
         <ListView
             android:id="@+id/lv_main_store"
