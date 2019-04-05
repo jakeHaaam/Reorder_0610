@@ -14,7 +14,10 @@
         <activity
             android:name=".NavigationActivity"
             android:label="@string/title_activity_navigation"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar">
+        </activity>
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
@@ -23,6 +26,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDRB8G4Hy0al68HTL0PpxKsVY7TaBRwBH0"/>
+
     </application>
 
 </manifest>
