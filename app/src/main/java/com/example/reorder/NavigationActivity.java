@@ -33,7 +33,8 @@ public class NavigationActivity extends AppCompatActivity
         bt_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent MapIntent=new Intent(NavigationActivity.this,GoogleMapActivity.class);
+                NavigationActivity.this.startActivity(MapIntent);
             }
         });
 
