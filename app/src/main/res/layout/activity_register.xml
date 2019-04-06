@@ -85,30 +85,6 @@
                 android:drawableLeft="@drawable/ic_https"
                 android:layout_marginTop="10dp"/>
 
-            <RadioGroup
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:id="@+id/rg_sex"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp">
-
-                <RadioButton
-                    android:id="@+id/rb_sex_man"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="30dp"
-                    android:text="남" />
-
-                <RadioButton
-                    android:id="@+id/rb_sex_girl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:text="여"
-                    android:checked="true"/>
-            </RadioGroup>
-
             <TextView
                 android:layout_width="260dp"
                 android:layout_height="wrap_content"
@@ -117,36 +93,6 @@
                 android:textSize="25dp"
                 android:layout_marginTop="10dp"
                 android:id="@+id/tv_birth"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center">
-
-                <Spinner
-                    android:layout_width="140dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="right"
-                    android:id="@+id/cb_sign_up_birth_year"></Spinner>
-
-
-                <Spinner
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="right"
-                    android:id="@+id/cb_sign_up_birth_month"></Spinner>
-
-                <Spinner
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="right"
-                    android:id="@+id/cb_sign_up_birth_day"></Spinner>
-            </LinearLayout>
 
             <Button
                 android:layout_width="100dp"

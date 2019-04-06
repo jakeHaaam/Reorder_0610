@@ -25,10 +25,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private ArrayAdapter adapter;
-    private Spinner birth_year;
-    private Spinner birth_month;
-    private Spinner birth_day;
     Button bt_sign_up_ok;
     Button bt_sign_up_id_check;
     EditText et_sign_up_id;
@@ -41,23 +37,11 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        birth_year=(Spinner)findViewById(R.id.cb_sign_up_birth_year);
-        birth_month=(Spinner)findViewById(R.id.cb_sign_up_birth_month);
-        birth_day=(Spinner)findViewById(R.id.cb_sign_up_birth_day);
         bt_sign_up_ok=(Button)findViewById(R.id.bt_sign_up_ok);
         et_sign_up_id=(EditText)findViewById(R.id.et_sign_up_id);
         et_sign_up_password=(EditText)findViewById(R.id.et_sign_up_password);
         et_sign_up_password_check=(EditText)findViewById(R.id.et_sign_up_password_check);
         bt_sign_up_id_check=(Button)findViewById(R.id.bt_sign_up_id_check);
-
-        adapter=ArrayAdapter.createFromResource(this,R.array.birth_year,android.R.layout.simple_spinner_dropdown_item);
-        birth_year.setAdapter(adapter);
-
-        adapter=ArrayAdapter.createFromResource(this,R.array.birth_month,android.R.layout.simple_spinner_dropdown_item);
-        birth_month.setAdapter(adapter);
-
-        adapter=ArrayAdapter.createFromResource(this,R.array.birth_day,android.R.layout.simple_spinner_dropdown_item);
-        birth_day.setAdapter(adapter);
 
         //아이디 중복 체크
         bt_sign_up_id_check.setOnClickListener(new View.OnClickListener() {
