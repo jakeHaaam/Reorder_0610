@@ -42,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
         et_sign_up_password=(EditText)findViewById(R.id.et_sign_up_password);
         et_sign_up_password_check=(EditText)findViewById(R.id.et_sign_up_password_check);
         bt_sign_up_id_check=(Button)findViewById(R.id.bt_sign_up_id_check);
-
+        
         //아이디 중복 체크
         bt_sign_up_id_check.setOnClickListener(new View.OnClickListener() {
             @Override

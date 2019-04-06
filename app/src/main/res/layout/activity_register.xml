@@ -85,14 +85,7 @@
                 android:drawableLeft="@drawable/ic_https"
                 android:layout_marginTop="10dp"/>
 
-            <TextView
-                android:layout_width="260dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="생년월일"
-                android:textSize="25dp"
-                android:layout_marginTop="10dp"
-                android:id="@+id/tv_birth"/>
+
 
             <Button
                 android:layout_width="100dp"

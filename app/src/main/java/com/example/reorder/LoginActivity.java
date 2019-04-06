@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         bt_login_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 if(!et_login_id.getText().toString().equals("xodn0996")
                         || !et_login_password.getText().toString().equals("qwqw1210"))
                     //DB에 있는 ID값들과 비교해서 존재하면 넘어가기+DB에 해당 ID의 비밀번호와 비교해서 일치하면 넘어가기
@@ -51,6 +52,10 @@ public class LoginActivity extends AppCompatActivity {
                     Intent NaviIntent=new Intent(LoginActivity.this,NavigationActivity.class);
                     LoginActivity.this.startActivity(NaviIntent);
                 }
+                */
+                Toast.makeText(getApplicationContext(),"로그인 되었습니다.",Toast.LENGTH_SHORT).show();
+                Intent NaviIntent=new Intent(LoginActivity.this,NavigationActivity.class);
+                LoginActivity.this.startActivity(NaviIntent);
             }
         });
     }
