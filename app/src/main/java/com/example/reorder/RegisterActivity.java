@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.reorder.api.IdCheckApi;
 import com.example.reorder.api.JoinApi;
 
 import java.lang.reflect.GenericSignatureFormatError;
@@ -45,32 +47,63 @@ public class RegisterActivity extends AppCompatActivity {
         
         //아이디 중복 체크
         bt_sign_up_id_check.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
-
+                String client_email= et_sign_up_id.getText().toString();
 
                 if(et_sign_up_id.getText().toString().equals(""))
                 {
                     Toast.makeText(getApplicationContext(),"ID를 입력해 주세요.",Toast.LENGTH_SHORT).show();
                     bt_sign_up_ok.setClickable(false);
                     bt_sign_up_ok.setTextColor(Color.GRAY);
-                }
-
-                else if(et_sign_up_id.getText().toString().equals("xodn0996"))
-                {
-                    Toast.makeText(getApplicationContext(),"이미 가입된 ID입니다.",Toast.LENGTH_SHORT).show();
-                    bt_sign_up_ok.setClickable(false);
-                    bt_sign_up_ok.setTextColor(Color.GRAY);
+                    Log.d("12321",client_email+"1");
                 }
 
                 else
-                {
-                    Toast.makeText(getApplicationContext(),"사용 가능한 ID입니다.",Toast.LENGTH_SHORT).show();
-                    bt_sign_up_ok.setClickable(true);
-                    bt_sign_up_ok.setTextColor(Color.BLACK);
-                }
+                    try {
+                        Log.d("12321",client_email+"2");
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl("http://35.197.38.155")
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+
+                        IdCheckApi idCheckAPI = retrofit.create(IdCheckApi.class);
+                        idCheckAPI.getClient_email(client_email).enqueue(new Callback<IdCheckResult>() {
+                            @Override
+                            public void onResponse(Call<IdCheckResult> call, Response<IdCheckResult> response) {
+                                Log.d("12321",response.message()+" "+response.toString());
+                                //JsonObject post= new JsonObject().get(response.body().toString()).getAsJsonObject();
+                                if (response.isSuccessful()) {
+                                    IdCheckResult idCheckResult = response.body();
+                                    switch (idCheckResult.getResult()) {
+                                        case 0:
+                                            Toast.makeText(getApplicationContext(), "이미 가입된 ID입니다.", Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case 1:
+                                            Toast.makeText(getApplicationContext(), "사용 가능한 ID입니다.", Toast.LENGTH_SHORT).show();
+                                            break;
+                                        default:
+                                            Toast.makeText(getApplicationContext(), "11111111 is NOT Successful", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else
+                                    Toast.makeText(getApplicationContext(), "response is NOT Successful", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<IdCheckResult> call, Throwable t) {
+                                Toast.makeText(getApplicationContext(), "This is fail", Toast.LENGTH_SHORT).show();
+                                t.printStackTrace();
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
             }
         });
+
+
 
         //비밀번호 체크
         bt_sign_up_ok.setOnClickListener(new View.OnClickListener() {
@@ -100,16 +133,15 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onResponse(Call<JoinResult> call, Response<JoinResult> response) {
                             if (response.isSuccessful()) {
                                 JoinResult map = response.body();
-
+//                                Log.d("12321",response.headers().toString());
                                 if (map != null) {
                                     switch (map.getResult()) {
-                                        case 0:
-                                            Toast.makeText(RegisterActivity.this, "존재하는 아이디 입니다. 다른 아이디 사용해주세요!!.", Toast.LENGTH_SHORT).show();
-                                            break;
                                         case 1:
-                                            Intent intent = new Intent(RegisterActivity.this,NavigationActivity.class);//메인화면 대신 임시 지정
-                                            RegisterActivity.this.startActivity(intent);
                                             Toast.makeText(RegisterActivity.this, "회원 가입이 되었습니다~!", Toast.LENGTH_SHORT).show();
+//                                            Log.d("12321","ok");
+                                            break;
+                                        case 0:
+                                            Toast.makeText(RegisterActivity.this, "존재하는 아이디 입니다...", Toast.LENGTH_SHORT).show();
                                             break;
                                     }
                                 }
