@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity"
-    android:id="@+id/activity_main">
+    tools:context=".RegisterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,8 +15,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:orientation="vertical"
-            android:background="#FFF6CB">
+            android:background="#FFF6CB"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -37,66 +37,64 @@
             android:orientation="vertical">
 
             <EditText
+                android:id="@+id/et_sign_up_id"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:hint="ID"
                 android:layout_gravity="center"
-                android:padding="10dp"
-                android:textColor="#000"
-                android:textColorHint="#ADACAC"
-                android:id="@+id/et_sign_up_id"
+                android:layout_marginTop="50dp"
                 android:drawableStart="@drawable/ic_person"
                 android:drawableLeft="@drawable/ic_person"
-                android:layout_marginTop="50dp" />
+                android:hint="ID"
+                android:padding="10dp"
+                android:textColor="#000"
+                android:textColorHint="#ADACAC" />
 
             <Button
+                android:id="@+id/bt_sign_up_id_check"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="65dp"
-                android:id="@+id/bt_sign_up_id_check"
-                android:text="중 복 확 인"/>
+                android:text="중 복 확 인" />
 
             <EditText
-                android:inputType="textPassword"
-                android:layout_width="280dp"
-                android:layout_height="wrap_content"
-                android:hint="PASSWORD"
-                android:layout_gravity="center"
-                android:padding="10dp"
-                android:textColor="#000"
-                android:textColorHint="#ADACAC"
                 android:id="@+id/et_sign_up_password"
-                android:drawableStart="@drawable/ic_https"
-                android:drawableLeft="@drawable/ic_https"
-                android:layout_marginTop="10dp"/>
-
-            <EditText
-                android:inputType="textPassword"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:hint="PASSWORD Double Check"
                 android:layout_gravity="center"
-                android:padding="10dp"
-                android:textColor="#000"
-                android:textColorHint="#ADACAC"
-                android:id="@+id/et_sign_up_password_check"
+                android:layout_marginTop="10dp"
                 android:drawableStart="@drawable/ic_https"
                 android:drawableLeft="@drawable/ic_https"
-                android:layout_marginTop="10dp"/>
+                android:hint="PASSWORD"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:textColor="#000"
+                android:textColorHint="#ADACAC" />
 
+            <EditText
+                android:id="@+id/et_sign_up_password_check"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/ic_https"
+                android:drawableLeft="@drawable/ic_https"
+                android:hint="PASSWORD Double Check"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:textColor="#000"
+                android:textColorHint="#ADACAC" />
 
 
             <Button
+                android:id="@+id/bt_sign_up_ok"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="가 입 하 기"
                 android:layout_gravity="center"
-                android:id="@+id/bt_sign_up_ok"
                 android:layout_marginTop="10dp"
                 android:clickable="false"
-                android:textColor="#808080"
-                />
+                android:text="가 입 하 기"
+                android:textColor="#808080" />
 
         </LinearLayout>
 

@@ -1,5 +1,6 @@
 package com.example.reorder.api;
 
+import com.example.reorder.LoginResult;
 import com.example.reorder.JoinResult;
 
 import java.util.HashMap;
@@ -9,8 +10,8 @@ import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
-public interface JoinApi {
+public interface LoginApi {
     @FormUrlEncoded
-    @POST("/signup")
-    Call<JoinResult> postJoinUserInfo(@FieldMap HashMap<String,String>map);
+    @POST("/login")
+    Call<LoginResult> postUserInfo(@FieldMap HashMap<String,String> map);
 }

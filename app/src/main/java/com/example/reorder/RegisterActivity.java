@@ -80,17 +80,17 @@ public class RegisterActivity extends AppCompatActivity {
                 || et_sign_up_id.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(),"모든 항목을 입력해주세요.",Toast.LENGTH_SHORT).show();
                 }
-                if(et_sign_up_password.getText().toString().equals(et_sign_up_password_check.getText().toString())){
+                if(!et_sign_up_password.getText().toString().equals(et_sign_up_password_check.getText().toString())){
                     Toast.makeText(RegisterActivity.this,"비밀번호가 다릅니다", Toast.LENGTH_SHORT).show();
                 }
                 try {
                     HashMap<String, String> input = new HashMap<>();
-                    input.put("userId", et_sign_up_id.getText().toString());
-                    input.put("userPassword", et_sign_up_password.getText().toString());
-                    input.put("userPassword2", et_sign_up_password_check.getText().toString());
+                    input.put("client_email", et_sign_up_id.getText().toString());
+                    input.put("client_password", et_sign_up_password.getText().toString());
+                    input.put("client_password2", et_sign_up_password_check.getText().toString());
 
 
-                    Retrofit retrofit = new Retrofit.Builder().baseUrl("http://13.125.62.155:9999/")
+                    Retrofit retrofit = new Retrofit.Builder().baseUrl("http://35.197.38.155/")
                             .addConverterFactory(GsonConverterFactory.create()).build();
 
                     JoinApi joinApi = retrofit.create(JoinApi.class);
@@ -103,11 +103,12 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 if (map != null) {
                                     switch (map.getResult()) {
-
                                         case 0:
                                             Toast.makeText(RegisterActivity.this, "존재하는 아이디 입니다. 다른 아이디 사용해주세요!!.", Toast.LENGTH_SHORT).show();
                                             break;
                                         case 1:
+                                            Intent intent = new Intent(RegisterActivity.this,NavigationActivity.class);//메인화면 대신 임시 지정
+                                            RegisterActivity.this.startActivity(intent);
                                             Toast.makeText(RegisterActivity.this, "회원 가입이 되었습니다~!", Toast.LENGTH_SHORT).show();
                                             break;
                                     }
