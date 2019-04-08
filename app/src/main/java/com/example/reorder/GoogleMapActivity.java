@@ -2,6 +2,7 @@ package com.example.reorder;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,6 +25,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -55,17 +57,28 @@ public class GoogleMapActivity extends FragmentActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
+    Button bt_current;
     int camera_checked = 0;
     GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
     private FusedLocationProviderClient mFusedLocationClient;
-    private static final int REQUEST_CODE_PERMISSIONS=1000;
+    private static final int REQUEST_CODE_PERMISSIONS = 1000;
+    TextView tv_location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_map);
 
+        bt_current=(Button)findViewById(R.id.bt_current);
+        /*bt_current.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startLocationService();
+            }
+        });*/
+
+        tv_location = (TextView)findViewById(R.id.tv_location);
         //현재위치 설정
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -82,18 +95,63 @@ public class GoogleMapActivity extends FragmentActivity implements
         mapFragment.getMapAsync(this);
     }
 
+    public void startLocationService(){
+        long minTime = 3000;
+        float minDistance = 0;
+
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_PERMISSIONS);
+            return;
+        }
+        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                minTime,
+                minDistance,
+                new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        map.clear();
+                        showCurrentLocation(location);
+                    }
+
+                    @Override
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String provider) {
+
+                    }
+
+                    @Override
+                    public void onProviderDisabled(String provider) {
+
+                    }
+                });
+    }
+
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
 
-        //지도 시작위도,경도 설정
+        //지도 시작위도,경도 설정/초기 카메라 위치 설정
         LatLng start=new LatLng(37.48713123599517 ,126.82648816388149 );
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(start,17.0f));
     }
 
     @Override
     public void onLocationChanged(Location location) {
-
     }
 
     @Override
@@ -126,6 +184,17 @@ public class GoogleMapActivity extends FragmentActivity implements
 
     }
 
+    public void showCurrentLocation(Location location)
+    {
+        LatLng curPoint=new LatLng(location.getLatitude(),location.getLongitude());
+
+        Double myLat=location.getLatitude();
+        Double myLot=location.getLongitude();
+        map.addMarker(new MarkerOptions().position(curPoint).title("현재 위치"));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 17));
+        tv_location.setText("현재위치: "+myLat+", "+myLot);
+    }
+
     public void onLastLocationButtonClicked(View view) {
         //사용자 위치 서비스 허가여부
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
@@ -149,10 +218,13 @@ public class GoogleMapActivity extends FragmentActivity implements
             public void onSuccess(Location location) {
                 if(location!=null)
                 {
+                    startLocationService();
                     final LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    Double myLat=location.getLatitude();
+                    Double myLot=location.getLongitude();
                     map.addMarker(new MarkerOptions().position(myLocation).title("현재 위치"));
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 17));
-
+                    tv_location.setText("현재위치: "+myLat+", "+myLot);
                     //3d효과
                     final Button bt_map_3d = (Button) findViewById(R.id.bt_map_3d);
 
@@ -183,8 +255,11 @@ public class GoogleMapActivity extends FragmentActivity implements
                         }
                     });
                 }
-                else
-                    Toast.makeText(getApplicationContext(),"location is null", Toast.LENGTH_SHORT).show();
+                else {
+                    Toast.makeText(getApplicationContext(), "location is null", Toast.LENGTH_SHORT).show();
+                    //location.setLatitude(37.48713123599517);
+                    //location.setLongitude(126.82648816388149);
+                }
             }
         });
     }
@@ -213,7 +288,7 @@ public class GoogleMapActivity extends FragmentActivity implements
                                 final LatLng myLocation= new LatLng(location.getLatitude(),location.getLongitude());
                                 map.addMarker(new MarkerOptions().position(myLocation).title("현재 위치"));
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation,17));
-
+                                tv_location.setText("현재 위치: "+myLocation.latitude + ", " + myLocation.longitude);
                                 //3d효과
                                 final Button bt_map_3d=(Button)findViewById(R.id.bt_map_3d);
 
