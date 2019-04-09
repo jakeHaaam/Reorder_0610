@@ -9,13 +9,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F7EAEA"
+        android:background="#fff"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="#FFF6CB"
+            android:background="#fff"
             android:orientation="vertical">
 
             <TextView
@@ -24,10 +24,10 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="회원가입"
-                android:textColor="#808080"
+                android:text="S · I · G · N · U · P"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="30dp"
-                android:textStyle="bold" />
+                android:textStyle="italic" />
 
         </LinearLayout>
 
@@ -55,7 +55,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="65dp"
-                android:text="중 복 확 인" />
+                android:background="#fc3723"
+                android:text="I D check"
+                android:textColor="#FFF" />
 
             <EditText
                 android:id="@+id/et_sign_up_password"
@@ -92,12 +94,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:background="#fc3723"
                 android:clickable="false"
-                android:text="가 입 하 기"
+                android:text="S I G N U P"
                 android:textColor="#808080" />
 
         </LinearLayout>
 
     </LinearLayout>
 </RelativeLayout>
-

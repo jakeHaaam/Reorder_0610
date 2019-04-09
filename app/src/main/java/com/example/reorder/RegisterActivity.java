@@ -56,8 +56,8 @@ public class RegisterActivity extends AppCompatActivity {
                 if(et_sign_up_id.getText().toString().equals(""))
                 {
                     Toast.makeText(getApplicationContext(),"ID를 입력해 주세요.",Toast.LENGTH_SHORT).show();
-                    bt_sign_up_ok.setClickable(false);
-                    bt_sign_up_ok.setTextColor(Color.GRAY);
+                    //bt_sign_up_ok.setClickable(false);
+                    //bt_sign_up_ok.setTextColor(Color.GRAY);
                     Log.d("12321",client_email+"1");
                 }
 
@@ -116,47 +116,50 @@ public class RegisterActivity extends AppCompatActivity {
                 if(!et_sign_up_password.getText().toString().equals(et_sign_up_password_check.getText().toString())){
                     Toast.makeText(RegisterActivity.this,"비밀번호가 다릅니다", Toast.LENGTH_SHORT).show();
                 }
-                try {
-                    HashMap<String, String> input = new HashMap<>();
-                    input.put("client_email", et_sign_up_id.getText().toString());
-                    input.put("client_password", et_sign_up_password.getText().toString());
-                    input.put("client_password2", et_sign_up_password_check.getText().toString());
+                else {
+                    try {
+                        HashMap<String, String> input = new HashMap<>();
+                        input.put("client_email", et_sign_up_id.getText().toString());
+                        input.put("client_password", et_sign_up_password.getText().toString());
+                        input.put("client_password2", et_sign_up_password_check.getText().toString());
 
 
-                    Retrofit retrofit = new Retrofit.Builder().baseUrl("http://35.197.38.155/")
-                            .addConverterFactory(GsonConverterFactory.create()).build();
+                        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://35.197.38.155/")
+                                .addConverterFactory(GsonConverterFactory.create()).build();
 
-                    JoinApi joinApi = retrofit.create(JoinApi.class);
+                        JoinApi joinApi = retrofit.create(JoinApi.class);
 
-                    joinApi.postJoinUserInfo(input).enqueue(new Callback<JoinResult>() {
-                        @Override
-                        public void onResponse(Call<JoinResult> call, Response<JoinResult> response) {
-                            if (response.isSuccessful()) {
-                                JoinResult map = response.body();
+                        joinApi.postJoinUserInfo(input).enqueue(new Callback<JoinResult>() {
+                            @Override
+                            public void onResponse(Call<JoinResult> call, Response<JoinResult> response) {
+                                if (response.isSuccessful()) {
+                                    JoinResult map = response.body();
 //                                Log.d("12321",response.headers().toString());
-                                if (map != null) {
-                                    switch (map.getResult()) {
-                                        case 1:
-                                            Toast.makeText(RegisterActivity.this, "회원 가입이 되었습니다~!", Toast.LENGTH_SHORT).show();
+                                    if (map != null) {
+                                        switch (map.getResult()) {
+                                            case 1:
+                                                Toast.makeText(RegisterActivity.this, "회원 가입이 되었습니다~!", Toast.LENGTH_SHORT).show();
 //                                            Log.d("12321","ok");
-                                            break;
-                                        case 0:
-                                            Toast.makeText(RegisterActivity.this, "존재하는 아이디 입니다...", Toast.LENGTH_SHORT).show();
-                                            break;
+                                                finish();
+                                                break;
+                                            case 0:
+                                                Toast.makeText(RegisterActivity.this, "존재하는 아이디 입니다...", Toast.LENGTH_SHORT).show();
+                                                break;
+
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<JoinResult> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<JoinResult> call, Throwable t) {
 
-                        }
-                    });
-                } catch(Exception e){
+                            }
+                        });
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-            }
+                }            }
         });
     }
 }

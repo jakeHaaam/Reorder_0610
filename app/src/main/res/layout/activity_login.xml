@@ -9,14 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F7EAEA"
+        android:background="#fff"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="225dp"
             android:orientation="vertical"
-            android:background="#FFF6CB">
+            android:background="#FFF">
 
             <ImageView
                 android:layout_width="180dp"
@@ -26,22 +26,21 @@
                 />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="294dp"
                 android:layout_height="wrap_content"
-                android:text="주문을 재정의하다. ReOrder"
-                android:textColor="#F11C1C"
-                android:textSize="25dp"
-                android:textStyle="bold"
                 android:layout_gravity="center"
-                />
+                android:text="    주 · 문 · 을 · 재 · 정 · 의 · 하 · 다"
+                android:textColor="#F11C1C"
+                android:textSize="18sp"
+                android:textStyle="italic" />
 
         </LinearLayout>
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            
+
             <EditText
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
@@ -70,28 +69,27 @@
                 android:layout_marginTop="10dp"/>
 
             <Button
+                android:id="@+id/bt_login_ok"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:textColor="#000"
-                android:text="로그인"
-                android:background="#fff"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:id="@+id/bt_login_ok"/>
+                android:background="#F11C1C"
+                android:text="L O G I N"
+                android:textColor="#FFF"
+                android:textSize="20dp" />
 
             <TextView
+                android:id="@+id/tv_login_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="18dp"
                 android:layout_marginTop="10dp"
-                android:text="회원가입"
-                android:id="@+id/tv_login_register"/>
+                android:text="S I G N  U P"
+                android:textColor="#7e6654"
+                android:textSize="18dp" />
 
         </LinearLayout>
-        
+
     </LinearLayout>
 </RelativeLayout>
-
