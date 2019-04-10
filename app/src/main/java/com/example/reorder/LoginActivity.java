@@ -1,6 +1,5 @@
 package com.example.reorder;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -14,16 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.reorder.UserInfoUpdate.UserLogin;
-import com.example.reorder.api.LoginApi;
-import com.example.reorder.info.UserInfo;
-
-import java.util.HashMap;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 

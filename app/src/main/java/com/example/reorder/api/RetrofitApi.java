@@ -20,7 +20,4 @@ public interface RetrofitApi {
     @POST("/login")
     Call<LoginResult>postLoginUserInfo(@FieldMap HashMap<String, String> map);
 
-
-
-
 }

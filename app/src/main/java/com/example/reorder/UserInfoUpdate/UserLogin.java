@@ -3,12 +3,8 @@ package com.example.reorder.UserInfoUpdate;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.reorder.LoginActivity;
 import com.example.reorder.LoginResult;
-import com.example.reorder.NavigationActivity;
-import com.example.reorder.api.LoginApi;
 import com.example.reorder.api.RetrofitApi;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.IsLogin;
@@ -26,6 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class UserLogin {
     String url= serverURL.getUrl();
 
+
     public void Login(final String client_email,final String client_password, final Intent intent, final Activity activity){
 
         final String strEmail=client_email;
@@ -33,6 +30,7 @@ public class UserLogin {
 
         try {
             HashMap<String, String> input = new HashMap<>();
+            Log.d("11111", "UserLogin try 첫 줄");
             input.put("client_email", strEmail);
             input.put("client_password", strPassword);
             Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
@@ -41,24 +39,37 @@ public class UserLogin {
                 @Override
                 public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
                     if (response.isSuccessful()) {
+                        Log.d("11111",response.headers().get(client_email));
                         LoginResult map = response.body();
-                        Log.d("11111", "***?$?!#@");
+                        Log.d("11111", "손흥민 골");
+                        Log.d("11111",map.getResult() +"");  // 1확인
+                        //Log.d("11111",map.getUserInfo().getClient_email().toString());//
                         if (map != null) {
                             switch (map.getResult()) {
                                 case -1:
                                     Log.d("11111", "잘못된 비밀번호입니다");
                                     break;
                                 case 0:
+                                    //Toast.makeText(LoginActivity.this,"가입되지 않은 이메일입니다.",Toast.LENGTH_SHORT).show();
                                     Log.d("11111", "가입되지 않은 이메일입니다");
                                     break;
                                 case 1:
                                     Log.d("11111", "login 성공");
                                     UserInfo userinfo = map.getUserInfo();
-                                    userinfo.setChange(true);//???
+                                   // Log.d("11111",userinfo.getClient_password()); // 이 코드도 작동 x
+                                    Log.d("11111", "1??");
                                     CurrentUserInfo.getUser().setUserInfo(userinfo);
                                     UserInfo u_info = CurrentUserInfo.getUser().getUserInfo();
+                                    Log.d("11111", "2??");
+                                    
+                                    Log.d("11111", "3??");
+                                    //Log.d("11111",u_info.getClient_email());
+                                    Log.d("11111", "로그인성공맞음1??");
+//                                    userinfo.setChange(true);
+                                    Log.d("11111", "로그인성공맞음2??");
+                                    Log.d("11111",u_info +""); // null 값출력?? 왜지 .. 데이터 못받네
+                                    //Log.d("11111",u_info.getClient_email());
                                     IsLogin.setIsLogin(true);
-                                    Log.d("11111", String.valueOf(u_info.getClient_id()));//int값이라 이렇게 로그 받아와도 되나
                                     activity.startActivity(intent);
                                     activity.finish();
                                     break;
