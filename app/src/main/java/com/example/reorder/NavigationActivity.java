@@ -13,12 +13,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Button bt_map;
+    ImageButton bt_cart;
+    Button bt_bookmark;
+    Button bt_near_store;
+    ListView lv_bookmark_store;
+    ArrayAdapter<String> mAdapter;
+    ListView lv_near_store;
+    List<String> mData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +41,42 @@ public class NavigationActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        bt_map=(Button)findViewById(R.id.bt_map);
+        bt_map=findViewById(R.id.bt_map);
+        bt_cart=findViewById(R.id.bt_cart);
+        bt_bookmark=findViewById(R.id.bt_bookmark);
+        bt_near_store=findViewById(R.id.bt_near_store);
+        lv_near_store=findViewById(R.id.lv_near_store);
+        lv_bookmark_store=findViewById(R.id.lv_bookmark_store);
 
         bt_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent MapIntent=new Intent(NavigationActivity.this,GoogleMapActivity.class);
                 NavigationActivity.this.startActivity(MapIntent);
+            }
+        });
+
+        bt_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent CartIntent=new Intent(NavigationActivity.this,CartActivity.class);
+                NavigationActivity.this.startActivity(CartIntent);
+            }
+        });
+
+        bt_near_store.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lv_bookmark_store.setVisibility(View.INVISIBLE);
+                lv_near_store.setVisibility(View.VISIBLE);
+            }
+        });
+
+        bt_bookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lv_bookmark_store.setVisibility(View.VISIBLE);
+                lv_near_store.setVisibility(View.INVISIBLE);
             }
         });
 

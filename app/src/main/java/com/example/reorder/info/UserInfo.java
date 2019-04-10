@@ -4,15 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-public class UserInfo implements Parcelable {
+public class UserInfo  {
     int id;
     String client_email;
     String client_password;
     String client_password2;
     int client_mileage;
     String client_bookmark_id;
-
-//    Boolean isChange=false;
 
 
     public UserInfo(int id,String client_email, String client_password,String client_password2,int client_mileage,String client_bookmark_id) {
@@ -79,49 +77,6 @@ public class UserInfo implements Parcelable {
 //        isChange=change;
 //    }
 
-    public static Creator<UserInfo>getCREATOR() {return CREATOR;}
 
-
-    protected UserInfo(Parcel in) {
-        id=in.readInt();
-        client_email = in.readString();
-        client_password = in.readString();
-        client_password2=in.readString();
-        client_mileage=in.readInt();
-        client_bookmark_id=in.readString();
-
-//        byte tmpIsChange=in.readByte();
-//        isChange=tmpIsChange==0? null: tmpIsChange==1;
-    }
-
-    public static final Creator<UserInfo> CREATOR = new Creator<UserInfo>() {
-
-        @Override
-        public UserInfo createFromParcel(Parcel in) {
-            return new UserInfo(in);
-        }
-
-        @Override
-        public UserInfo[] newArray(int size) {
-            return new UserInfo[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(client_email);
-        dest.writeString(client_password);
-        dest.writeString(client_password2);
-        dest.writeInt(client_mileage);
-        dest.writeString(client_bookmark_id);
-
-//        dest.writeByte((byte)(isChange==null? 0 : isChange? 1:2));
-    }
 
 }

@@ -39,7 +39,6 @@ public class UserLogin {
                 @Override
                 public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
                     if (response.isSuccessful()) {
-                        Log.d("11111",response.headers().get(client_email));
                         LoginResult map = response.body();
                         Log.d("11111", "손흥민 골");
                         Log.d("11111",map.getResult() +"");  // 1확인
