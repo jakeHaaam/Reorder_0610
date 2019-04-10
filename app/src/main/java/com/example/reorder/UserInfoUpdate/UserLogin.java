@@ -61,7 +61,7 @@ public class UserLogin {
                                     CurrentUserInfo.getUser().setUserInfo(userinfo);
                                     UserInfo u_info = CurrentUserInfo.getUser().getUserInfo();
                                     Log.d("11111", "2??");
-                                    
+
                                     Log.d("11111", "3??");
                                     //Log.d("11111",u_info.getClient_email());
                                     Log.d("11111", "로그인성공맞음1??");
