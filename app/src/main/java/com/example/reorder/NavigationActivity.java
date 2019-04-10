@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class NavigationActivity extends AppCompatActivity
     ArrayAdapter<String> mAdapter;
     ListView lv_near_store;
     List<String> mData;
+    View tv_nav_nicname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +43,15 @@ public class NavigationActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
         bt_map=findViewById(R.id.bt_map);
         bt_cart=findViewById(R.id.bt_cart);
         bt_bookmark=findViewById(R.id.bt_bookmark);
         bt_near_store=findViewById(R.id.bt_near_store);
         lv_near_store=findViewById(R.id.lv_near_store);
         lv_bookmark_store=findViewById(R.id.lv_bookmark_store);
+        tv_nav_nicname=findViewById(R.id.tv_nav_nicname);
 
         bt_map.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +84,8 @@ public class NavigationActivity extends AppCompatActivity
                 lv_near_store.setVisibility(View.INVISIBLE);
             }
         });
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
