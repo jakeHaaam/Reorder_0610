@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.reorder.R;
+import com.example.reorder.globalVariables.CurrentUserInfo;
 
 import java.util.List;
 
@@ -102,6 +103,11 @@ public class NavigationActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View nav_header_view=navigationView.getHeaderView(0);
+        TextView tv_nav_nicname=(TextView)nav_header_view.findViewById(R.id.tv_nav_nicname);
+        tv_nav_nicname.setText(CurrentUserInfo.getUser().getUserInfo().getClient_id());
+
     }
 
     @Override

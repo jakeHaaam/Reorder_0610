@@ -116,7 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
                 else {
                     try {
                         HashMap<String, String> input = new HashMap<>();
-                        input.put("client_email", et_sign_up_id.getText().toString());
+                        input.put("client_id", et_sign_up_id.getText().toString());
                         input.put("client_password", et_sign_up_password.getText().toString());
                         input.put("client_password2", et_sign_up_password_check.getText().toString());
 
