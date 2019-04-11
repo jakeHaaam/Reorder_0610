@@ -13,9 +13,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".Activity.SeatReserveActivity"></activity>
-        <activity android:name=".Activity.OrderActivity" />
-        <activity android:name=".Activity.CartActivity" />
+        <activity
+            android:name=".Activity.SeattReserveActivity"
+            android:label="@string/title_activity_seatt_reserve"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+        <activity
+            android:name=".Activity.OrderrActivity"
+            android:label="@string/title_activity_orderr"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
+        <activity
+            android:name=".Activity.CarttActivity"
+            android:label="@string/title_activity_cartt"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
+        <activity android:name=".Activity.SeatReserveActivity" />
         <activity android:name=".Activity.GoogleMapActivity" />
         <activity
             android:name=".Activity.NavigationActivity"

@@ -3,11 +3,8 @@ package com.example.reorder.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
-import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,80 +14,77 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ListView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.reorder.R;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 
-import java.util.List;
-
-public class NavigationActivity extends AppCompatActivity
+public class OrderrActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Button bt_map;
-    ImageButton bt_cart;
-    Button bt_bookmark;
-    Button bt_near_store;
-    ListView lv_bookmark_store;
-    ArrayAdapter<String> mAdapter;
-    ListView lv_near_store;
-    List<String> mData;
-    TextView tv_nav_nicname;
+    RadioButton rb_eat_here;
+    RadioButton rb_take_out;
+    RadioButton rb_seat_yes;
+    RadioButton rb_seat_no;
+    RadioGroup rg_seat;
+    RadioGroup rg_eat;
+    LinearLayout ll_seat;
+
+    Button bt_order;
+    Button bt_cancle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navigation);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        setContentView(R.layout.activity_orderr);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
 
-        bt_map=findViewById(R.id.bt_map);
-        bt_cart=findViewById(R.id.bt_cart);
-        bt_bookmark=findViewById(R.id.bt_bookmark);
-        bt_near_store=findViewById(R.id.bt_near_store);
-        lv_near_store=findViewById(R.id.lv_near_store);
-        lv_bookmark_store=findViewById(R.id.lv_bookmark_store);
-        tv_nav_nicname=findViewById(R.id.tv_nav_nicname);
+        rb_eat_here=findViewById(R.id.rb_eat_here);
+        rb_take_out=findViewById(R.id.rb_take_out);
+        rb_take_out.setChecked(true);
+        rb_seat_yes=findViewById(R.id.rb_seat_yes);
+        rb_seat_no=findViewById(R.id.rb_seat_no);
+        rg_eat=findViewById(R.id.rg_eat);
+        rg_seat=findViewById(R.id.rg_seat);
+        ll_seat=findViewById(R.id.ll_seat);
 
-        bt_map.setOnClickListener(new View.OnClickListener() {
+
+        bt_order=findViewById(R.id.bt_order);
+        bt_cancle=findViewById(R.id.bt_cancle);
+
+        rg_eat.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                Intent MapIntent=new Intent(NavigationActivity.this,GoogleMapActivity.class);
-                NavigationActivity.this.startActivity(MapIntent);
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.rb_eat_here)
+                    ll_seat.setVisibility(View.VISIBLE);
+                else
+                    ll_seat.setVisibility(View.GONE);
             }
         });
 
-        bt_cart.setOnClickListener(new View.OnClickListener() {
+        bt_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent CartIntent=new Intent(NavigationActivity.this,CarttActivity.class);
-                NavigationActivity.this.startActivity(CartIntent);
+                if(rb_take_out.isChecked()){
+                    Intent NaviIntent=new Intent(OrderrActivity.this,NavigationActivity.class);
+                    OrderrActivity.this.startActivity(NaviIntent);
+                }
+                else if(rb_eat_here.isChecked() && rb_seat_no.isChecked()) {
+                    Intent NaviIntent=new Intent(OrderrActivity.this,NavigationActivity.class);
+                    OrderrActivity.this.startActivity(NaviIntent);
+                }
+                else if(rb_eat_here.isChecked() && rb_seat_yes.isChecked()){
+                    Intent SeatIntent=new Intent(OrderrActivity.this,SeattReserveActivity.class);
+                    OrderrActivity.this.startActivity(SeatIntent);
+                }
             }
         });
-
-        bt_near_store.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                lv_bookmark_store.setVisibility(View.INVISIBLE);
-                lv_near_store.setVisibility(View.VISIBLE);
-            }
-        });
-
-        bt_bookmark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                lv_bookmark_store.setVisibility(View.VISIBLE);
-                lv_near_store.setVisibility(View.INVISIBLE);
-            }
-        });
-
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -105,7 +99,6 @@ public class NavigationActivity extends AppCompatActivity
         View nav_header_view=navigationView.getHeaderView(0);
         TextView tv_nav_nicname=(TextView)nav_header_view.findViewById(R.id.tv_nav_nicname);
         tv_nav_nicname.setText(CurrentUserInfo.getUser().getUserInfo().getClient_id());
-
     }
 
     @Override
@@ -121,7 +114,7 @@ public class NavigationActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.navigation, menu);
+        getMenuInflater().inflate(R.menu.orderr, menu);
         return true;
     }
 

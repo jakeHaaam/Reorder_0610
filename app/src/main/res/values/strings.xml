@@ -7,4 +7,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_cartt">CarttActivity</string>
+    <string name="title_activity_orderr">OrderrActivity</string>
+    <string name="title_activity_seatt_reserve">SeattReserveActivity</string>
 </resources>
