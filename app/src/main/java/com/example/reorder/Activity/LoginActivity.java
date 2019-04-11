@@ -17,7 +17,7 @@ import com.example.reorder.UserInfoUpdate.UserLogin;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText et_login_id;//[client_email받는 버튼]
+    EditText et_login_id;//[client_id받는 버튼]
     EditText et_login_password;
     Button bt_login_ok;
     TextView registerButton;

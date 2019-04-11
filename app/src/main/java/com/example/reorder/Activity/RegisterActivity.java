@@ -48,26 +48,26 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                String client_email= et_sign_up_id.getText().toString();
+                String client_id= et_sign_up_id.getText().toString();
 
                 if(et_sign_up_id.getText().toString().equals(""))
                 {
                     Toast.makeText(getApplicationContext(),"ID를 입력해 주세요.",Toast.LENGTH_SHORT).show();
                     //bt_sign_up_ok.setClickable(false);
                     //bt_sign_up_ok.setTextColor(Color.GRAY);
-                    Log.d("12321",client_email+"1");
+                    Log.d("12321",client_id+"1");
                 }
 
                 else
                     try {
-                        Log.d("12321",client_email+"2");
+                        Log.d("12321",client_id+"2");
                         Retrofit retrofit = new Retrofit.Builder()
                                 .baseUrl("http://35.197.38.155")
                                 .addConverterFactory(GsonConverterFactory.create())
                                 .build();
 
                         IdCheckApi idCheckAPI = retrofit.create(IdCheckApi.class);
-                        idCheckAPI.getClient_email(client_email).enqueue(new Callback<IdCheckResult>() {
+                        idCheckAPI.getClient_id(client_id).enqueue(new Callback<IdCheckResult>() {
                             @Override
                             public void onResponse(Call<IdCheckResult> call, Response<IdCheckResult> response) {
                                 Log.d("12321",response.message()+" "+response.toString());

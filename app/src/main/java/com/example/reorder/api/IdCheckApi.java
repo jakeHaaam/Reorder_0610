@@ -7,6 +7,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface IdCheckApi {
-    @GET("/check/{client_email}")
-    Call<IdCheckResult> getClient_email(@Path("client_email") String client_email);
+    @GET("/check/{client_id}")
+    Call<IdCheckResult> getClient_id(@Path("client_id") String client_id);
 }
