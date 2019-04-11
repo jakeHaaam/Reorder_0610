@@ -1,7 +1,7 @@
 package com.example.reorder.api;
 
-import com.example.reorder.JoinResult;
-import com.example.reorder.LoginResult;
+import com.example.reorder.Result.JoinResult;
+import com.example.reorder.Result.LoginResult;
 
 import java.util.HashMap;
 

@@ -1,6 +1,6 @@
 package com.example.reorder.api;
 
-import com.example.reorder.JoinResult;
+import com.example.reorder.Result.JoinResult;
 
 import java.util.HashMap;
 

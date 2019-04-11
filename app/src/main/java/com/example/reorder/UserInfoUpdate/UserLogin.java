@@ -5,8 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.reorder.LoginActivity;
-import com.example.reorder.LoginResult;
+import com.example.reorder.Result.LoginResult;
 import com.example.reorder.api.RetrofitApi;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.IsLogin;

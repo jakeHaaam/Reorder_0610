@@ -1,4 +1,4 @@
-package com.example.reorder;
+package com.example.reorder.Activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +8,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
+
+import com.example.reorder.R;
 
 public class OrderActivity extends AppCompatActivity {
 

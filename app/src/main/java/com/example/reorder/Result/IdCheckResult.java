@@ -1,4 +1,4 @@
-package com.example.reorder;
+package com.example.reorder.Result;
 
 public class IdCheckResult {
     int result;

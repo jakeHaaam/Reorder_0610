@@ -1,4 +1,4 @@
-package com.example.reorder;
+package com.example.reorder.Activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.reorder.R;
 import com.example.reorder.UserInfoUpdate.UserLogin;
 
 public class LoginActivity extends AppCompatActivity {

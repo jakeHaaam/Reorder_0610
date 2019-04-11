@@ -1,4 +1,4 @@
-package com.example.reorder;
+package com.example.reorder.Activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.reorder.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;

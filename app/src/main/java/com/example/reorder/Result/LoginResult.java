@@ -1,4 +1,4 @@
-package com.example.reorder;
+package com.example.reorder.Result;
 
 import com.example.reorder.info.UserInfo;
 

@@ -1,6 +1,6 @@
 package com.example.reorder.api;
 
-import com.example.reorder.IdCheckResult;
+import com.example.reorder.Result.IdCheckResult;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

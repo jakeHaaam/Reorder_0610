@@ -1,22 +1,19 @@
-package com.example.reorder;
+package com.example.reorder.Activity;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.reorder.Result.IdCheckResult;
+import com.example.reorder.Result.JoinResult;
+import com.example.reorder.R;
 import com.example.reorder.api.IdCheckApi;
 import com.example.reorder.api.JoinApi;
 
-import java.lang.reflect.GenericSignatureFormatError;
 import java.util.HashMap;
 
 import retrofit2.Call;
