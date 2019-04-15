@@ -10,4 +10,8 @@
     <string name="title_activity_cartt">CarttActivity</string>
     <string name="title_activity_orderr">OrderrActivity</string>
     <string name="title_activity_seatt_reserve">SeattReserveActivity</string>
+    <string name="title_activity_navigationn">NavigationnActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

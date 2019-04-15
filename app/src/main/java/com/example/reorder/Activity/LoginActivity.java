@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else{
                     UserLogin userLogin = new UserLogin();
-                    userLogin.Login(et_login_id.getText().toString(),et_login_password.getText().toString(),new Intent(LoginActivity.this, NavigationActivity.class),LoginActivity.this);
+                    userLogin.Login(et_login_id.getText().toString(),et_login_password.getText().toString(),new Intent(LoginActivity.this, NavigationnActivity.class),LoginActivity.this);
                     Log.d("11111", "여기는왔니");
                 }
 

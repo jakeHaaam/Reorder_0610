@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.HomeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <Button
+        android:id="@+id/bt_bookmark"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_toLeftOf="@+id/bt_near_store"
+        android:background="#fff"
+        android:text="M y  매 장" />
+
+    <Button
+        android:id="@+id/bt_near_store"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="#fff"
+        android:text="가 까 운   매 장" />
+
+    <Button
+        android:id="@+id/bt_map"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="280dp"
+        android:layout_marginTop="50dp"
+        android:layout_toRightOf="@+id/bt_near_store"
+        android:background="#fff"
+        android:text="지           도" />
+
+
+    <ListView
+        android:id="@+id/lv_near_store"
+        android:layout_width="380dp"
+        android:layout_height="400dp"
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="130dp" />
+
+    <ListView
+        android:id="@+id/lv_bookmark_store"
+        android:layout_width="380dp"
+        android:layout_height="400dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="130dp"
+        android:visibility="invisible" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:requiresFadingEdge="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v4.view.ViewPager>
+
+    </FrameLayout>
