@@ -37,7 +37,7 @@ public class SeattReserveActivity extends AppCompatActivity
         bt_order_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent NaviIntent=new Intent(SeattReserveActivity.this,NavigationActivity.class);
+                Intent NaviIntent=new Intent(SeattReserveActivity.this,NavigationnActivity.class);
                 SeattReserveActivity.this.startActivity(NaviIntent);
             }
         });

@@ -72,11 +72,11 @@ public class OrderrActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 if(rb_take_out.isChecked()){
-                    Intent NaviIntent=new Intent(OrderrActivity.this,NavigationActivity.class);
+                    Intent NaviIntent=new Intent(OrderrActivity.this,NavigationnActivity.class);
                     OrderrActivity.this.startActivity(NaviIntent);
                 }
                 else if(rb_eat_here.isChecked() && rb_seat_no.isChecked()) {
-                    Intent NaviIntent=new Intent(OrderrActivity.this,NavigationActivity.class);
+                    Intent NaviIntent=new Intent(OrderrActivity.this,NavigationnActivity.class);
                     OrderrActivity.this.startActivity(NaviIntent);
                 }
                 else if(rb_eat_here.isChecked() && rb_seat_yes.isChecked()){
