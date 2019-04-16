@@ -65,7 +65,7 @@
             android:layout_alignParentRight="true"
             android:src="@drawable/ic_shopping_cart" />
 
-        <ListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/lv_near_store"
             android:layout_width="395dp"
             android:layout_height="400dp"
@@ -73,7 +73,7 @@
             android:layout_below="@+id/bt_near_store"
             />
 
-        <ListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/lv_bookmark_store"
             android:layout_width="395dp"
             android:layout_height="400dp"

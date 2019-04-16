@@ -7,6 +7,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -24,7 +25,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.reorder.R;
+import com.example.reorder.StoreListAdapter;
 import com.example.reorder.globalVariables.CurrentUserInfo;
+import com.example.reorder.info.StoreInfo;
 
 import java.util.List;
 
@@ -35,11 +38,14 @@ public class NavigationActivity extends AppCompatActivity
     ImageButton bt_cart;
     Button bt_bookmark;
     Button bt_near_store;
-    ListView lv_bookmark_store;
-    ArrayAdapter<String> mAdapter;
-    ListView lv_near_store;
-    List<String> mData;
+    RecyclerView lv_bookmark_store;
+    RecyclerView lv_near_store;
     TextView tv_nav_nicname;
+
+    private StoreListAdapter storeListAdapter;
+    List<StoreInfo> storeInfoList;
+    RecyclerView.Adapter adapter;
+    RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

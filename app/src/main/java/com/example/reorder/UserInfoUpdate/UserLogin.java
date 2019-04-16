@@ -10,9 +10,11 @@ import com.example.reorder.api.RetrofitApi;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.IsLogin;
 import com.example.reorder.globalVariables.serverURL;
+import com.example.reorder.info.StoreInfo;
 import com.example.reorder.info.UserInfo;
 
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,6 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserLogin {
     String url= serverURL.getUrl();
+    List<StoreInfo> storeInfoList;
 
 
     public void Login(final String client_id,final String client_password, final Intent intent, final Activity activity){
@@ -54,11 +57,9 @@ public class UserLogin {
                                     break;
                                 case 1:
                                     Log.d("11111", "login 성공");
-                                    UserInfo userinfo = map.getUserInfo();
+                                    UserInfo userinfo = map.getUser();
+                                    storeInfoList=map.getStore();
                                     CurrentUserInfo.getUser().setUserInfo(userinfo);
-                                    UserInfo u_info = CurrentUserInfo.getUser().getUserInfo();
-                                    Log.d("11111", String.valueOf(u_info.getId()));
-                                    Log.d("11111",u_info.getClient_id());
                                     IsLogin.setIsLogin(true);
                                     activity.startActivity(intent);
                                     activity.finish();
