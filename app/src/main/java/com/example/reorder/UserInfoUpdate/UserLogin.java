@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.example.reorder.Result.LoginResult;
 import com.example.reorder.api.RetrofitApi;
+import com.example.reorder.globalVariables.CurrentStoreInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.IsLogin;
 import com.example.reorder.globalVariables.serverURL;
@@ -24,8 +25,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserLogin {
     String url= serverURL.getUrl();
-    List<StoreInfo> storeInfoList;
-
 
     public void Login(final String client_id,final String client_password, final Intent intent, final Activity activity){
 
@@ -58,8 +57,10 @@ public class UserLogin {
                                 case 1:
                                     Log.d("11111", "login 성공");
                                     UserInfo userinfo = map.getUser();
-                                    storeInfoList=map.getStore();
+                                    //StoreInfo storeInfo= (StoreInfo) map.getStore();
+                                    List<StoreInfo> storeInfo=map.getStore();
                                     CurrentUserInfo.getUser().setUserInfo(userinfo);
+                                    CurrentStoreInfo.getStore().setStoreInfos(storeInfo);
                                     IsLogin.setIsLogin(true);
                                     activity.startActivity(intent);
                                     activity.finish();
@@ -72,7 +73,7 @@ public class UserLogin {
 
                 @Override
                 public void onFailure(Call<LoginResult> call, Throwable t) {
-
+                    t.printStackTrace();
                 }
             });
         }catch (Exception e){

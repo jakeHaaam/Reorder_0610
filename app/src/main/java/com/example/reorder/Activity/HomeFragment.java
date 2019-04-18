@@ -10,15 +10,23 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.example.reorder.R;
+import com.example.reorder.adpatertest;
+import com.example.reorder.globalVariables.CurrentStoreInfo;
+import com.example.reorder.info.StoreInfo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.Inflater;
 
 
@@ -61,9 +69,12 @@ public class HomeFragment extends Fragment {
     private Button bt_bookmark;
     private Button bt_map;
     private ViewPager pager;
-    private ListView lv_bookmark_store;
-    private ListView lv_near_store;
+    private RecyclerView lv_bookmark_store;
+    private RecyclerView lv_near_store;
     private Button bt_cart;
+    private RecyclerView.Adapter adapter;
+    private List<StoreInfo> currentStoreInfos;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,7 +84,13 @@ public class HomeFragment extends Fragment {
 
         lv_bookmark_store=view.findViewById(R.id.lv_bookmark_store);
         lv_near_store=view.findViewById(R.id.lv_near_store);
+        lv_near_store.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
 
+            currentStoreInfos = CurrentStoreInfo.getStore().getStoreInfos();
+
+        adapter= new adpatertest(currentStoreInfos,inflater.getContext());
+
+        lv_near_store.setAdapter(adapter);
 
         bt_near_store = (Button) view.findViewById(R.id.bt_near_store);
         bt_near_store.setOnClickListener(new View.OnClickListener() {

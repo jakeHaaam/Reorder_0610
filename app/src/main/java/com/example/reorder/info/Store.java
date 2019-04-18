@@ -1,13 +1,11 @@
 package com.example.reorder.info;
 
+import java.util.List;
+
 public class Store {
-    StoreInfo storeInfo;
+    List<StoreInfo> storeInfos;
 
-    public StoreInfo getStoreInfo() {
-        return storeInfo;
-    }
+    public List<StoreInfo> getStoreInfos() {return storeInfos;}
 
-    public void setStoreInfo(StoreInfo storeInfo) {
-        this.storeInfo = storeInfo;
-    }
+    public void setStoreInfos(List<StoreInfo> storeInfos) {this.storeInfos = storeInfos;}
 }

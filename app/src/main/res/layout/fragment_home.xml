@@ -42,7 +42,7 @@
         android:text="지           도" />
 
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/lv_near_store"
         android:layout_width="380dp"
         android:layout_height="400dp"
@@ -51,7 +51,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="130dp" />
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/lv_bookmark_store"
         android:layout_width="380dp"
         android:layout_height="400dp"
