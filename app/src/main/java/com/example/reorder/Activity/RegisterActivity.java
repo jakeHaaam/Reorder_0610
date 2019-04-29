@@ -62,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
                     try {
                         Log.d("12321",client_id+"2");
                         Retrofit retrofit = new Retrofit.Builder()
-                                .baseUrl("http://35.197.38.155")
+                                .baseUrl("http://35.197.38.155:4000")
                                 .addConverterFactory(GsonConverterFactory.create())
                                 .build();
 

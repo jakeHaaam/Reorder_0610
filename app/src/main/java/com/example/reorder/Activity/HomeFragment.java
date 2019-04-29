@@ -1,14 +1,8 @@
 package com.example.reorder.Activity;
 
-import android.content.Context;
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,17 +11,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ListView;
 
+import com.example.reorder.BookMarkStoreAdapter;
 import com.example.reorder.R;
-import com.example.reorder.adpatertest;
+import com.example.reorder.StoreAdapter;
+import com.example.reorder.globalVariables.CurrentBookMarkStoreInfo;
 import com.example.reorder.globalVariables.CurrentStoreInfo;
+import com.example.reorder.info.BookMarkStoreInfo;
 import com.example.reorder.info.StoreInfo;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 
 public class HomeFragment extends Fragment {
@@ -72,8 +65,10 @@ public class HomeFragment extends Fragment {
     private RecyclerView lv_bookmark_store;
     private RecyclerView lv_near_store;
     private Button bt_cart;
-    private RecyclerView.Adapter adapter;
+    private RecyclerView.Adapter store_adapter;
+    private RecyclerView.Adapter bookmark_store_adapter;
     private List<StoreInfo> currentStoreInfos;
+    private List<BookMarkStoreInfo> currentBookMarkStoreList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,13 +79,18 @@ public class HomeFragment extends Fragment {
 
         lv_bookmark_store=view.findViewById(R.id.lv_bookmark_store);
         lv_near_store=view.findViewById(R.id.lv_near_store);
+
+        //전체 store 리스트뷰 연결
         lv_near_store.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
+        currentStoreInfos = CurrentStoreInfo.getStore().getStoreInfoList();
+        store_adapter = new StoreAdapter(currentStoreInfos,inflater.getContext());
+        lv_near_store.setAdapter(store_adapter);
 
-            currentStoreInfos = CurrentStoreInfo.getStore().getStoreInfos();
-
-        adapter= new adpatertest(currentStoreInfos,inflater.getContext());
-
-        lv_near_store.setAdapter(adapter);
+        //북마크 리스트뷰 연결
+        /*lv_bookmark_store.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
+        currentBookMarkStoreList= CurrentBookMarkStoreInfo.getBookMarkStore().getBookMarkStoreInfoList();
+        bookmark_store_adapter= new BookMarkStoreAdapter(currentBookMarkStoreList,inflater.getContext());
+        lv_bookmark_store.setAdapter(bookmark_store_adapter);*/
 
         bt_near_store = (Button) view.findViewById(R.id.bt_near_store);
         bt_near_store.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +118,9 @@ public class HomeFragment extends Fragment {
         bt_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int count=store_adapter.getItemCount();
                 Intent MapIntent=new Intent(getActivity(),GoogleMapActivity.class); //this 대신 getActivity() : 현재의 context받아올 수 있음
+                MapIntent.putExtra("count",count);
                 startActivity(MapIntent);
                // pager.setCurrentItem(2);
             }

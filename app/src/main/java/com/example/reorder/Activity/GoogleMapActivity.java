@@ -22,6 +22,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +31,9 @@ import android.widget.Toast;
 
 
 import com.example.reorder.R;
+import com.example.reorder.StoreAdapter;
+import com.example.reorder.globalVariables.CurrentStoreInfo;
+import com.example.reorder.info.StoreInfo;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -53,7 +57,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class GoogleMapActivity extends FragmentActivity implements
-        OnMapReadyCallback,
+        OnMapReadyCallback,GoogleMap.OnMarkerClickListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
@@ -65,12 +69,14 @@ public class GoogleMapActivity extends FragmentActivity implements
     private FusedLocationProviderClient mFusedLocationClient;
     private static final int REQUEST_CODE_PERMISSIONS = 1000;
     TextView tv_location;
+    int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_map);
-
+        Intent intent=getIntent();
+        count=intent.getExtras().getInt("count");
         bt_current=(Button)findViewById(R.id.bt_current);
         /*bt_current.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,13 +108,6 @@ public class GoogleMapActivity extends FragmentActivity implements
 
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_PERMISSIONS);
             return;
@@ -145,10 +144,20 @@ public class GoogleMapActivity extends FragmentActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-
+        double st_lat=0,st_lng = 0;
         //지도 시작위도,경도 설정/초기 카메라 위치 설정
         LatLng start=new LatLng(37.48713123599517 ,126.82648816388149 );
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(start,17.0f));
+
+        //store marker
+        for(int i=0;i<count;i++){
+            st_lat=Double.parseDouble(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_lat());
+            st_lng=Double.parseDouble(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_lng());
+            LatLng stPoint=new LatLng(st_lat,st_lng);
+            map.addMarker(new MarkerOptions().position(stPoint).title(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_name()));
+        }
+
+        map.setOnMarkerClickListener(this);
     }
 
     @Override
@@ -202,14 +211,6 @@ public class GoogleMapActivity extends FragmentActivity implements
                 PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_PERMISSIONS);
             return;
@@ -327,5 +328,12 @@ public class GoogleMapActivity extends FragmentActivity implements
                     });
                 }
         }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        //마커 클릭시 구현
+
+        return true;
     }
 }

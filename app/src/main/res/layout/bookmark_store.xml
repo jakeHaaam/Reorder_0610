@@ -13,21 +13,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_id"
+            android:id="@+id/tv_bm_id"
             android:text="id"
             android:textSize="20dp"
             android:layout_marginLeft="30dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_near_store_id"
+            android:id="@+id/tv_bm_store_id"
             android:text="store_id"
             android:textSize="20dp"
             android:layout_marginLeft="30dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_near_store_name"
+            android:id="@+id/tv_bm_store_name"
             android:text="깐뚜치오"
             android:textSize="20dp"
             android:layout_marginLeft="30dp"/>
@@ -35,19 +35,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_near_store_lat"
+            android:id="@+id/tv_bm_store_lat"
             android:text="경도: "
             android:layout_marginLeft="30dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_near_store_lng"
+            android:id="@+id/tv_bm_store_lng"
             android:text="위도: "
             android:layout_marginLeft="30dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_near_store_category"
+            android:id="@+id/tv_bm_store_category"
             android:text="카페"
             android:layout_marginLeft="30dp"/>
 

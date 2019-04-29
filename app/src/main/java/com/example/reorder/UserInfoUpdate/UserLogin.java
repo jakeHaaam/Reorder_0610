@@ -7,10 +7,12 @@ import android.widget.Toast;
 
 import com.example.reorder.Result.LoginResult;
 import com.example.reorder.api.RetrofitApi;
+import com.example.reorder.globalVariables.CurrentBookMarkStoreInfo;
 import com.example.reorder.globalVariables.CurrentStoreInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.IsLogin;
 import com.example.reorder.globalVariables.serverURL;
+import com.example.reorder.info.BookMarkStoreInfo;
 import com.example.reorder.info.StoreInfo;
 import com.example.reorder.info.UserInfo;
 
@@ -57,10 +59,11 @@ public class UserLogin {
                                 case 1:
                                     Log.d("11111", "login 성공");
                                     UserInfo userinfo = map.getUser();
-                                    //StoreInfo storeInfo= (StoreInfo) map.getStore();
                                     List<StoreInfo> storeInfo=map.getStore();
+                                    //List<BookMarkStoreInfo> bookMarkStoreInfos=map.getBookMarkStore();
                                     CurrentUserInfo.getUser().setUserInfo(userinfo);
-                                    CurrentStoreInfo.getStore().setStoreInfos(storeInfo);
+                                    CurrentStoreInfo.getStore().setStoreInfoList(storeInfo);
+                                    //CurrentBookMarkStoreInfo.getBookMarkStore().setBookMarkStoreInfoList(bookMarkStoreInfos);
                                     IsLogin.setIsLogin(true);
                                     activity.startActivity(intent);
                                     activity.finish();

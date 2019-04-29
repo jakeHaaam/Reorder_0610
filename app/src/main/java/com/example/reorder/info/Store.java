@@ -3,9 +3,9 @@ package com.example.reorder.info;
 import java.util.List;
 
 public class Store {
-    List<StoreInfo> storeInfos;
+    List<StoreInfo> storeInfoList;
 
-    public List<StoreInfo> getStoreInfos() {return storeInfos;}
+    public List<StoreInfo> getStoreInfoList() {        return storeInfoList;    }
 
-    public void setStoreInfos(List<StoreInfo> storeInfos) {this.storeInfos = storeInfos;}
+    public void setStoreInfoList(List<StoreInfo> storeInfoList) {        this.storeInfoList = storeInfoList; }
 }
