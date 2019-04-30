@@ -7,6 +7,7 @@ public class StoreMenuInfo {
     String menu_info;
     int menu_price;
 
+
     public StoreMenuInfo(int id, int menu_id, String menu_name, String menu_info, int menu_price) {
         this.id = id;
         this.menu_id = menu_id;

@@ -1,13 +1,15 @@
 package com.example.reorder.info;
 
-public class StoreMenu {
-    StoreMenuInfo storeMenuInfo;
+import java.util.List;
 
-    public StoreMenuInfo getStoreMenuInfo() {
-        return storeMenuInfo;
+public class StoreMenu {
+    List<StoreMenuInfo> storeMenuInfoList;
+
+    public List<StoreMenuInfo> getStoreMenuInfoList() {
+        return storeMenuInfoList;
     }
 
-    public void setStoreMenuInfo(StoreMenuInfo storeMenuInfo) {
-        this.storeMenuInfo = storeMenuInfo;
+    public void setStoreMenuInfoList(List<StoreMenuInfo> storeMenuInfoList) {
+        this.storeMenuInfoList = storeMenuInfoList;
     }
 }

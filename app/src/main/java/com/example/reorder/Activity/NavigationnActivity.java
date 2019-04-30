@@ -40,14 +40,14 @@ public class NavigationnActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
-        homeFragment = new HomeFragment();
 
+        homeFragment = new HomeFragment();
         FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.container,homeFragment);
         transaction.addToBackStack(null);
         transaction.commit();
 
-       //layoutInflater layoutInflater =(LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        //layoutInflater layoutInflater =(LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
         //ViewGroup mainLayout=layoutInflater.inflate(R.layout.activity_navigationn);
         //layoutInflater.inflate(R.layout.app_bar_navigationn,null,true);
         //View view=layoutInflater.inflate(R.layout.app_bar_navigationn,null);

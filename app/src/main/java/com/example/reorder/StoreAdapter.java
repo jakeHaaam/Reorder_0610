@@ -2,7 +2,9 @@ package com.example.reorder;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,14 +14,12 @@ import android.widget.TextView;
 
 import com.example.reorder.Activity.StoreFragment;
 import com.example.reorder.Result.StoreIdResult;
-import com.example.reorder.api.RetrofitApi;
 import com.example.reorder.api.StoreIdApi;
 import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
 import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.StoreInfo;
 import com.example.reorder.info.StoreMenuInfo;
 
-import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -62,6 +62,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
             @Override
             public void onClick(final View v) {
                 String store_id=viewHolder.st_id.getText().toString();
+                final String store_name=viewHolder.st_name.getText().toString();
                 try{
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(url)
@@ -78,11 +79,18 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
                                 switch (storeIdResult.getResult()) {
                                     case 1://성공
                                         Log.d("store", "store 받아오기 성공");
-                                        StoreMenuInfo storeMenuInfo=storeIdResult.getStoreMenuInfo();
-                                        CurrentStoreMenuInfo.getStoreMenu().setStoreMenuInfo(storeMenuInfo);
+                                        List<StoreMenuInfo> storeMenuInfo= (List<StoreMenuInfo>) storeIdResult.getStoreMenuInfo();
+                                        CurrentStoreMenuInfo.getStoreMenu().setStoreMenuInfoList(storeMenuInfo);
 
-                                        Intent StoreIntent=new Intent(v.getContext(), StoreFragment.class); //this 대신 getActivity() : 현재의 context받아올 수 있음
-                                        v.getContext().startActivity(StoreIntent);//view를 final처리를 해서 오류 안 뜨게 됨
+                                        Fragment fragment=new StoreFragment();
+                                        Bundle bundle=new Bundle();
+                                        bundle.putString("store_name",store_name);
+                                        fragment.setArguments(bundle);
+                                        Log.d("store", "store_name넘어갔음");
+
+                                        //Intent StoreIntent=new Intent(v.getContext(), StoreFragment.class); //this 대신 getActivity() : 현재의 context받아올 수 있음
+                                        //StoreIntent.putExtra("store_name", store_name);
+                                        //v.getContext().startActivity(StoreIntent);//view를 final처리를 해서 오류 안 뜨게 됨
                                         break;
                                     case 0://실패
                                         Log.d("store", "store 받아오기 실패");

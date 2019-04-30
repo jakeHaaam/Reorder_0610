@@ -7,6 +7,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface StoreIdApi {
-    @GET("/check/{store_id}")
-    Call<StoreIdResult> getStore_id(@Path("store_id") String store_id);
+    @GET("/storecheck/{storeinfo_id}")
+    Call<StoreIdResult> getStore_id(@Path("storeinfo_id") String store_id);
 }

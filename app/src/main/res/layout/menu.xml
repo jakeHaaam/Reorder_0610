@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="5dp"
+    android:background="#f7f6f6"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="370dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_menu_name"
+                android:layout_width="214dp"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="menu_name"
+                android:textColor="#715c4b"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_menu_price"
+                android:layout_width="101dp"
+                android:layout_height="wrap_content"
+                android:text="menu_price"
+                android:textColor="#715c4b"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_menu_info"
+            android:layout_width="317dp"
+            android:layout_height="wrap_content"
+            android:text="menu_info"
+            android:textColor="#aa886d"
+            android:textSize="13sp"
+
+            />
+
+
+    </LinearLayout>
+
+</LinearLayout>
