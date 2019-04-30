@@ -55,14 +55,14 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"ID를 입력해 주세요.",Toast.LENGTH_SHORT).show();
                     //bt_sign_up_ok.setClickable(false);
                     //bt_sign_up_ok.setTextColor(Color.GRAY);
-                    Log.d("12321",client_id+"1");
+                    Log.d("11111",client_id+"1");
                 }
 
                 else
                     try {
-                        Log.d("12321",client_id+"2");
+                        Log.d("11111",client_id+" ");
                         Retrofit retrofit = new Retrofit.Builder()
-                                .baseUrl("http://35.197.38.155:4000")
+                                .baseUrl("http://34.85.56.49:4000")
                                 .addConverterFactory(GsonConverterFactory.create())
                                 .build();
 
@@ -70,7 +70,7 @@ public class RegisterActivity extends AppCompatActivity {
                         idCheckAPI.getClient_id(client_id).enqueue(new Callback<IdCheckResult>() {
                             @Override
                             public void onResponse(Call<IdCheckResult> call, Response<IdCheckResult> response) {
-                                Log.d("12321",response.message()+" "+response.toString());
+                                Log.d("11111","응답은 : "+response.message()+" "+response.toString());
                                 //JsonObject post= new JsonObject().get(response.body().toString()).getAsJsonObject();
                                 if (response.isSuccessful()) {
                                     IdCheckResult idCheckResult = response.body();
@@ -82,7 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
                                             Toast.makeText(getApplicationContext(), "사용 가능한 ID입니다.", Toast.LENGTH_SHORT).show();
                                             break;
                                         default:
-                                            Toast.makeText(getApplicationContext(), "11111111 is NOT Successful", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "login is NOT Successful", Toast.LENGTH_SHORT).show();
                                     }
                                 } else
                                     Toast.makeText(getApplicationContext(), "response is NOT Successful", Toast.LENGTH_SHORT).show();
@@ -118,10 +118,9 @@ public class RegisterActivity extends AppCompatActivity {
                         HashMap<String, String> input = new HashMap<>();
                         input.put("client_id", et_sign_up_id.getText().toString());
                         input.put("client_password", et_sign_up_password.getText().toString());
-                        input.put("client_password2", et_sign_up_password_check.getText().toString());
 
 
-                        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://35.197.38.155/")
+                        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://34.85.56.49:4000")
                                 .addConverterFactory(GsonConverterFactory.create()).build();
 
                         JoinApi joinApi = retrofit.create(JoinApi.class);

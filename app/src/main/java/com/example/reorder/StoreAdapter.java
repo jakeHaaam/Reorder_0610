@@ -50,7 +50,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
 
         viewHolder.id.setText("id: " + Integer.toString(currentStoreInfo.get(i).getId()));
-        viewHolder.st_id.setText("st_id: " + Integer.toString(currentStoreInfo.get(i).getStore_id()));
+        viewHolder.st_id.setText(Integer.toString(currentStoreInfo.get(i).getStore_id()));
         viewHolder.st_name.setText("가게이름: " + currentStoreInfo.get(i).getStore_name());
         viewHolder.st_lat.setText("경도: " + currentStoreInfo.get(i).getStore_lat());
         viewHolder.st_lng.setText("위도: " + currentStoreInfo.get(i).getStore_lng());
@@ -61,7 +61,8 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                String store_id=viewHolder.st_id.getText().toString();
+                String storeinfo_id=viewHolder.st_id.getText().toString();
+                Log.d("storeadapter","!@#!#!@#!@1" + storeinfo_id);
                 final String store_name=viewHolder.st_name.getText().toString();
                 try{
                 Retrofit retrofit = new Retrofit.Builder()
@@ -69,16 +70,17 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 StoreIdApi storeIdApi= retrofit.create(StoreIdApi.class);
-                storeIdApi.getStore_id(store_id).enqueue(new Callback<StoreIdResult>() {
+                storeIdApi.getStore_id(storeinfo_id).enqueue(new Callback<StoreIdResult>() {
                     @Override
                     public void onResponse(Call<StoreIdResult> call, Response<StoreIdResult> response) {
-                        Log.d("33",response.message()+" "+response.toString());
+                        Log.d("storeadapter",response.message()+"*^^* "+response.toString());
                         if (response.isSuccessful()){
                             StoreIdResult storeIdResult=response.body();
                             if(storeIdResult!=null) {
                                 switch (storeIdResult.getResult()) {
                                     case 1://성공
-                                        Log.d("store", "store 받아오기 성공");
+                                        Log.d("storeadapter", "store 받아오기 성공");
+                                        //////////////error//////////////////////84line
                                         List<StoreMenuInfo> storeMenuInfo= (List<StoreMenuInfo>) storeIdResult.getStoreMenuInfo();
                                         CurrentStoreMenuInfo.getStoreMenu().setStoreMenuInfoList(storeMenuInfo);
 
@@ -86,14 +88,14 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
                                         Bundle bundle=new Bundle();
                                         bundle.putString("store_name",store_name);
                                         fragment.setArguments(bundle);
-                                        Log.d("store", "store_name넘어갔음");
+                                        Log.d("storeadapter", "store_name:"+store_name+" 넘어갔음");
 
                                         //Intent StoreIntent=new Intent(v.getContext(), StoreFragment.class); //this 대신 getActivity() : 현재의 context받아올 수 있음
                                         //StoreIntent.putExtra("store_name", store_name);
                                         //v.getContext().startActivity(StoreIntent);//view를 final처리를 해서 오류 안 뜨게 됨
                                         break;
                                     case 0://실패
-                                        Log.d("store", "store 받아오기 실패");
+                                        Log.d("storeadapter", "store 받아오기 실패");
                                         break;
                                 }
                             }
