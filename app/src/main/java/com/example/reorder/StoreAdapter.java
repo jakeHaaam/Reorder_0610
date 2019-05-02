@@ -81,14 +81,14 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
                                     case 1://성공
                                         Log.d("storeadapter", "store 받아오기 성공");
                                         //////////////error//////////////////////84line
-                                        List<StoreMenuInfo> storeMenuInfo= (List<StoreMenuInfo>) storeIdResult.getStoreMenuInfo();
+                                        List<StoreMenuInfo> storeMenuInfo= storeIdResult.getStoreMenuInfo();
                                         CurrentStoreMenuInfo.getStoreMenu().setStoreMenuInfoList(storeMenuInfo);
 
-                                        Fragment fragment=new StoreFragment();
-                                        Bundle bundle=new Bundle();
-                                        bundle.putString("store_name",store_name);
-                                        fragment.setArguments(bundle);
-                                        Log.d("storeadapter", "store_name:"+store_name+" 넘어갔음");
+                                        //Fragment fragment=new StoreFragment();
+                                        //Bundle bundle=new Bundle();
+                                        //bundle.putString("store_name",store_name);
+                                        //fragment.setArguments(bundle);
+                                        //Log.d("storeadapter", "store_name:"+store_name+" 넘어갔음");
 
                                         //Intent StoreIntent=new Intent(v.getContext(), StoreFragment.class); //this 대신 getActivity() : 현재의 context받아올 수 있음
                                         //StoreIntent.putExtra("store_name", store_name);
