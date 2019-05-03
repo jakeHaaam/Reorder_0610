@@ -7,51 +7,46 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.reorder.MenuAdapter;
 import com.example.reorder.R;
+import com.example.reorder.globalVariables.CurrentStoreInfo;
 import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
+import com.example.reorder.info.Store;
+import com.example.reorder.info.StoreMenuInfo;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link StoreFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link StoreFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.List;
+
+
 public class StoreFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private RecyclerView.Adapter adapter;
+    private RecyclerView rv_menu;
+    private RecyclerView.Adapter menu_adapter;
     private TextView tv_store_name;
+    private List<StoreMenuInfo> currentStoreMenuInfo;
     private Button bt_bookmark;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
 
     public StoreFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment StoreFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static StoreFragment newInstance(String param1, String param2) {
         StoreFragment fragment = new StoreFragment();
@@ -79,52 +74,19 @@ public class StoreFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_store, container, false);
-
-        tv_store_name=view.findViewById(R.id.tv_store_name);
         bt_bookmark=view.findViewById(R.id.bt_bookmark);
 
-        Bundle bundle=getArguments();
-        String message=bundle.getString("store_name");
-        tv_store_name.setText(message);
+        tv_store_name=view.findViewById(R.id.tv_store_name);
+        tv_store_name.setText(CurrentStoreInfo.getStore().getStoreInfoList().get(0).getStore_name());
+
+
+        //rv_menu=view.findViewById(R.id.rv_menu);
+        //rv_menu.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
+        //currentStoreMenuInfo=CurrentStoreMenuInfo.getStoreMenu().getStoreMenuInfoList();
+        //menu_adapter=new MenuAdapter(currentStoreMenuInfo,inflater.getContext());
+        //rv_menu.setAdapter(menu_adapter);
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

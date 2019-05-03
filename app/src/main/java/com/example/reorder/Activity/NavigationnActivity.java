@@ -20,16 +20,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.reorder.FragmentReplaceable;
 import com.example.reorder.R;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 
 public class NavigationnActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, FragmentReplaceable {
 
     private Fragment homeFragment;
-    private Button bt_cart;
+    private Fragment storeFragment;
+    private Fragment testFragment;
+    private ImageButton bt_cart;
 
 
 
@@ -42,17 +47,9 @@ public class NavigationnActivity extends AppCompatActivity
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
 
         homeFragment = new HomeFragment();
-        FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.container,homeFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-
-        //layoutInflater layoutInflater =(LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
-        //ViewGroup mainLayout=layoutInflater.inflate(R.layout.activity_navigationn);
-        //layoutInflater.inflate(R.layout.app_bar_navigationn,null,true);
-        //View view=layoutInflater.inflate(R.layout.app_bar_navigationn,null);
-        //Button bt_cart=(Button)view.findViewById(R.id.bt_cart);
-
+        storeFragment=new StoreFragment();
+        testFragment=new TestFragment();
+        setDefaultFragment();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -111,10 +108,14 @@ public class NavigationnActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             Log.d("11111","된다 ");
-            transaction.replace(R.id.container,homeFragment);
+            replaceFragment(1);
+            Toast.makeText(this, "홈이다", Toast.LENGTH_SHORT).show();
+
         }
 //            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
+        else if (id == R.id.nav_logout) {
+            replaceFragment(2);
+        }
 //
 //        } else if (id == R.id.nav_slideshow) {
 //
@@ -132,5 +133,27 @@ public class NavigationnActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void setDefaultFragment(){
+        FragmentTransaction transaction =getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.container,homeFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    @Override
+    public void replaceFragment(int fragmentId){
+        FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
+        if(fragmentId==1){
+            transaction.replace(R.id.container,homeFragment);
+        }else if (fragmentId==2){
+            transaction.replace(R.id.container, storeFragment);
+        }else if (fragmentId==3){
+            transaction.replace(R.id.container, testFragment);
+        }
+
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

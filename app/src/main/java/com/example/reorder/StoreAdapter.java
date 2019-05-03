@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.reorder.Activity.HomeFragment;
+import com.example.reorder.Activity.NavigationnActivity;
 import com.example.reorder.Activity.StoreFragment;
 import com.example.reorder.Result.StoreIdResult;
 import com.example.reorder.api.StoreIdApi;
@@ -28,10 +32,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.app.PendingIntent.getActivity;
+
 public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> {
     List<StoreInfo> currentStoreInfo;
     Context context;
     String url= serverURL.getUrl();
+    private Fragment StoreFragment;
 
     public StoreAdapter(List<StoreInfo> currentStoreInfo, Context context) {
         this.currentStoreInfo = currentStoreInfo;
@@ -60,10 +67,10 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         // list item click
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v) {
+            public void onClick(View v) {
                 String storeinfo_id=viewHolder.st_id.getText().toString();
-                Log.d("storeadapter","!@#!#!@#!@1" + storeinfo_id);
-                final String store_name=viewHolder.st_name.getText().toString();
+                Log.d("storeadapter","!@#!#!@#!@ " + storeinfo_id);
+
                 try{
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(url)
@@ -79,12 +86,14 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
                             if(storeIdResult!=null) {
                                 switch (storeIdResult.getResult()) {
                                     case 1://성공
+                                        String store_name=viewHolder.st_name.getText().toString();
                                         Log.d("storeadapter", "store 받아오기 성공");
-                                        //////////////error//////////////////////84line
                                         List<StoreMenuInfo> storeMenuInfo= storeIdResult.getStoreMenuInfo();
                                         CurrentStoreMenuInfo.getStoreMenu().setStoreMenuInfoList(storeMenuInfo);
 
-                                        //Fragment fragment=new StoreFragment();
+                                        //(FragmentReplaceable)NavigationnActivity.replaceFragment(2);
+
+
                                         //Bundle bundle=new Bundle();
                                         //bundle.putString("store_name",store_name);
                                         //fragment.setArguments(bundle);
@@ -135,4 +144,6 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
             st_category=itemView.findViewById(R.id.tv_near_store_category);
         }
     }
+
+
 }

@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".Activity.StoreFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <!--<android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_menu"
         android:layout_width="362dp"
         android:layout_height="437dp"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="200dp" />
-
+-->
     <TextView
         android:id="@+id/tv_store_name"
         android:layout_width="305dp"
@@ -20,11 +20,14 @@
         android:layout_marginTop="40dp"
         android:text="TextView" />
 
-    <Button
-        android:id="@+id/bt_bookmark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="300dp"
-        android:layout_marginTop="130dp"
-        android:text="찜" />
+
+       <Button
+           android:id="@+id/bt_bookmark"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginLeft="300dp"
+           android:layout_marginTop="130dp"
+           android:text="찜" />
+
+
 </FrameLayout>

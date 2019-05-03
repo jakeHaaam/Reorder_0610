@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.reorder.BookMarkStoreAdapter;
 import com.example.reorder.R;
@@ -75,6 +76,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
+
         View view=inflater.inflate(R.layout.fragment_home,container,false);
 
         lv_bookmark_store=view.findViewById(R.id.lv_bookmark_store);
@@ -100,7 +102,7 @@ public class HomeFragment extends Fragment {
                 lv_bookmark_store.setVisibility(View.INVISIBLE);
                 lv_near_store.setVisibility(View.VISIBLE);
                 Log.d("11111","왜 안 돼");
-                //pager.setCurrentItem(0);
+
             }
         });
 
@@ -110,7 +112,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 lv_bookmark_store.setVisibility(View.VISIBLE);
                 lv_near_store.setVisibility(View.INVISIBLE);
-               // pager.setCurrentItem(1);
+
             }
         });
 
@@ -122,12 +124,11 @@ public class HomeFragment extends Fragment {
                 Intent MapIntent=new Intent(getActivity(),GoogleMapActivity.class); //this 대신 getActivity() : 현재의 context받아올 수 있음
                 MapIntent.putExtra("count",count);
                 startActivity(MapIntent);
-               // pager.setCurrentItem(2);
+
             }
         });
 
 
-        //pager.setCurrentItem(0);
         return view;
     }
 
