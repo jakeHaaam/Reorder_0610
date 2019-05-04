@@ -152,7 +152,7 @@ public class NavigationnActivity extends AppCompatActivity
     public void setDefaultFragment(){
         FragmentTransaction transaction =getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.container,homeFragment);
-        transaction.addToBackStack(null);
+        //transaction.addToBackStack(null);
         transaction.commit();
     }
 
