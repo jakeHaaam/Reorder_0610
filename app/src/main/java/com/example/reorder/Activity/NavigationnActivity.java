@@ -34,8 +34,9 @@ public class NavigationnActivity extends AppCompatActivity
     private Fragment homeFragment;
     private Fragment storeFragment;
     private Fragment testFragment;
+    private Fragment CartFragment;
     private ImageButton bt_cart;
-
+    public static Context mContext;
 
 
     @Override
@@ -49,9 +50,18 @@ public class NavigationnActivity extends AppCompatActivity
         homeFragment = new HomeFragment();
         storeFragment=new StoreFragment();
         testFragment=new TestFragment();
+        CartFragment=new CartFragment();
         setDefaultFragment();
 
+        bt_cart=findViewById(R.id.bt_cart);
+        bt_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(4);
+            }
+        });
 
+        mContext=this;
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -151,8 +161,11 @@ public class NavigationnActivity extends AppCompatActivity
             transaction.replace(R.id.container, storeFragment);
         }else if (fragmentId==3){
             transaction.replace(R.id.container, testFragment);
+        } else if (fragmentId==4){
+            transaction.replace(R.id.container, CartFragment);
+        }else if (fragmentId==5) {
+            transaction.replace(R.id.container, testFragment);
         }
-
         transaction.addToBackStack(null);
         transaction.commit();
     }
