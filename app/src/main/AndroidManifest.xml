@@ -17,14 +17,6 @@
             android:name=".Activity.NavigationnActivity"
             android:label="@string/title_activity_navigationn"
             android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
-        <activity
-            android:name=".Activity.SeattReserveActivity"
-            android:label="@string/title_activity_seatt_reserve"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
-        <activity
-            android:name=".Activity.OrderrActivity"
-            android:label="@string/title_activity_orderr"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
         <activity android:name=".Activity.GoogleMapActivity" />
         <activity android:name=".Activity.RegisterActivity" />
         <activity android:name=".Activity.LoginActivity">

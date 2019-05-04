@@ -35,6 +35,8 @@ public class NavigationnActivity extends AppCompatActivity
     private Fragment storeFragment;
     private Fragment testFragment;
     private Fragment CartFragment;
+    private Fragment OrderFragment;
+    private Fragment SeatReserveFragment;
     private ImageButton bt_cart;
     public static Context mContext;
 
@@ -51,6 +53,8 @@ public class NavigationnActivity extends AppCompatActivity
         storeFragment=new StoreFragment();
         testFragment=new TestFragment();
         CartFragment=new CartFragment();
+        OrderFragment=new OrderFragment();
+        SeatReserveFragment=new SeatReserveFragment();
         setDefaultFragment();
 
         bt_cart=findViewById(R.id.bt_cart);
@@ -164,8 +168,12 @@ public class NavigationnActivity extends AppCompatActivity
         } else if (fragmentId==4){
             transaction.replace(R.id.container, CartFragment);
         }else if (fragmentId==5) {
-            transaction.replace(R.id.container, testFragment);
+            transaction.replace(R.id.container, OrderFragment);
+        }else if (fragmentId==6) {
+            transaction.replace(R.id.container, SeatReserveFragment);
         }
+
+
         transaction.addToBackStack(null);
         transaction.commit();
     }

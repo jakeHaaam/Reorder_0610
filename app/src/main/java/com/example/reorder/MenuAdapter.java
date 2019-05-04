@@ -43,7 +43,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+            //해당 메뉴의 수량을 고르게 되는 페이지로 이동 구현
+                //동시에 해당 메뉴의 menu_id,price,name을 같이 전달
             }
         });
     }
