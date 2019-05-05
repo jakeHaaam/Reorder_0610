@@ -21,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText et_login_password;
     Button bt_login_ok;
     TextView registerButton;
+    Button test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
         et_login_id=(EditText)findViewById(R.id.et_login_id);
         et_login_password=(EditText)findViewById(R.id.et_login_password);
         bt_login_ok=(Button)findViewById(R.id.bt_login_ok);
-
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override

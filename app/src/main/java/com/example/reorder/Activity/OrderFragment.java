@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.reorder.R;
 
@@ -35,7 +37,7 @@ public class OrderFragment extends Fragment {
     private RadioGroup rg_seat;
     private RadioGroup rg_eat;
     private LinearLayout ll_seat;
-
+    private TextView tv_selected_seat;
     private Button bt_order;
     private Button bt_cancle;
 
@@ -89,7 +91,7 @@ public class OrderFragment extends Fragment {
         rg_eat=view.findViewById(R.id.rg_eat);
         rg_seat=view.findViewById(R.id.rg_seat);
         ll_seat=view.findViewById(R.id.ll_seat);
-
+        tv_selected_seat=view.findViewById(R.id.tv_selected_seat);
         bt_order=view.findViewById(R.id.bt_order);
         bt_cancle=view.findViewById(R.id.bt_cancle);
 
@@ -97,7 +99,6 @@ public class OrderFragment extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if(checkedId == R.id.rb_eat_here)
-                    //이 부분 작동 안돼
                     ll_seat.setVisibility(View.VISIBLE);
                 else
                     ll_seat.setVisibility(View.GONE);
@@ -108,19 +109,29 @@ public class OrderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(rb_take_out.isChecked()){
-                    //이 부분도 안돼
                     ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(1);
+                    Toast.makeText(getContext(),"주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
                 }
                 else if(rb_eat_here.isChecked() && rb_seat_no.isChecked()) {
                     ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(1);
+                    Toast.makeText(getContext(),"주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
                 }
                 else if(rb_eat_here.isChecked() && rb_seat_yes.isChecked()){
+
                     ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(6);
+
                 }
             }
         });
 
-        return inflater.inflate(R.layout.fragment_order, container, false);
+        bt_cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(4);
+            }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -88,7 +88,6 @@
                 android:text="S I G N  U P"
                 android:textColor="#7e6654"
                 android:textSize="18dp" />
-
         </LinearLayout>
 
     </LinearLayout>

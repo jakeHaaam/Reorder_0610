@@ -130,7 +130,7 @@ public class MenuFragment extends Fragment {
         bt_cancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.exit(0);//취소 버튼 시 이전 storefragment로 이동
+                ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(2);
             }
         });
 
@@ -140,7 +140,7 @@ public class MenuFragment extends Fragment {
                 //->storeFragment로 이동 and 입력한 상품과 수량을 장바구니로 보내는 내용 작성
                 cartInfoList.add(new CartInfo(1,tv_menu_name.toString(), price,count));
                 CurrentCartInfo.getCart().setCartInfoList(cartInfoList);
-                System.exit(0);
+                ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(2);
             }
         });
         return view;
