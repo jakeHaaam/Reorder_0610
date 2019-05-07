@@ -37,13 +37,16 @@ import static android.app.PendingIntent.getActivity;
 public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> {
     List<StoreInfo> currentStoreInfo;
     Context context;
+    public String storeinfo_id;
     String url= serverURL.getUrl();
-    private Fragment StoreFragment;
 
     public StoreAdapter(List<StoreInfo> currentStoreInfo, Context context) {
         this.currentStoreInfo = currentStoreInfo;
-
         this.context = context;
+    }
+
+    public StoreAdapter() {
+
     }
 
     @NonNull
@@ -68,7 +71,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String storeinfo_id=viewHolder.st_id.getText().toString();
+                storeinfo_id=viewHolder.st_id.getText().toString();
                 Log.d("storeadapter","!@#!#!@#!@ " + storeinfo_id);
 
                 try{
@@ -91,7 +94,6 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
                                         List<StoreMenuInfo> storeMenuInfo= storeIdResult.getStoreMenuInfo();
                                         CurrentStoreMenuInfo.getStoreMenu().setStoreMenuInfoList(storeMenuInfo);
                                         ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(2);
-
                                         break;
                                     case 0://실패
                                         Log.d("storeadapter", "store 받아오기 실패");
@@ -119,7 +121,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         return currentStoreInfo.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView id,st_id,st_name,st_lat,st_lng,st_category;
 
@@ -135,5 +137,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         }
     }
 
-
+    public String getStoreinfo_id(){
+        return this.storeinfo_id;
+    }
 }

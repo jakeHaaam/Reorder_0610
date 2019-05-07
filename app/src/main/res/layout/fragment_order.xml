@@ -180,13 +180,12 @@
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
             android:text="선택한 좌석: "
-            android:visibility="invisible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.814" />
+            app:layout_constraintVertical_bias="0.828" />
     </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

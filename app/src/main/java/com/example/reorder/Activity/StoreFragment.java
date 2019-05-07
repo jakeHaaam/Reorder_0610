@@ -79,12 +79,12 @@ public class StoreFragment extends Fragment {
         tv_store_name=view.findViewById(R.id.tv_store_name);
         tv_store_name.setText(CurrentStoreInfo.getStore().getStoreInfoList().get(0).getStore_name());
 
+        rv_menu=view.findViewById(R.id.rv_menu);
+        rv_menu.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
+        currentStoreMenuInfo=CurrentStoreMenuInfo.getStoreMenu().getStoreMenuInfoList();
+        menu_adapter=new MenuAdapter(currentStoreMenuInfo,inflater.getContext());
+        rv_menu.setAdapter(menu_adapter);
 
-        //rv_menu=view.findViewById(R.id.rv_menu);
-        //rv_menu.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
-        //currentStoreMenuInfo=CurrentStoreMenuInfo.getStoreMenu().getStoreMenuInfoList();
-        //menu_adapter=new MenuAdapter(currentStoreMenuInfo,inflater.getContext());
-        //rv_menu.setAdapter(menu_adapter);
         return view;
     }
 

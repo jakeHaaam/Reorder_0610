@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.reorder.R;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +43,7 @@ public class OrderFragment extends Fragment {
     private TextView tv_selected_seat;
     private Button bt_order;
     private Button bt_cancle;
+    private Bundle bundle;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -94,6 +98,17 @@ public class OrderFragment extends Fragment {
         tv_selected_seat=view.findViewById(R.id.tv_selected_seat);
         bt_order=view.findViewById(R.id.bt_order);
         bt_cancle=view.findViewById(R.id.bt_cancle);
+
+        if(bundle!=null) {
+            ArrayList<Integer> seat = getActivity().getIntent().getExtras().getIntegerArrayList("bundle");
+            if (seat != null) {
+                tv_selected_seat.setText(seat.toString());
+                tv_selected_seat.setVisibility(View.VISIBLE);
+            }
+            else
+                tv_selected_seat.setVisibility(View.GONE);
+        }
+
 
         rg_eat.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override

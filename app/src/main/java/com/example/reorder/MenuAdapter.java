@@ -3,11 +3,14 @@ package com.example.reorder;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.reorder.Activity.NavigationnActivity;
+import com.example.reorder.globalVariables.CurrentMenuInfo;
 import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.info.StoreMenu;
@@ -35,23 +38,39 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MenuAdapter.ViewHolder viewHolder, int i) {
-        viewHolder.tv_menu_name.setText(currentStoreMenuInfo.get(i).getMenu_name());
-        viewHolder.tv_menu_price.setText(currentStoreMenuInfo.get(i).getMenu_price());
+        final int menu_id=currentStoreMenuInfo.get(i).getMenu_id();
+        final String menu_name=currentStoreMenuInfo.get(i).getMenu_name();
+        viewHolder.tv_menu_name.setText(menu_name);
+        final String menu_price=Integer.toString(currentStoreMenuInfo.get(i).getMenu_price());
+        viewHolder.tv_menu_price.setText(menu_price);
         viewHolder.tv_menu_info.setText(currentStoreMenuInfo.get(i).getMenu_info());
 
         // list item click
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //해당 메뉴의 수량을 고르게 되는 페이지로 이동 구현
+                //해당 메뉴의 수량을 고르게 되는 페이지로 이동 구현
                 //동시에 해당 메뉴의 menu_id,price,name을 같이 전달
+                Log.d("menuadapter","current test:"+menu_name);
+                CurrentMenuInfo.setMenu_id(menu_id);
+                CurrentMenuInfo.setMenu_name(menu_name);
+                CurrentMenuInfo.setMenu_price(Integer.parseInt(menu_price));
+                CurrentMenuInfo.setMenu_count(1);
+//                MenuFragment fragment=new MenuFragment();
+//                Bundle bundle=new Bundle();
+//                bundle.putString("menu_name",menu_name);
+//                Log.d("menuadapter",menu_name);
+//                //bundle.putString("menu_price",menu_price);
+//                fragment.setArguments(bundle);
+                Log.d("menuadapter","값: "+CurrentMenuInfo.getMenu_name());
+                ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(7);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return currentStoreMenuInfo.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -1,27 +1,33 @@
 package com.example.reorder.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.PaintDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.reorder.R;
+import com.example.reorder.StoreAdapter;
+import com.example.reorder.api.OrderAndSeatApi;
+import com.example.reorder.globalVariables.CurrentUserInfo;
+import com.example.reorder.globalVariables.serverURL;
+import com.example.reorder.info.Selected_seat_id;
 
-import java.sql.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,9 +46,11 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
     private Button bt_order_cancle;
     private GridLayout grid;
     private Context context;
-    int checked_count=0,max_count=10;
+    String url= serverURL.getUrl();
+    int checked_count,max_count;
     private static int[] seat_state;
     public static boolean[] seat_checked;
+    private int select_id;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -66,7 +74,6 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
     public static SeatReserveFragment newInstance(String param1, String param2) {
         SeatReserveFragment fragment = new SeatReserveFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -90,6 +97,11 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
         bt_order_cancle=view.findViewById(R.id.bt_order_cancle);
         grid= view.findViewById(R.id.grid);
         context=grid.getContext();
+        checked_count=0;
+        max_count=1;
+
+        final SeatReserveFragment seatReserveFragment=new SeatReserveFragment();
+
         seat_state=new int[100];
         seat_checked=new boolean[100];//seat갯수 만큼 불린형 생성
         Arrays.fill(seat_checked,false);//불린형 false로 초기화
@@ -114,12 +126,37 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                     bt.setClickable(false);}
                 grid.addView(bt);
             }
-
         bt_order_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //데이터를 order페이지에 전송 필요=어떤?
-                ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(5);
+                //필요한 자료:store_id, client_id, menu_id, count,select_seat
+                if(select_id!=-1){
+                    StoreAdapter storeAdapter=new StoreAdapter();
+                    String store=storeAdapter.getStoreinfo_id();
+                    String userid= CurrentUserInfo.getUser().getUserInfo().getClient_id();
+                    try {
+                        HashMap<String, String> input = new HashMap<>();
+                        input.put("store_id",store);
+                        input.put("client_id",userid);
+                        input.put("select_seat",String.valueOf(select_id));
+                        //메뉴아이디, 메뉴 수량 넣어야 해
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(url)
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+                        OrderAndSeatApi orderAndSeatApi=retrofit.create(OrderAndSeatApi.class);
+                        //orderAndSeatApi.getResult()여기에 뭘 넣어야 할까?
+                        //storeIdApi.getStore_id(storeinfo_id).enqueue(new Callback<StoreIdResult>()
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                    ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(1);
+                    Toast.makeText(getContext(),"주문전송이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                    Log.d("order","주문 전송 완료");
+                }
+                else
+                    Toast.makeText(getContext(),"좌석을 선택 해주세요.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -162,30 +199,29 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         int id=v.getId();
-
-        //if(( ==Color.BLUE)
-            //v.setBackgroundColor(Color.WHITE);
-          //  else
         if(checked_count<max_count) {
 
             if (seat_checked[id] != true) {
                 seat_checked[id]=true;
                 v.setBackgroundColor(Color.BLUE);
                 checked_count++;
+                select_id=id;
             }
             else{
                 seat_checked[id]=false;
                 checked_count--;
                 v.setBackgroundColor(Color.WHITE);
+                select_id=-1;
             }
         }
         else {
             if (seat_checked[id] != true)
-                Toast.makeText(getContext(), "좌석 선택은 10개가 최대 입니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "좌석 선택은 1개가 최대 입니다.", Toast.LENGTH_SHORT).show();
             else{
                 checked_count--;
                 seat_checked[id]=false;
                 v.setBackgroundColor(Color.WHITE);
+                select_id=-1;
             }
         }
     }
