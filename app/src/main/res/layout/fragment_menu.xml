@@ -109,21 +109,15 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_marginTop="80dp">
+
         <Button
+            android:id="@+id/bt_go_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginRight="30dp"
-            android:text="담  기"
-            android:id="@+id/bt_go_cart"/>
+            android:text="담  기" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="30dp"
-            android:text="취  소"
-            android:id="@+id/bt_cancle"/>
 
     </LinearLayout>
 

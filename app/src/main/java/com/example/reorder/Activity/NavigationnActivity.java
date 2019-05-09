@@ -3,9 +3,12 @@ package com.example.reorder.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,13 +18,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.reorder.Api.FragmentReplaceable;
+
 import com.example.reorder.R;
+import com.example.reorder.Result.CartResult;
+import com.example.reorder.Api.CartSetApi;
+import com.example.reorder.globalVariables.CurrentCartInfo;
+import com.example.reorder.globalVariables.CurrentStoreInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
+import com.example.reorder.globalVariables.serverURL;
+import com.example.reorder.info.CartInfo;
+import com.google.android.gms.common.api.Api;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NavigationnActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentReplaceable {
@@ -35,6 +56,7 @@ public class NavigationnActivity extends AppCompatActivity
     private Fragment MenuFragment;
     private ImageButton bt_cart;
     public static Context mContext;
+    String url= serverURL.getUrl();
 
 
     @Override
@@ -59,7 +81,51 @@ public class NavigationnActivity extends AppCompatActivity
         bt_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(4);
+                final int id= CurrentUserInfo.getUser().getUserInfo().getId();
+                Log.d("cart", "id: "+CurrentUserInfo.getUser().getUserInfo().getId());
+                Log.d("cart", "client_id : "+CurrentUserInfo.getUser().getUserInfo().getClient_id());
+                try {
+                    Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
+                    CartSetApi cartSetApi = retrofit.create(CartSetApi.class);
+                    cartSetApi.getId(id).enqueue(new Callback<CartResult>() {
+                        @Override
+                        public void onResponse(Call<CartResult> call, Response<CartResult> response) {
+                            if (response.isSuccessful()) {
+                                CartResult cartResult = response.body();
+                                if (cartResult != null) {
+                                    switch (cartResult.getResult()) {
+                                        case 1:
+                                            Log.d("cart", "카트 받아오기 성공");
+                                            List<CartInfo> cartInfo = cartResult.getCartInfo();
+                                            CurrentCartInfo.getCart().setCartInfoList(cartInfo);//저장
+                                            Log.d("cart", ""+response.body());
+//                                            Log.d("cart", "카트담겨진 메뉴이름 : "+CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_name());
+//                                            Log.d("cart", "카트담겨진 메뉴가격 :"+CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_price());
+//                                            Log.d("cart", "카트담겨진 메 :"+CurrentCartInfo.getCart().getCartInfoList().get(1).getMenu_name());
+
+                                            replaceFragment(4);
+                                            break;
+                                        case 0:
+                                            Log.d("cart", "fail");
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<CartResult> call, Throwable t) {
+
+                            t.printStackTrace();
+                        }
+                    });
+
+                }catch (Exception e){
+                    e.printStackTrace();
+
+                }
+
+
             }
         });
 
@@ -172,6 +238,7 @@ public class NavigationnActivity extends AppCompatActivity
         }else if (fragmentId==7) {
             transaction.replace(R.id.container, MenuFragment);
         }
+
         transaction.addToBackStack(null);
         transaction.commit();
     }

@@ -48,7 +48,6 @@ public class MenuFragment extends Fragment {
     private Button bt_down;
     private Button bt_up;
     private Button bt_ok;
-    private Button bt_cancle;
     private TextView tv_total_price;
     private int count;
     private int price;
@@ -112,7 +111,6 @@ public class MenuFragment extends Fragment {
         bt_up=view.findViewById(R.id.bt_up);
         bt_down=view.findViewById(R.id.bt_down);
         bt_ok=view.findViewById(R.id.bt_go_cart);
-        bt_cancle=view.findViewById(R.id.bt_cancle);
         count=1;
         total=0;
         //전달 받은 price를 밑에 price에 넣어주고 수량 증가,감소시 반영은 버튼 안에 구현
@@ -149,12 +147,7 @@ public class MenuFragment extends Fragment {
             }
         });
 
-        bt_cancle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(2);
-            }
-        });
+
 
         bt_ok.setOnClickListener(new View.OnClickListener() {
             @Override

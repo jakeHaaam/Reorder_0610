@@ -7,21 +7,23 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.example.reorder.Adapter.CartAdapter;
+import com.example.reorder.Adapter.MenuAdapter;
 import com.example.reorder.R;
+import com.example.reorder.globalVariables.CurrentCartInfo;
+import com.example.reorder.info.CartInfo;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CartFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CartFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.List;
+
 public class CartFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -32,6 +34,10 @@ public class CartFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private Button bt_cart_order;
+    private RecyclerView rv_cart;
+    private TextView tv_cart_total_price;
+    private List<CartInfo> currentCartInfo;
+    private RecyclerView.Adapter cart_adapter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -39,14 +45,7 @@ public class CartFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CartFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static CartFragment newInstance(String param1, String param2) {
         CartFragment fragment = new CartFragment();
@@ -70,10 +69,18 @@ public class CartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View view =inflater.inflate(R.layout.fragment_cart, container, false);
+        Log.d("cart","카트에 담은 총 금액:"+sumTotalPrice());
+        tv_cart_total_price=view.findViewById(R.id.tv_cart_total_price);
+        tv_cart_total_price.setText(Integer.toString(sumTotalPrice()));
+        rv_cart=view.findViewById(R.id.rv_cart);
+        rv_cart.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
+        currentCartInfo=CurrentCartInfo.getCart().getCartInfoList();
+        cart_adapter=new CartAdapter(currentCartInfo,inflater.getContext());
+        rv_cart.setAdapter(cart_adapter);
 
         bt_cart_order=view.findViewById(R.id.bt_cart_order);
-
         bt_cart_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +88,15 @@ public class CartFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public int sumTotalPrice(){
+        int totalprice=0;
+        for(int i=0;i< CurrentCartInfo.getCart().getCartInfoList().size();++i){
+            int countprice=(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price())*(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
+            totalprice+=countprice;
+        }
+        return totalprice;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -97,7 +113,7 @@ public class CartFragment extends Fragment {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             //throw new RuntimeException(context.toString()
-              //      + " must implement OnFragmentInteractionListener");
+            //      + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -107,16 +123,6 @@ public class CartFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
