@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.reorder.Adapter.BookMarkStoreAdapter;
 import com.example.reorder.R;
 import com.example.reorder.Result.GetBookMarkResult;
 import com.example.reorder.Adapter.StoreAdapter;
@@ -81,7 +82,7 @@ public class HomeFragment extends Fragment {
     String url= serverURL.getUrl();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
 
@@ -96,12 +97,6 @@ public class HomeFragment extends Fragment {
         currentStoreInfos = CurrentStoreInfo.getStore().getStoreInfoList();
         store_adapter = new StoreAdapter(currentStoreInfos,inflater.getContext());
         lv_near_store.setAdapter(store_adapter);
-
-        //북마크 리스트뷰 연결
-        /*lv_bookmark_store.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
-        currentBookMarkStoreList= CurrentBookMarkStoreInfo.getBookMarkStore().getBookMarkStoreInfoList();
-        bookmark_store_adapter= new BookMarkStoreAdapter(currentBookMarkStoreList,inflater.getContext());
-        lv_bookmark_store.setAdapter(bookmark_store_adapter);*/
 
         bt_near_store = (Button) view.findViewById(R.id.bt_near_store);
         bt_near_store.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +147,61 @@ public class HomeFragment extends Fragment {
                             });
                 }catch (Exception e){
                     e.printStackTrace();
+                }
+
+            }
+        });
+
+        bt_bookmark=(Button)view.findViewById(R.id.bt_bookmark);
+        bt_bookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(url)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    final String id=String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
+                    Log.d("bt_bookmark",id);
+                    GetBookMarkApi getBookMarkApi = retrofit.create(GetBookMarkApi.class);
+                    getBookMarkApi.getid(id)
+                            .enqueue(new Callback<GetBookMarkResult>() {
+                                @Override
+                                public void onResponse(Call<GetBookMarkResult> call, Response<GetBookMarkResult> response) {
+                                    Log.d("bt_bookmark","respone");
+                                    Log.d("bt_bookmark",""+response.body());
+                                    if(response.isSuccessful())
+                                    {
+                                        Log.d("bt_bookmark","respone성공");
+                                        GetBookMarkResult getBookMarkResult=response.body();
+                                        switch (getBookMarkResult.getResult()){
+                                            case 1://성공
+                                                Log.d("bt_bookmark","body성공");
+                                                lv_bookmark_store.setVisibility(View.VISIBLE);
+                                                lv_near_store.setVisibility(View.INVISIBLE);
+                                                Log.d("bt_bookmark","2");
+                                                List<BookMarkStoreInfo> bookMarkStoreInfoList=getBookMarkResult.getBookMarkStoreInfoList();
+                                                CurrentBookMarkStoreInfo.getBookMarkStore().setBookMarkStoreInfoList(bookMarkStoreInfoList);
+                                                lv_bookmark_store.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
+                                                currentBookMarkStoreList= CurrentBookMarkStoreInfo.getBookMarkStore().getBookMarkStoreInfoList();
+                                                bookmark_store_adapter= new BookMarkStoreAdapter(currentBookMarkStoreList,inflater.getContext());
+                                                lv_bookmark_store.setAdapter(bookmark_store_adapter);
+                                                break;
+                                            case 0://실패
+                                                break;
+                                        }
+                                    }
+                                }
+                                @Override
+                                public void onFailure(Call<GetBookMarkResult> call, Throwable t) {
+                                    t.printStackTrace();
+                                    Log.d("bt_bookmark", String.valueOf(call));
+                                    Log.d("bt_bookmark","fail");
+                                }
+                            });
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Log.d("bt_bookmark","excep");
                 }
 
             }

@@ -57,8 +57,6 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         viewHolder.id.setText(Integer.toString(currentStoreInfo.get(i).getId()));
         viewHolder.st_id.setText(Integer.toString(currentStoreInfo.get(i).getStore_id()));
         viewHolder.st_name.setText(currentStoreInfo.get(i).getStore_name());
-        viewHolder.st_lat.setText(currentStoreInfo.get(i).getStore_lat());
-        viewHolder.st_lng.setText(currentStoreInfo.get(i).getStore_lng());
         viewHolder.st_category.setText(currentStoreInfo.get(i).getStore_category());
 
 
@@ -130,8 +128,6 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
             id=itemView.findViewById(R.id.tv_id);
             st_id=itemView.findViewById(R.id.tv_near_store_id);
             st_name=itemView.findViewById(R.id.tv_near_store_name);
-            st_lat=itemView.findViewById(R.id.tv_near_store_lat);
-            st_lng=itemView.findViewById(R.id.tv_near_store_lng);
             st_category=itemView.findViewById(R.id.tv_near_store_category);
         }
     }

@@ -160,12 +160,6 @@
                     android:layout_gravity="center"
                     android:text="Order" />
 
-                <Button
-                    android:id="@+id/bt_cancle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="60dp"
-                    android:text="Cancle" />
             </LinearLayout>
         </LinearLayout>
 

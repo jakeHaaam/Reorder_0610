@@ -42,7 +42,6 @@ public class OrderFragment extends Fragment {
     private LinearLayout ll_seat;
     private TextView tv_selected_seat;
     private Button bt_order;
-    private Button bt_cancle;
     private Bundle bundle;
 
     // TODO: Rename and change types of parameters
@@ -97,7 +96,6 @@ public class OrderFragment extends Fragment {
         ll_seat=view.findViewById(R.id.ll_seat);
         tv_selected_seat=view.findViewById(R.id.tv_selected_seat);
         bt_order=view.findViewById(R.id.bt_order);
-        bt_cancle=view.findViewById(R.id.bt_cancle);
 
         if(bundle!=null) {
             ArrayList<Integer> seat = getActivity().getIntent().getExtras().getIntegerArrayList("bundle");
@@ -139,12 +137,6 @@ public class OrderFragment extends Fragment {
             }
         });
 
-        bt_cancle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(4);
-            }
-        });
 
         return view;
     }
