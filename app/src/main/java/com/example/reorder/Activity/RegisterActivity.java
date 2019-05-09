@@ -11,8 +11,8 @@ import android.widget.Toast;
 import com.example.reorder.Result.IdCheckResult;
 import com.example.reorder.Result.JoinResult;
 import com.example.reorder.R;
-import com.example.reorder.api.IdCheckApi;
-import com.example.reorder.api.JoinApi;
+import com.example.reorder.Api.IdCheckApi;
+import com.example.reorder.Api.JoinApi;
 
 import java.util.HashMap;
 

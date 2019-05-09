@@ -1,4 +1,4 @@
-package com.example.reorder.api;
+package com.example.reorder.Api;
 
 import com.example.reorder.Result.OrderAndSeatResult;
 

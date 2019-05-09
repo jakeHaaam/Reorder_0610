@@ -1,12 +1,7 @@
-package com.example.reorder;
+package com.example.reorder.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,11 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.reorder.Activity.HomeFragment;
 import com.example.reorder.Activity.NavigationnActivity;
-import com.example.reorder.Activity.StoreFragment;
+import com.example.reorder.R;
 import com.example.reorder.Result.StoreIdResult;
-import com.example.reorder.api.StoreIdApi;
+import com.example.reorder.Api.StoreIdApi;
+import com.example.reorder.globalVariables.CurrentSelectStore;
 import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
 import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.StoreInfo;
@@ -71,6 +66,10 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CurrentSelectStore.setId(Integer.parseInt(viewHolder.id.getText().toString()));
+                CurrentSelectStore.setSt_id(Integer.parseInt(viewHolder.st_id.getText().toString()));
+                CurrentSelectStore.setSt_name(viewHolder.st_name.getText().toString());
+                CurrentSelectStore.setSt_category(viewHolder.st_category.getText().toString());
                 storeinfo_id=viewHolder.st_id.getText().toString();
                 Log.d("storeadapter","!@#!#!@#!@ " + storeinfo_id);
 

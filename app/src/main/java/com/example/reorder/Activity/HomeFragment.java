@@ -11,17 +11,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.example.reorder.BookMarkStoreAdapter;
 import com.example.reorder.R;
-import com.example.reorder.StoreAdapter;
+import com.example.reorder.Result.GetBookMarkResult;
+import com.example.reorder.Adapter.StoreAdapter;
+import com.example.reorder.Api.GetBookMarkApi;
 import com.example.reorder.globalVariables.CurrentBookMarkStoreInfo;
 import com.example.reorder.globalVariables.CurrentStoreInfo;
+import com.example.reorder.globalVariables.CurrentUserInfo;
+import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.BookMarkStoreInfo;
 import com.example.reorder.info.StoreInfo;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class HomeFragment extends Fragment {
@@ -70,6 +78,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView.Adapter bookmark_store_adapter;
     private List<StoreInfo> currentStoreInfos;
     private List<BookMarkStoreInfo> currentBookMarkStoreList;
+    String url= serverURL.getUrl();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -110,8 +119,40 @@ public class HomeFragment extends Fragment {
         bt_bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lv_bookmark_store.setVisibility(View.VISIBLE);
-                lv_near_store.setVisibility(View.INVISIBLE);
+                try {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(url)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+
+                    GetBookMarkApi getBookMarkApi = retrofit.create(GetBookMarkApi.class);
+                    getBookMarkApi.getid(String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()))
+                            .enqueue(new Callback<GetBookMarkResult>() {
+                                @Override
+                                public void onResponse(Call<GetBookMarkResult> call, Response<GetBookMarkResult> response) {
+                                    if(response.isSuccessful())
+                                    {
+                                        GetBookMarkResult getBookMarkResult=response.body();
+                                        switch (getBookMarkResult.getResult()){
+                                            case 1://성공
+                                                lv_bookmark_store.setVisibility(View.VISIBLE);
+                                                lv_near_store.setVisibility(View.INVISIBLE);
+                                                List<BookMarkStoreInfo> bookMarkStoreInfoList=getBookMarkResult.getBookMarkStoreInfoList();
+                                                CurrentBookMarkStoreInfo.getBookMarkStore().setBookMarkStoreInfoList(bookMarkStoreInfoList);
+                                                break;
+                                            case 0://실패
+                                                break;
+                                        }
+                                    }
+                                }
+                                @Override
+                                public void onFailure(Call<GetBookMarkResult> call, Throwable t) {
+                                    t.printStackTrace();
+                                }
+                            });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
             }
         });

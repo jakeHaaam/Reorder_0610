@@ -1,4 +1,4 @@
-package com.example.reorder;
+package com.example.reorder.Adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,13 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.reorder.Activity.NavigationnActivity;
+import com.example.reorder.R;
 import com.example.reorder.globalVariables.CurrentMenuInfo;
-import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
-import com.example.reorder.globalVariables.CurrentUserInfo;
-import com.example.reorder.info.StoreMenu;
 import com.example.reorder.info.StoreMenuInfo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {

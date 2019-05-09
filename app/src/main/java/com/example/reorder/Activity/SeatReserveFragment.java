@@ -1,9 +1,7 @@
 package com.example.reorder.Activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,13 +14,11 @@ import android.widget.GridLayout;
 import android.widget.Toast;
 
 import com.example.reorder.R;
-import com.example.reorder.StoreAdapter;
-import com.example.reorder.api.OrderAndSeatApi;
+import com.example.reorder.Adapter.StoreAdapter;
+import com.example.reorder.Api.OrderAndSeatApi;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.serverURL;
-import com.example.reorder.info.Selected_seat_id;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 

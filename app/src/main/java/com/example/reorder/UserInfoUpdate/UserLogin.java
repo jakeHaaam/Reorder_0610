@@ -6,13 +6,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.reorder.Result.LoginResult;
-import com.example.reorder.api.RetrofitApi;
-import com.example.reorder.globalVariables.CurrentBookMarkStoreInfo;
+import com.example.reorder.Api.RetrofitApi;
 import com.example.reorder.globalVariables.CurrentStoreInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.IsLogin;
 import com.example.reorder.globalVariables.serverURL;
-import com.example.reorder.info.BookMarkStoreInfo;
 import com.example.reorder.info.StoreInfo;
 import com.example.reorder.info.UserInfo;
 

@@ -1,7 +1,6 @@
 package com.example.reorder.Activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,17 +13,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.reorder.R;
-import com.example.reorder.globalVariables.CurrentCartInfo;
+import com.example.reorder.Result.JoinResult;
+import com.example.reorder.Api.CartSetApi;
 import com.example.reorder.globalVariables.CurrentMenuInfo;
+import com.example.reorder.globalVariables.CurrentUserInfo;
+import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.CartInfo;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 
-import static com.example.reorder.globalVariables.CurrentMenuInfo.menu_id;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,6 +54,7 @@ public class MenuFragment extends Fragment {
     private int price;
     private int total;
     private List<CartInfo> cartInfoList;
+    String url= serverURL.getUrl();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -155,19 +159,51 @@ public class MenuFragment extends Fragment {
         bt_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //->storeFragment로 이동 and 입력한 상품과 수량을 장바구니로 보내는 내용 작성
                 Log.d("menuadapter",""+CurrentMenuInfo.getMenu_id()+" /"+CurrentMenuInfo.getMenu_name()+" /"+CurrentMenuInfo.getMenu_price()+" /"+CurrentMenuInfo.getMenu_count());
                 int id=CurrentMenuInfo.getMenu_id();
                 String menu_name=CurrentMenuInfo.getMenu_name();
                 int menu_price=CurrentMenuInfo.getMenu_price();
                 int menu_count=CurrentMenuInfo.getMenu_count();
 
-                cartInfoList=new ArrayList<CartInfo>();
-                cartInfoList.add(new CartInfo(id,menu_name,menu_price,menu_count));
+                try {
+                    HashMap<String, String> input = new HashMap<>();
+                    input.put("client_id", CurrentUserInfo.getUser().getUserInfo().getClient_id());
+                    input.put("menu_id", String.valueOf(id));
+                    input.put("menu_name", menu_name);
+                    input.put("menu_price", String.valueOf(menu_price));
+                    input.put("menu_count", String.valueOf(menu_count));
 
-                CurrentCartInfo.getCart().setCartInfoList(cartInfoList);
-                Log.d("menuadapter",""+CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_id());
-                ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(2);
+                    Retrofit retrofit = new Retrofit.Builder().baseUrl(url)
+                            .addConverterFactory(GsonConverterFactory.create()).build();
+
+                    CartSetApi cartSetApi = retrofit.create(CartSetApi.class);
+
+                    cartSetApi.setUserCartInfo(input).enqueue(new Callback<JoinResult>() {
+                        @Override
+                        public void onResponse(Call<JoinResult> call, Response<JoinResult> response) {
+                            if (response.isSuccessful()) {
+                                JoinResult map = response.body();
+                                if (map!=null) {
+                                    switch (map.getResult()) {
+                                        case 1:
+                                            Toast.makeText(getContext(),"장바구니에 담겼습니다.", Toast.LENGTH_SHORT).show();
+                                            ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(2);
+                                            break;
+                                        case 0:
+                                            Toast.makeText(getContext(),"실패", Toast.LENGTH_SHORT).show();
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<JoinResult> call, Throwable t) {
+                            t.printStackTrace();
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
         return view;

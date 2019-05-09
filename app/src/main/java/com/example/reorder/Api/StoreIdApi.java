@@ -1,6 +1,5 @@
-package com.example.reorder.api;
+package com.example.reorder.Api;
 
-import com.example.reorder.Result.IdCheckResult;
 import com.example.reorder.Result.StoreIdResult;
 
 import retrofit2.Call;

@@ -1,25 +1,19 @@
 package com.example.reorder.Activity;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.reorder.MenuAdapter;
+import com.example.reorder.Adapter.MenuAdapter;
 import com.example.reorder.R;
 import com.example.reorder.globalVariables.CurrentStoreInfo;
 import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
-import com.example.reorder.info.Store;
 import com.example.reorder.info.StoreMenuInfo;
 
 import java.util.List;

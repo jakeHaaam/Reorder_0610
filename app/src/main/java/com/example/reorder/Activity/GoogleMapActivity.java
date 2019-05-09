@@ -1,29 +1,17 @@
 package com.example.reorder.Activity;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
-import android.os.Build;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -31,30 +19,19 @@ import android.widget.Toast;
 
 
 import com.example.reorder.R;
-import com.example.reorder.StoreAdapter;
 import com.example.reorder.globalVariables.CurrentStoreInfo;
-import com.example.reorder.info.StoreInfo;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 public class GoogleMapActivity extends FragmentActivity implements
         OnMapReadyCallback,GoogleMap.OnMarkerClickListener,
@@ -78,12 +55,6 @@ public class GoogleMapActivity extends FragmentActivity implements
         Intent intent=getIntent();
         count=intent.getExtras().getInt("count");
         bt_current=(Button)findViewById(R.id.bt_current);
-        /*bt_current.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startLocationService();
-            }
-        });*/
 
         tv_location = (TextView)findViewById(R.id.tv_location);
         //현재위치 설정
@@ -227,40 +198,9 @@ public class GoogleMapActivity extends FragmentActivity implements
                     map.addMarker(new MarkerOptions().position(myLocation).title("현재 위치"));
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 17));
                     tv_location.setText("현재위치: "+myLat+", "+myLot);
-                    //3d효과
-                    final Button bt_map_3d = (Button) findViewById(R.id.bt_map_3d);
-
-                    bt_map_3d.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            camera_checked++;
-                            if (camera_checked == 1) {
-                                CameraPosition cameraPosition = new CameraPosition.Builder()
-                                        .target(myLocation)      // Sets the center of the map to Mountain View
-                                        .zoom(19)                   // Sets the zoom
-                                        .bearing(0)                // Sets the orientation of the camera to east
-                                        .tilt(70)                   // Sets the tilt of the camera to 30 degrees
-                                        .build();                   // Creates a CameraPosition from the builder
-                                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                                bt_map_3d.setText("돌아가기");
-                            } else {
-                                camera_checked = 0;
-                                CameraPosition cameraPosition = new CameraPosition.Builder()
-                                        .target(myLocation)      // Sets the center of the map to Mountain View
-                                        .zoom(17)                   // Sets the zoom
-                                        .bearing(0)                // Sets the orientation of the camera to east
-                                        .tilt(0)                   // Sets the tilt of the camera to 30 degrees
-                                        .build();                   // Creates a CameraPosition from the builder
-                                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                                bt_map_3d.setText("3d로 보기");
-                            }
-                        }
-                    });
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "location is null", Toast.LENGTH_SHORT).show();
-                    //location.setLatitude(37.48713123599517);
-                    //location.setLongitude(126.82648816388149);
                 }
             }
         });
@@ -291,36 +231,6 @@ public class GoogleMapActivity extends FragmentActivity implements
                                 map.addMarker(new MarkerOptions().position(myLocation).title("현재 위치"));
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation,17));
                                 tv_location.setText("현재 위치: "+myLocation.latitude + ", " + myLocation.longitude);
-                                //3d효과
-                                final Button bt_map_3d=(Button)findViewById(R.id.bt_map_3d);
-
-                                bt_map_3d.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        camera_checked++;
-                                        if(camera_checked==1) {
-                                            CameraPosition cameraPosition = new CameraPosition.Builder()
-                                                    .target(myLocation)      // Sets the center of the map to Mountain View
-                                                    .zoom(19)                   // Sets the zoom
-                                                    .bearing(0)                // Sets the orientation of the camera to east
-                                                    .tilt(70)                   // Sets the tilt of the camera to 30 degrees
-                                                    .build();                   // Creates a CameraPosition from the builder
-                                            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                                            bt_map_3d.setText("돌아가기");
-                                        }
-                                        else{
-                                            camera_checked=0;
-                                            CameraPosition cameraPosition = new CameraPosition.Builder()
-                                                    .target(myLocation)      // Sets the center of the map to Mountain View
-                                                    .zoom(17)                   // Sets the zoom
-                                                    .bearing(0)                // Sets the orientation of the camera to east
-                                                    .tilt(0)                   // Sets the tilt of the camera to 30 degrees
-                                                    .build();                   // Creates a CameraPosition from the builder
-                                            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                                            bt_map_3d.setText("3d로 보기");
-                                        }
-                                    }
-                                });
                             }
                             else
                                 Toast.makeText(getApplicationContext(),"location is null", Toast.LENGTH_SHORT).show();

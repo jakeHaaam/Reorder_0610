@@ -1,4 +1,4 @@
-package com.example.reorder;
+package com.example.reorder.Adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.reorder.R;
 import com.example.reorder.info.BookMarkStoreInfo;
 
 import java.util.List;
