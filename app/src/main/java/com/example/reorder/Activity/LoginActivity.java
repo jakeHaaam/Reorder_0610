@@ -59,28 +59,5 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
     }
-
 }
-
-
-
-
-         /* 예전코드
-
-         if(!et_login_id.getText().toString().equals("xodn0996")
-                        || !et_login_password.getText().toString().equals("qwqw1210"))
-                    //DB에 있는 ID값들과 비교해서 존재하면 넘어가기+DB에 해당 ID의 비밀번호와 비교해서 일치하면 넘어가기
-                {
-                    Toast.makeText(getApplicationContext(),"ID 또는 패스워드가 맞지 않습니다.",Toast.LENGTH_SHORT).show();
-                }
-                else if(et_login_id.getText().toString().equals("xodn0996")
-                        && et_login_password.getText().toString().equals("qwqw1210"))
-                    //DB에 있는 ID,비밀번호 값이 일치하면
-                {
-                    Toast.makeText(getApplicationContext(),"로그인 되었습니다.",Toast.LENGTH_SHORT).show();
-                    Intent NaviIntent=new Intent(LoginActivity.this,NavigationActivity.class);
-                    LoginActivity.this.startActivity(NaviIntent);
-                }
-            }*/

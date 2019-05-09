@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.reorder.Adapter.MenuAdapter;
 import com.example.reorder.R;
+import com.example.reorder.globalVariables.CurrentSelectStore;
 import com.example.reorder.globalVariables.CurrentStoreInfo;
 import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
 import com.example.reorder.info.StoreMenuInfo;
@@ -69,9 +70,8 @@ public class StoreFragment extends Fragment {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_store, container, false);
         bt_bookmark=view.findViewById(R.id.bt_bookmark);
-
         tv_store_name=view.findViewById(R.id.tv_store_name);
-        tv_store_name.setText(CurrentStoreInfo.getStore().getStoreInfoList().get(0).getStore_name());
+        tv_store_name.setText(CurrentSelectStore.getSt_name());
 
         rv_menu=view.findViewById(R.id.rv_menu);
         rv_menu.setLayoutManager(new LinearLayoutManager(inflater.getContext()));

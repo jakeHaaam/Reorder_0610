@@ -54,12 +54,12 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
 
-        viewHolder.id.setText("id: " + Integer.toString(currentStoreInfo.get(i).getId()));
+        viewHolder.id.setText(Integer.toString(currentStoreInfo.get(i).getId()));
         viewHolder.st_id.setText(Integer.toString(currentStoreInfo.get(i).getStore_id()));
-        viewHolder.st_name.setText("가게이름: " + currentStoreInfo.get(i).getStore_name());
-        viewHolder.st_lat.setText("경도: " + currentStoreInfo.get(i).getStore_lat());
-        viewHolder.st_lng.setText("위도: " + currentStoreInfo.get(i).getStore_lng());
-        viewHolder.st_category.setText("카테고리: " + currentStoreInfo.get(i).getStore_category());
+        viewHolder.st_name.setText(currentStoreInfo.get(i).getStore_name());
+        viewHolder.st_lat.setText(currentStoreInfo.get(i).getStore_lat());
+        viewHolder.st_lng.setText(currentStoreInfo.get(i).getStore_lng());
+        viewHolder.st_category.setText(currentStoreInfo.get(i).getStore_category());
 
 
         // list item click
