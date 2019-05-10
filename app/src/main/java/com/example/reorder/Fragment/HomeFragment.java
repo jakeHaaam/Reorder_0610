@@ -1,4 +1,4 @@
-package com.example.reorder.Activity;
+package com.example.reorder.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.reorder.Activity.GoogleMapActivity;
 import com.example.reorder.Adapter.BookMarkStoreAdapter;
 import com.example.reorder.R;
 import com.example.reorder.Result.GetBookMarkResult;
@@ -212,7 +213,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int count=store_adapter.getItemCount();
-                Intent MapIntent=new Intent(getActivity(),GoogleMapActivity.class); //this 대신 getActivity() : 현재의 context받아올 수 있음
+                Intent MapIntent=new Intent(getActivity(), GoogleMapActivity.class); //this 대신 getActivity() : 현재의 context받아올 수 있음
                 MapIntent.putExtra("count",count);
                 startActivity(MapIntent);
 

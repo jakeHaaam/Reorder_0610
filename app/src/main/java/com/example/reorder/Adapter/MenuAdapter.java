@@ -52,13 +52,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
                 CurrentMenuInfo.setMenu_id(menu_id);
                 CurrentMenuInfo.setMenu_name(menu_name);
                 CurrentMenuInfo.setMenu_price(Integer.parseInt(menu_price));
-                CurrentMenuInfo.setMenu_count(1);
-//                MenuFragment fragment=new MenuFragment();
-//                Bundle bundle=new Bundle();
-//                bundle.putString("menu_name",menu_name);
-//                Log.d("menuadapter",menu_name);
-//                //bundle.putString("menu_price",menu_price);
-//                fragment.setArguments(bundle);
+                CurrentMenuInfo.setMenu_count(1);//이거 맞음?
                 Log.d("menuadapter","값: "+CurrentMenuInfo.getMenu_name());
                 ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(7);
             }
@@ -81,48 +75,4 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
             tv_menu_info=itemView.findViewById(R.id.tv_menu_info);
         }
     }
-    /*private ArrayList<MenuData>listData=new ArrayList<>();
-
-
-    @NonNull
-    @Override
-    public MenuAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.menu,parent,false);
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull MenuAdapter.ViewHolder viewHolder, int position) {
-
-        viewHolder.tv_menu_name.setText(CurrentStoreMenuInfo.getStoreMenu().getStoreMenuInfo().get);
-        viewHolder.tv_menu_price.setText(Integer.toString(MenuData.getMenu_price()));
-        viewHolder.tv_menu_info.setText(MenuData.getMenu_info());
-        //viewHolder.onBind(listData.get(position));
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return listData.size();
-    }
-
-
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView tv_menu_name;
-        private TextView tv_menu_price;
-        private TextView tv_menu_info;
-
-        ViewHolder(View itemView){
-            super(itemView);
-
-            tv_menu_name=itemView.findViewById(R.id.tv_menu_name);
-            tv_menu_price=itemView.findViewById(R.id.tv_menu_price);
-            tv_menu_info=itemView.findViewById(R.id.tv_menu_info);
-        }
-//        void onBind(MenuData data){
-//            tv_menu_name.setText(data.getMenu_name);
-//            tv_menu_price.setText(data.getMenu_price);
-//            tv_menu_info.setText(data.getMenu_info);
-//        }
-    }*/
 }

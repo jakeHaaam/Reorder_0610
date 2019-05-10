@@ -2,6 +2,7 @@ package com.example.reorder.globalVariables;
 
 public class CurrentMenuInfo {
 
+    public static int storeinfo_id;
     public static int menu_id;
     public static String menu_name ;
     public static int menu_price;
@@ -37,5 +38,13 @@ public class CurrentMenuInfo {
 
     public static void setMenu_count(int menu_count) {
         CurrentMenuInfo.menu_count = menu_count;
+    }
+
+    public static int getStoreinfo_id() {
+        return storeinfo_id;
+    }
+
+    public static void setStoreinfo_id(int storeinfo_id) {
+        CurrentMenuInfo.storeinfo_id = storeinfo_id;
     }
 }

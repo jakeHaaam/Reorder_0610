@@ -18,7 +18,6 @@ public interface CartSetApi {
     @POST("/setcart")
     Call<JoinResult> setUserCartInfo(@FieldMap HashMap<String,String> map);
 
-
     @GET("/setcart/{id}")
     Call<CartResult> getId(@Path("id") int id);
 }

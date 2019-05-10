@@ -3,12 +3,9 @@ package com.example.reorder.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,23 +15,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.reorder.Api.FragmentReplaceable;
 
+import com.example.reorder.Fragment.CartFragment;
+import com.example.reorder.Fragment.HomeFragment;
+import com.example.reorder.Fragment.MenuFragment;
+import com.example.reorder.Fragment.OrderFragment;
+import com.example.reorder.Fragment.SeatReserveFragment;
+import com.example.reorder.Fragment.StoreFragment;
 import com.example.reorder.R;
 import com.example.reorder.Result.CartResult;
 import com.example.reorder.Api.CartSetApi;
 import com.example.reorder.globalVariables.CurrentCartInfo;
-import com.example.reorder.globalVariables.CurrentStoreInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.CartInfo;
-import com.google.android.gms.common.api.Api;
 
 import java.util.List;
 
@@ -228,7 +227,7 @@ public class NavigationnActivity extends AppCompatActivity
         }else if (fragmentId==2){
             transaction.replace(R.id.container, storeFragment);
         }else if (fragmentId==3){
-            transaction.replace(R.id.container, testFragment);
+
         } else if (fragmentId==4){
             transaction.replace(R.id.container, CartFragment);
         }else if (fragmentId==5) {
@@ -238,8 +237,8 @@ public class NavigationnActivity extends AppCompatActivity
         }else if (fragmentId==7) {
             transaction.replace(R.id.container, MenuFragment);
         }
-
-        transaction.addToBackStack(null);
+        transaction.addToBackStack(null);//뒤로가기라는 스텍에 계속 저장중
         transaction.commit();
     }
+
 }

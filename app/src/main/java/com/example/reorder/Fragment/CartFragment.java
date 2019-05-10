@@ -1,12 +1,9 @@
-package com.example.reorder.Activity;
+package com.example.reorder.Fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.reorder.Activity.NavigationnActivity;
 import com.example.reorder.Adapter.CartAdapter;
-import com.example.reorder.Adapter.MenuAdapter;
 import com.example.reorder.R;
 import com.example.reorder.globalVariables.CurrentCartInfo;
 import com.example.reorder.info.CartInfo;

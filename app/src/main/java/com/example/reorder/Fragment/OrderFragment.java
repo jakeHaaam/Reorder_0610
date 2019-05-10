@@ -1,10 +1,11 @@
-package com.example.reorder.Activity;
+package com.example.reorder.Fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,27 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.reorder.Activity.NavigationnActivity;
+import com.example.reorder.Adapter.CartAdapter;
+import com.example.reorder.Api.OrderApi;
+import com.example.reorder.Api.RetrofitApi;
 import com.example.reorder.R;
+import com.example.reorder.Result.OrderResult;
+import com.example.reorder.globalVariables.CurrentCartInfo;
+import com.example.reorder.globalVariables.CurrentUserInfo;
+import com.example.reorder.globalVariables.OrderState;
+import com.example.reorder.globalVariables.serverURL;
+import com.example.reorder.info.CartInfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +62,10 @@ public class OrderFragment extends Fragment {
     private TextView tv_selected_seat;
     private Button bt_order;
     private Bundle bundle;
+    private RecyclerView rv_item;
+    private List<CartInfo> currentCartInfo;
+    private RecyclerView.Adapter cart_adapter;
+    String url= serverURL.getUrl();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -96,7 +119,12 @@ public class OrderFragment extends Fragment {
         ll_seat=view.findViewById(R.id.ll_seat);
         tv_selected_seat=view.findViewById(R.id.tv_selected_seat);
         bt_order=view.findViewById(R.id.bt_order);
-
+        rv_item=view.findViewById(R.id.rv_order);
+        rv_item.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
+        currentCartInfo=CurrentCartInfo.getCart().getCartInfoList();
+        cart_adapter=new CartAdapter(currentCartInfo,inflater.getContext());
+        rv_item.setAdapter(cart_adapter);
+        //장바구니에서 선택된 제품만 주문하는게 아니라서 장바구니 아이템/어댑터 사용
         if(bundle!=null) {
             ArrayList<Integer> seat = getActivity().getIntent().getExtras().getIntegerArrayList("bundle");
             if (seat != null) {
@@ -121,18 +149,74 @@ public class OrderFragment extends Fragment {
         bt_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(rb_take_out.isChecked()){
-                    ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(1);
-                    Toast.makeText(getContext(),"주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
-                }
-                else if(rb_eat_here.isChecked() && rb_seat_no.isChecked()) {
-                    ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(1);
-                    Toast.makeText(getContext(),"주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
+                ArrayList<ArrayList<String>> test=new ArrayList<ArrayList<String>>();
+                if(rb_take_out.isChecked()||rb_eat_here.isChecked() && rb_seat_no.isChecked()){
+
+                    for(int i=0;i<CurrentCartInfo.getCart().getCartInfoList().size();i++) {
+
+                        String id=String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
+                        String store_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getStore_id()+1);
+                        String menu_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_id());
+                        String menu_name=CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_name();
+                        String menu_price=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
+                        String menu_count=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
+
+                        ArrayList<String> list=new ArrayList<>();
+                        list.add(0, id);
+                        list.add(1, store_id);
+                        list.add(2, menu_id);
+                        list.add(3, menu_name);
+                        list.add(4, menu_price);
+                        list.add(5, menu_count);
+                        Log.d("list test",list.get(0)+"/"+list.get(1)+"/"+list.get(2)+"/"+list.get(3)+"/"+list.get(4)+"/"+list.get(5));
+                        test.add(list);
+                        Log.d("array test",""+test.get(i));
+                    }
+                    Log.d("array test",""+test.get(0)+test.get(1));
+
+                    try {
+                        HashMap<String,ArrayList> input=new HashMap<String, ArrayList>();
+                        input.put("order",test);
+                        Log.d("input",""+input);
+                        Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
+                        OrderApi orderApi = retrofit.create(OrderApi.class);
+                        orderApi.getReslut(input).enqueue(new Callback<OrderResult>() {
+                            @Override
+                            public void onResponse(Call<OrderResult> call, Response<OrderResult> response) {
+                                Log.d("respone","respone");
+                                if(response.isSuccessful()){
+                                    Log.d("respone is successful","respone is successful");
+                                    OrderResult map=response.body();
+                                    if(map!=null){
+                                        Log.d("body is not null","body is not null");
+                                        switch (map.getResult()){
+                                            case 1://성공
+                                                OrderState.setOrder_id(map.getOrder_id());
+                                                OrderState.setOrder_state(map.getOrder_state());
+                                                Toast.makeText(getContext(),"주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
+                                                //장바구니에서 삭제하는 페이지 구현
+                                                CurrentCartInfo.getCart().setCartInfoList(null);
+                                                ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(1);
+                                                break;
+                                            case 0:
+                                                Toast.makeText(getContext(),"주문이 전송되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<OrderResult> call, Throwable t) {
+                                t.printStackTrace();
+                            }
+                        });
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
                 else if(rb_eat_here.isChecked() && rb_seat_yes.isChecked()){
-
                     ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(6);
-
                 }
             }
         });

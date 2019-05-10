@@ -1,6 +1,7 @@
 package com.example.reorder.info;
 
 public class StoreMenuInfo {
+    int storeinfo_id;
     int id;
     int menu_id;
     String menu_name;
@@ -8,12 +9,13 @@ public class StoreMenuInfo {
     int menu_price;
 
 
-    public StoreMenuInfo(int id, int menu_id, String menu_name, String menu_info, int menu_price) {
+    public StoreMenuInfo(int id, int menu_id, String menu_name, String menu_info, int menu_price,int storeinfo_id) {
         this.id = id;
         this.menu_id = menu_id;
         this.menu_name = menu_name;
         this.menu_info = menu_info;
         this.menu_price = menu_price;
+        this.storeinfo_id=storeinfo_id;
     }
 
     public int getId() {
@@ -54,5 +56,13 @@ public class StoreMenuInfo {
 
     public void setMenu_price(int menu_price) {
         this.menu_price = menu_price;
+    }
+
+    public int getStoreinfo_id() {
+        return storeinfo_id;
+    }
+
+    public void setStoreinfo_id(int storeinfo_id) {
+        this.storeinfo_id = storeinfo_id;
     }
 }

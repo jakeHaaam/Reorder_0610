@@ -1,13 +1,13 @@
 package com.example.reorder.Result;
 
-public class OrderAndSeatResult {
+public class OrderResult {
     int result;
-    int oreder_number;
+    int order_id;
     int order_state;
 
-    public OrderAndSeatResult(int result, int oreder_number, int order_state) {
+    public OrderResult(int result, int order_id, int order_state) {
         this.result = result;
-        this.oreder_number = oreder_number;
+        this.order_id = order_id;
         this.order_state = order_state;
     }
 
@@ -19,12 +19,12 @@ public class OrderAndSeatResult {
         this.result = result;
     }
 
-    public int getOreder_number() {
-        return oreder_number;
+    public int getOrder_id() {
+        return order_id;
     }
 
-    public void setOreder_number(int oreder_number) {
-        this.oreder_number = oreder_number;
+    public void setOrder_id(int order_id) {
+        this.order_id = order_id;
     }
 
     public int getOrder_state() {

@@ -1,4 +1,4 @@
-package com.example.reorder.Activity;
+package com.example.reorder.Fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.example.reorder.Adapter.MenuAdapter;
 import com.example.reorder.R;
 import com.example.reorder.globalVariables.CurrentSelectStore;
-import com.example.reorder.globalVariables.CurrentStoreInfo;
 import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
 import com.example.reorder.info.StoreMenuInfo;
 

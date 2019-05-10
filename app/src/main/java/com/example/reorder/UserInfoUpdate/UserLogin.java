@@ -58,9 +58,9 @@ public class UserLogin {
                                     Log.d("11111", "login 성공");
                                     UserInfo userinfo = map.getUser();
                                     List<StoreInfo> storeInfo=map.getStore();
-                                    //List<BookMarkStoreInfo> bookMarkStoreInfos=map.getBookMarkStore();
                                     CurrentUserInfo.getUser().setUserInfo(userinfo);
                                     CurrentStoreInfo.getStore().setStoreInfoList(storeInfo);
+                                    //List<BookMarkStoreInfo> bookMarkStoreInfos=map.getBookMarkStore();
                                     //CurrentBookMarkStoreInfo.getBookMarkStore().setBookMarkStoreInfoList(bookMarkStoreInfos);
                                     IsLogin.setIsLogin(true);
                                     activity.startActivity(intent);

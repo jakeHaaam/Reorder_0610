@@ -1,4 +1,4 @@
-package com.example.reorder.Activity;
+package com.example.reorder.Fragment;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.Toast;
 
+import com.example.reorder.Activity.NavigationnActivity;
 import com.example.reorder.R;
 import com.example.reorder.Adapter.StoreAdapter;
 import com.example.reorder.Api.OrderAndSeatApi;

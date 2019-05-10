@@ -1,4 +1,4 @@
-package com.example.reorder.Activity;
+package com.example.reorder.Fragment;
 
 import android.content.Context;
 import android.net.Uri;
@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.reorder.Activity.NavigationnActivity;
 import com.example.reorder.R;
 import com.example.reorder.Result.JoinResult;
 import com.example.reorder.Api.CartSetApi;
@@ -102,7 +103,6 @@ public class MenuFragment extends Fragment {
 
         tv_menu_price=view.findViewById(R.id.menu_price);
         tv_menu_price.setText(Integer.toString(CurrentMenuInfo.getMenu_price()));
-
         tv_menu_count=view.findViewById(R.id.menu_count);
 
         tv_total_price=view.findViewById(R.id.tv_total_price);
@@ -153,18 +153,22 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("menuadapter",""+CurrentMenuInfo.getMenu_id()+" /"+CurrentMenuInfo.getMenu_name()+" /"+CurrentMenuInfo.getMenu_price()+" /"+CurrentMenuInfo.getMenu_count());
-                int id=CurrentMenuInfo.getMenu_id();
-                String menu_name=CurrentMenuInfo.getMenu_name();
+
+                int id = CurrentUserInfo.getUser().getUserInfo().getId();
+                int menu_id=CurrentMenuInfo.getMenu_id();
+                final String menu_name=CurrentMenuInfo.getMenu_name();
                 int menu_price=CurrentMenuInfo.getMenu_price();
                 int menu_count=CurrentMenuInfo.getMenu_count();
+                int store_id=CurrentMenuInfo.getStoreinfo_id();
 
                 try {
                     HashMap<String, String> input = new HashMap<>();
-                    input.put("client_id", CurrentUserInfo.getUser().getUserInfo().getClient_id());
-                    input.put("menu_id", String.valueOf(id));
+                    input.put("id", String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()));
+                    input.put("menu_id", String.valueOf(menu_id));
                     input.put("menu_name", menu_name);
                     input.put("menu_price", String.valueOf(menu_price));
                     input.put("menu_count", String.valueOf(menu_count));
+                    input.put("store_id",String.valueOf(store_id));
 
                     Retrofit retrofit = new Retrofit.Builder().baseUrl(url)
                             .addConverterFactory(GsonConverterFactory.create()).build();
