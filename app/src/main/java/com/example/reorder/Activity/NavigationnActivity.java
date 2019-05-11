@@ -82,6 +82,7 @@ public class NavigationnActivity extends AppCompatActivity
         MenuFragment=new MenuFragment();
         setDefaultFragment();
 
+        //구글맵에서 받아온 st_name를 현재 스토어에 저장되어있는 st_name들과 비교해서 해당 store로 이동 구현
         Intent intent=getIntent();
         String map_st_name=intent.getStringExtra("map");
         if(map_st_name!=null){
