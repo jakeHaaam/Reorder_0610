@@ -86,7 +86,6 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
                             if(storeIdResult!=null) {
                                 switch (storeIdResult.getResult()) {
                                     case 1://성공
-                                        String store_name=viewHolder.st_name.getText().toString();
                                         Log.d("storeadapter", "store 받아오기 성공");
                                         List<StoreMenuInfo> storeMenuInfo= storeIdResult.getStoreMenuInfo();
                                         CurrentStoreMenuInfo.getStoreMenu().setStoreMenuInfoList(storeMenuInfo);

@@ -28,6 +28,12 @@ import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.OrderState;
 import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.CartInfo;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +44,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Query;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -149,11 +156,12 @@ public class OrderFragment extends Fragment {
         bt_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<ArrayList<String>> test=new ArrayList<ArrayList<String>>();
+                //ArrayList<ArrayList<String>> test=new ArrayList<ArrayList<String>>();
+                JSONArray jsonArray=new JSONArray();
+                //ArrayList<String> list=new ArrayList<>();
                 if(rb_take_out.isChecked()||rb_eat_here.isChecked() && rb_seat_no.isChecked()){
-
+                    try {
                     for(int i=0;i<CurrentCartInfo.getCart().getCartInfoList().size();i++) {
-
                         String id=String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
                         String store_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getStore_id()+1);
                         String menu_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_id());
@@ -161,26 +169,59 @@ public class OrderFragment extends Fragment {
                         String menu_price=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
                         String menu_count=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
 
-                        ArrayList<String> list=new ArrayList<>();
-                        list.add(0, id);
-                        list.add(1, store_id);
-                        list.add(2, menu_id);
-                        list.add(3, menu_name);
-                        list.add(4, menu_price);
-                        list.add(5, menu_count);
-                        Log.d("list test",list.get(0)+"/"+list.get(1)+"/"+list.get(2)+"/"+list.get(3)+"/"+list.get(4)+"/"+list.get(5));
-                        test.add(list);
-                        Log.d("array test",""+test.get(i));
-                    }
-                    Log.d("array test",""+test.get(0)+test.get(1));
+                        JSONObject object=new JSONObject();
+                        object.put("id",id);
+                        object.put("store_id",store_id);
+                        object.put("menu_id",menu_id);
+                        object.put("menu_name",menu_name);
+                        object.put("menu_price",menu_price);
+                        object.put("menu_count",menu_count);
+                        jsonArray.put(object);
+                        //object.add("id",CurrentUserInfo.getUser().getUserInfo().getId());
 
+//                        if(i==0) {
+//                            list.add(i, "{");
+//                            list.add(i + 1, id);
+//                            list.add(i + 2, store_id);
+//                            list.add(i + 3, menu_id);
+//                            list.add(i + 4, menu_name);
+//                            list.add(i + 5, menu_price);
+//                            list.add(i + 6, menu_count);
+//                            list.add(i + 7, "}");
+//                        }else{
+//                            list.add(i*6+1,",");
+//                            list.add(i, "{");
+//                            list.add(i + 1, id);
+//                            list.add(i + 2, store_id);
+//                            list.add(i + 3, menu_id);
+//                            list.add(i + 4, menu_name);
+//                            list.add(i + 5, menu_price);
+//                            list.add(i + 6, menu_count);
+//                            list.add(i + 7, "}");
+//                        }
+                        //Log.d("list test",list.get(0)+"/"+list.get(1)+"/"+list.get(2)+"/"+list.get(3)+"/"+list.get(4)+"/"+list.get(5)+"/"+list.get(6)+"/"+list.get(7));
+                        //test.add(list);
+                        //Log.d("array test",""+test.get(i));
+                    }
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                    JSONObject jsonObject=new JSONObject();
                     try {
-                        HashMap<String,ArrayList> input=new HashMap<String, ArrayList>();
-                        input.put("order",test);
-                        Log.d("input",""+input);
+                        jsonObject.put("order",jsonArray);//이게 필요해
+                        Log.d("input2",""+jsonObject);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        //HashMap<String, JSONObject> input=new HashMap<>();
+                        //input.put("order",jsonObject);//필요없어
+                        //Log.d("input3",""+input);
+
                         Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
                         OrderApi orderApi = retrofit.create(OrderApi.class);
-                        orderApi.getReslut(input).enqueue(new Callback<OrderResult>() {
+                        //Call<OrderResult> call= orderApi.getResult(jsonObject);
+                        orderApi.getResult(jsonObject).enqueue(new Callback<OrderResult>() {
                             @Override
                             public void onResponse(Call<OrderResult> call, Response<OrderResult> response) {
                                 Log.d("respone","respone");
@@ -196,6 +237,7 @@ public class OrderFragment extends Fragment {
                                                 Toast.makeText(getContext(),"주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
                                                 //장바구니에서 삭제하는 페이지 구현
                                                 CurrentCartInfo.getCart().setCartInfoList(null);
+                                                CurrentCartInfo.setCart(null);
                                                 ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(1);
                                                 break;
                                             case 0:

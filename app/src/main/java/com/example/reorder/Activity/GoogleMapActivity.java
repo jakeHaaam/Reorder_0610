@@ -125,7 +125,9 @@ public class GoogleMapActivity extends FragmentActivity implements
             st_lat=Double.parseDouble(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_lat());
             st_lng=Double.parseDouble(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_lng());
             LatLng stPoint=new LatLng(st_lat,st_lng);
-            map.addMarker(new MarkerOptions().position(stPoint).title(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_name()));
+            map.addMarker(new MarkerOptions().position(stPoint)
+                    .title(CurrentStoreInfo.getStore().getStoreInfoList()
+                            .get(i).getStore_name())).showInfoWindow();
         }
 
         map.setOnMarkerClickListener(this);
@@ -243,7 +245,10 @@ public class GoogleMapActivity extends FragmentActivity implements
     @Override
     public boolean onMarkerClick(Marker marker) {
         //마커 클릭시 구현
-
+        String st_name=marker.getTitle();
+        Intent HomeIntent=new Intent(getApplicationContext(), NavigationnActivity.class); //this 대신 getActivity() : 현재의 context받아올 수 있음
+        HomeIntent.putExtra("map",st_name);
+        startActivity(HomeIntent);
         return true;
     }
 }

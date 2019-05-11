@@ -1,6 +1,7 @@
 package com.example.reorder.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.reorder.Api.FragmentReplaceable;
 
+import com.example.reorder.Api.StoreIdApi;
 import com.example.reorder.Fragment.CartFragment;
 import com.example.reorder.Fragment.HomeFragment;
 import com.example.reorder.Fragment.MenuFragment;
@@ -30,10 +32,16 @@ import com.example.reorder.Fragment.StoreFragment;
 import com.example.reorder.R;
 import com.example.reorder.Result.CartResult;
 import com.example.reorder.Api.CartSetApi;
+import com.example.reorder.Result.StoreIdResult;
 import com.example.reorder.globalVariables.CurrentCartInfo;
+import com.example.reorder.globalVariables.CurrentSelectStore;
+import com.example.reorder.globalVariables.CurrentStoreInfo;
+import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.CartInfo;
+import com.example.reorder.info.StoreInfo;
+import com.example.reorder.info.StoreMenuInfo;
 
 import java.util.List;
 
@@ -74,7 +82,60 @@ public class NavigationnActivity extends AppCompatActivity
         MenuFragment=new MenuFragment();
         setDefaultFragment();
 
+        Intent intent=getIntent();
+        String map_st_name=intent.getStringExtra("map");
+        if(map_st_name!=null){
+            for(int i=0;i< CurrentStoreInfo.getStore().getStoreInfoList().size();i++){
+                String st_name=CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_name();
+                if(map_st_name.equals(st_name)){
+                    CurrentSelectStore.setId(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getId());
+                    CurrentSelectStore.setSt_id(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_id());
+                    CurrentSelectStore.setSt_name(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_name());
+                    CurrentSelectStore.setSt_category(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_category());
 
+                    String st_id=String.valueOf(CurrentSelectStore.getSt_id());
+
+                    try{
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(url)
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+                        StoreIdApi storeIdApi= retrofit.create(StoreIdApi.class);
+                        storeIdApi.getStore_id(st_id).enqueue(new Callback<StoreIdResult>() {
+                            @Override
+                            public void onResponse(Call<StoreIdResult> call, Response<StoreIdResult> response) {
+                                Log.d("storeadapter",response.message()+"*^^* "+response.toString());
+                                if (response.isSuccessful()){
+                                    StoreIdResult storeIdResult=response.body();
+                                    if(storeIdResult!=null) {
+                                        switch (storeIdResult.getResult()) {
+                                            case 1://성공
+                                                Log.d("storeadapter", "store 받아오기 성공");
+                                                List<StoreMenuInfo> storeMenuInfo= storeIdResult.getStoreMenuInfo();
+                                                CurrentStoreMenuInfo.getStoreMenu().setStoreMenuInfoList(storeMenuInfo);
+                                                replaceFragment(2);
+                                                break;
+                                            case 0://실패
+                                                Log.d("storeadapter", "store 받아오기 실패");
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<StoreIdResult> call, Throwable t) {
+                                t.printStackTrace();
+                            }
+                        });
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+            }
+        }
 
         bt_cart=findViewById(R.id.bt_cart);
         bt_cart.setOnClickListener(new View.OnClickListener() {

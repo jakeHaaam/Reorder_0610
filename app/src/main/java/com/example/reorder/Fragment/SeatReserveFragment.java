@@ -17,8 +17,12 @@ import com.example.reorder.Activity.NavigationnActivity;
 import com.example.reorder.R;
 import com.example.reorder.Adapter.StoreAdapter;
 import com.example.reorder.Api.OrderAndSeatApi;
+import com.example.reorder.globalVariables.CurrentCartInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.serverURL;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -130,10 +134,31 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                     String store=storeAdapter.getStoreinfo_id();
                     String userid= CurrentUserInfo.getUser().getUserInfo().getClient_id();
                     try {
+                        JSONArray jsonArray=new JSONArray();
+
+                        for(int i = 0; i< CurrentCartInfo.getCart().getCartInfoList().size(); i++) {
+
+                            String id=String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
+                            String store_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getStore_id()+1);
+                            String menu_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_id());
+                            String menu_name=CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_name();
+                            String menu_price=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
+                            String menu_count=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
+
+                            JSONObject object=new JSONObject();
+                            object.put("id",id);
+                            object.put("store_id",store_id);
+                            object.put("menu_id",menu_id);
+                            object.put("menu_name",menu_name);
+                            object.put("menu_price",menu_price);
+                            object.put("menu_count",menu_count);
+                            jsonArray.put(object);
+                        }
+
                         HashMap<String, String> input = new HashMap<>();
-                        input.put("store_id",store);
-                        input.put("client_id",userid);
-                        input.put("select_seat",String.valueOf(select_id));
+//                        input.put("store_id",store);
+//                        input.put("client_id",userid);
+//                        input.put("select_seat",String.valueOf(select_id));
                         //메뉴아이디, 메뉴 수량 넣어야 해
                         Retrofit retrofit = new Retrofit.Builder()
                                 .baseUrl(url)
