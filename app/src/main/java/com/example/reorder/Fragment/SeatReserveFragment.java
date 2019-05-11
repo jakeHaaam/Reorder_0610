@@ -18,6 +18,8 @@ import com.example.reorder.R;
 import com.example.reorder.Adapter.StoreAdapter;
 import com.example.reorder.Api.OrderAndSeatApi;
 import com.example.reorder.globalVariables.CurrentCartInfo;
+import com.example.reorder.globalVariables.CurrentSeatInfo;
+import com.example.reorder.globalVariables.CurrentStoreSeatInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.serverURL;
 
@@ -44,7 +46,6 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private Button bt_order_ok;
-    private Button bt_order_cancle;
     private GridLayout grid;
     private Context context;
     String url= serverURL.getUrl();
@@ -95,7 +96,6 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_seat_reserve, container, false);
         bt_order_ok=view.findViewById(R.id.bt_order_ok);
-        bt_order_cancle=view.findViewById(R.id.bt_order_cancle);
         grid= view.findViewById(R.id.grid);
         context=grid.getContext();
         checked_count=0;
@@ -103,30 +103,31 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
 
         final SeatReserveFragment seatReserveFragment=new SeatReserveFragment();
 
-        seat_state=new int[100];
-        seat_checked=new boolean[100];//seat갯수 만큼 불린형 생성
+        Log.d("seat",""+CurrentStoreSeatInfo.getStoreSeat().getStoreSeatInfo().getSeat_num());
+        int st_num= CurrentStoreSeatInfo.getStoreSeat().getStoreSeatInfo().getSeat_num();
+        int st_row=CurrentStoreSeatInfo.getStoreSeat().getStoreSeatInfo().getSeat_row();
+        seat_state=new int[st_num];
+        seat_checked=new boolean[st_num+1];//seat갯수 만큼 불린형 생성
         Arrays.fill(seat_checked,false);//불린형 false로 초기화
-
-        //int seatcount;받아온 seat의 갯수를 넣어주고 밑에 for문에 100대신 입력
-            //grid.setColumnCount();<-여기에 받아오는 행렬의 행값 입력 해주면 해당 행까지만 나오고 자동으로 다음 열로 이동해서 생성 됨
-            for(int j=0;j<100;j++)//버튼 동적 생성 부분
-            {
-                seat_state[j]=0;//db에서 받아온 seat_state를 seat_id에 맞춰 집어넣어줘야 함
-                //if()
-                final Button bt = new Button(context);
-                bt.setId(j + 1);//id=1,2,3,4 이런식으로 할당 받아짐
-                bt.setText(String.valueOf(j + 1));
-                if(seat_state[j]==0){ //"0"은 사용 가능한 상태
-                    bt.setBackgroundColor(Color.WHITE);
-                    bt.setOnClickListener(this);}
-                else if(seat_state[j]==1){//"1"은 예약중인 상태-예약 불가
-                    bt.setBackgroundColor(Color.YELLOW);
+        grid.setColumnCount(st_row);//<-여기에 받아오는 행렬의 행값 입력 해주면 해당 행까지만 나오고 자동으로 다음 열로 이동해서 생성 됨
+        for(int j=0;j<st_num;j++)//버튼 동적 생성 부분
+        {
+            seat_state[j]= CurrentSeatInfo.getSeat().getSeatInfoList().get(j).getSeat_statement();//db에서 받아온 seat_state를 seat_id에 맞춰 집어넣어줘야 함
+            //if()
+            final Button bt = new Button(context);
+            bt.setId(j + 1);//id=1,2,3,4 이런식으로 할당 받아짐
+            bt.setText(String.valueOf(j + 1));
+            if(seat_state[j]==0){ //"0"은 사용 가능한 상태
+                bt.setBackgroundColor(Color.WHITE);
+                bt.setOnClickListener(this);}
+            else if(seat_state[j]==1){//"1"은 예약중인 상태-예약 불가
+                bt.setBackgroundColor(Color.YELLOW);
                 bt.setClickable(false);}
-                else if(seat_state[j]==2){//"2"는 현재 사용중인 상태-예약 불가
-                    bt.setBackgroundColor(Color.GREEN);
-                    bt.setClickable(false);}
-                grid.addView(bt);
-            }
+            else if(seat_state[j]==2){//"2"는 현재 사용중인 상태-예약 불가
+                bt.setBackgroundColor(Color.GREEN);
+                bt.setClickable(false);}
+            grid.addView(bt);
+        }
         bt_order_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -182,12 +183,6 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
             }
         });
 
-        bt_order_cancle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((NavigationnActivity)NavigationnActivity.mContext).onBackPressed();}
-        });
-
         return view;
     }
 
@@ -219,7 +214,8 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        int id=v.getId();
+        Log.d("click",""+v.getId());
+        int id=v.getId();//현재 1번을 누르면 seat_checked[1]이 true가 되는 상태
         if(checked_count<max_count) {
 
             if (seat_checked[id] != true) {

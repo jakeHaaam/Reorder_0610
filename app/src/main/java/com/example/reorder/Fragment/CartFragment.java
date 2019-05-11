@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,8 +91,8 @@ public class CartFragment extends Fragment {
     public int sumTotalPrice(){
         int totalprice=0;
         for(int i=0;i< CurrentCartInfo.getCart().getCartInfoList().size();++i){
-            int countprice=(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price())*(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
-            totalprice+=countprice;
+            totalprice+=(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price())
+                    *(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
         }
         return totalprice;
     }

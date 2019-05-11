@@ -176,7 +176,7 @@ public class MenuFragment extends Fragment {
                     input.put("menu_name", menu_name);
                     input.put("menu_price", String.valueOf(menu_price));
                     input.put("menu_count", String.valueOf(menu_count));
-                    input.put("store_id",String.valueOf(store_id));
+                    input.put("store_id",String.valueOf(store_id+1));
 
                     Retrofit retrofit = new Retrofit.Builder().baseUrl(url)
                             .addConverterFactory(GsonConverterFactory.create()).build();
@@ -196,6 +196,11 @@ public class MenuFragment extends Fragment {
                                             break;
                                         case 0:
                                             Toast.makeText(getContext(),"실패", Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case 2://다른 매장의 제품을 장바구니에 넣으려고 할 시.
+                                            Toast.makeText(getContext(),
+                                                    "장바구니에는 1개의 매장의 제품들만 담을 수 있습니다."
+                                                    , Toast.LENGTH_SHORT).show();
                                             break;
                                     }
                                 }

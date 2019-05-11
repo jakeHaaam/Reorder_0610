@@ -4,14 +4,7 @@ public class OrderAndSeatResult {
     int result;
     int oreder_id;
     int order_state;
-    int seat_id;
-
-    public OrderAndSeatResult(int result, int oreder_id, int order_state, int seat_id) {
-        this.result = result;
-        this.oreder_id = oreder_id;
-        this.order_state = order_state;
-        this.seat_id = seat_id;
-    }
+    int id;
 
     public int getResult() {
         return result;
@@ -37,11 +30,18 @@ public class OrderAndSeatResult {
         this.order_state = order_state;
     }
 
-    public int getSeat_id() {
-        return seat_id;
+    public int getId() {
+        return id;
     }
 
-    public void setSeat_id(int seat_id) {
-        this.seat_id = seat_id;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public OrderAndSeatResult(int result, int oreder_id, int order_state, int id) {
+        this.result = result;
+        this.oreder_id = oreder_id;
+        this.order_state = order_state;
+        this.id = id;
     }
 }

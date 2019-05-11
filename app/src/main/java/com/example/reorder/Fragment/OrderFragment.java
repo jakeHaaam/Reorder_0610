@@ -19,15 +19,24 @@ import android.widget.Toast;
 
 import com.example.reorder.Activity.NavigationnActivity;
 import com.example.reorder.Adapter.CartAdapter;
+import com.example.reorder.Api.OrderAndSeatApi;
 import com.example.reorder.Api.OrderApi;
 import com.example.reorder.Api.RetrofitApi;
+import com.example.reorder.Api.StoreSeatApi;
 import com.example.reorder.R;
+import com.example.reorder.Result.GetBookMarkResult;
+import com.example.reorder.Result.OrderAndSeatResult;
 import com.example.reorder.Result.OrderResult;
+import com.example.reorder.Result.StoreSeatResult;
 import com.example.reorder.globalVariables.CurrentCartInfo;
+import com.example.reorder.globalVariables.CurrentSeatInfo;
+import com.example.reorder.globalVariables.CurrentStoreSeatInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.OrderState;
 import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.CartInfo;
+import com.example.reorder.info.SeatInfo;
+import com.example.reorder.info.StoreSeatInfo;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -68,7 +77,6 @@ public class OrderFragment extends Fragment {
     private LinearLayout ll_seat;
     private TextView tv_selected_seat;
     private Button bt_order;
-    private Button bt_cancle;
     private Bundle bundle;
     private RecyclerView rv_item;
     private List<CartInfo> currentCartInfo;
@@ -127,7 +135,6 @@ public class OrderFragment extends Fragment {
         ll_seat=view.findViewById(R.id.ll_seat);
         tv_selected_seat=view.findViewById(R.id.tv_selected_seat);
         bt_order=view.findViewById(R.id.bt_order);
-        bt_cancle=view.findViewById(R.id.bt_cancle);
         rv_item=view.findViewById(R.id.rv_order);
         rv_item.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         currentCartInfo=CurrentCartInfo.getCart().getCartInfoList();
@@ -163,23 +170,23 @@ public class OrderFragment extends Fragment {
                 //ArrayList<String> list=new ArrayList<>();
                 if(rb_take_out.isChecked()||rb_eat_here.isChecked() && rb_seat_no.isChecked()){
                     try {
-                    for(int i=0;i<CurrentCartInfo.getCart().getCartInfoList().size();i++) {
-                        String id=String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
-                        String store_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getStore_id()+1);
-                        String menu_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_id());
-                        String menu_name=CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_name();
-                        String menu_price=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
-                        String menu_count=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
+                        for(int i=0;i<CurrentCartInfo.getCart().getCartInfoList().size();i++) {
+                            String id=String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
+                            String store_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getStore_id()+1);
+                            String menu_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_id());
+                            String menu_name=CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_name();
+                            String menu_price=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
+                            String menu_count=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
 
-                        JSONObject object=new JSONObject();
-                        object.put("id",id);
-                        object.put("store_id",store_id);
-                        object.put("menu_id",menu_id);
-                        object.put("menu_name",menu_name);
-                        object.put("menu_price",menu_price);
-                        object.put("menu_count",menu_count);
-                        jsonArray.put(object);
-                        //object.add("id",CurrentUserInfo.getUser().getUserInfo().getId());
+                            JSONObject object=new JSONObject();
+                            object.put("id",id);
+                            object.put("store_id",store_id);
+                            object.put("menu_id",menu_id);
+                            object.put("menu_name",menu_name);
+                            object.put("menu_price",menu_price);
+                            object.put("menu_count",menu_count);
+                            jsonArray.put(object);
+                            //object.add("id",CurrentUserInfo.getUser().getUserInfo().getId());
 
 //                        if(i==0) {
 //                            list.add(i, "{");
@@ -201,10 +208,10 @@ public class OrderFragment extends Fragment {
 //                            list.add(i + 6, menu_count);
 //                            list.add(i + 7, "}");
 //                        }
-                        //Log.d("list test",list.get(0)+"/"+list.get(1)+"/"+list.get(2)+"/"+list.get(3)+"/"+list.get(4)+"/"+list.get(5)+"/"+list.get(6)+"/"+list.get(7));
-                        //test.add(list);
-                        //Log.d("array test",""+test.get(i));
-                    }
+                            //Log.d("list test",list.get(0)+"/"+list.get(1)+"/"+list.get(2)+"/"+list.get(3)+"/"+list.get(4)+"/"+list.get(5)+"/"+list.get(6)+"/"+list.get(7));
+                            //test.add(list);
+                            //Log.d("array test",""+test.get(i));
+                        }
                     }catch (JSONException e){
                         e.printStackTrace();
                     }
@@ -260,17 +267,57 @@ public class OrderFragment extends Fragment {
                     }
                 }
                 else if(rb_eat_here.isChecked() && rb_seat_yes.isChecked()){
-                    ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(6);
+
+                    try {
+                        String st_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getStore_id());
+                        //이거는 0해도됨->이유: 장바구니에는 어차피 같은 스토어만 저장 할 것이니깐
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl(url)
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .build();
+                        StoreSeatApi storeSeatApi = retrofit.create(StoreSeatApi.class);
+                        storeSeatApi.getResult(st_id)
+                                .enqueue(new Callback<StoreSeatResult>() {
+                                    @Override
+                                    public void onResponse(Call<StoreSeatResult> call, Response<StoreSeatResult> response) {
+                                        Log.d("store_seat","respone");
+                                        Log.d("store_seat",""+response.body());
+                                        if(response.isSuccessful())
+                                        {
+                                            Log.d("store_seat","respone성공");
+                                            StoreSeatResult storeSeatResult=response.body();
+                                            switch (storeSeatResult.getResult()){
+                                                case 1://성공
+                                                    Log.d("store_seat","body성공");
+                                                    Log.d("store_seat",storeSeatResult.toString());
+                                                    List<SeatInfo> seatInfos=storeSeatResult.getSeatInfos();//좌석 상태받는 애
+                                                    StoreSeatInfo storeSeatInfo=storeSeatResult.getStoreSeatInfo();
+                                                    CurrentStoreSeatInfo.getStoreSeat().setStoreSeatInfo(storeSeatInfo);
+                                                    CurrentSeatInfo.getSeat().setSeatInfoList(seatInfos);
+                                                    Log.d("seat",""+seatInfos);
+                                                    ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(6);
+                                                    break;
+                                                case 0://실패
+//                                                    Toast.makeText(getContext(),"등록된 매장이 없습니다.",Toast.LENGTH_SHORT).show();
+                                                    break;
+                                            }
+                                        }
+                                    }
+                                    @Override
+                                    public void onFailure(Call<StoreSeatResult> call, Throwable t) {
+                                        t.printStackTrace();
+                                        Log.d("store_seat", String.valueOf(call));
+                                        Log.d("store_seat","fail");
+                                    }
+                                });
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        Log.d("bt_bookmark","excep");
+                    }
                 }
             }
         });
 
-        bt_cancle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((NavigationnActivity)NavigationnActivity.mContext).onBackPressed();
-            }
-        });
 
         return view;
     }

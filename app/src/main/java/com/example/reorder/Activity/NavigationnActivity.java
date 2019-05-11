@@ -160,10 +160,6 @@ public class NavigationnActivity extends AppCompatActivity
                                             List<CartInfo> cartInfo = cartResult.getCartInfo();
                                             CurrentCartInfo.getCart().setCartInfoList(cartInfo);//저장
                                             Log.d("cart", ""+response.body());
-//                                            Log.d("cart", "카트담겨진 메뉴이름 : "+CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_name());
-//                                            Log.d("cart", "카트담겨진 메뉴가격 :"+CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_price());
-//                                            Log.d("cart", "카트담겨진 메 :"+CurrentCartInfo.getCart().getCartInfoList().get(1).getMenu_name());
-
                                             replaceFragment(4);
                                             break;
                                         case 0:
