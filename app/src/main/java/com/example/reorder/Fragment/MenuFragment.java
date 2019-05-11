@@ -49,6 +49,7 @@ public class MenuFragment extends Fragment {
     private Button bt_down;
     private Button bt_up;
     private Button bt_ok;
+    private Button bt_cancle;
     private TextView tv_total_price;
     private int count;
     private int price;
@@ -109,6 +110,7 @@ public class MenuFragment extends Fragment {
         tv_total_price.setText(Integer.toString(CurrentMenuInfo.getMenu_price()));
 
         bt_up=view.findViewById(R.id.bt_up);
+        bt_cancle=view.findViewById(R.id.bt_cancle);
         bt_down=view.findViewById(R.id.bt_down);
         bt_ok=view.findViewById(R.id.bt_go_cart);
         count=1;
@@ -147,6 +149,12 @@ public class MenuFragment extends Fragment {
             }
         });
 
+        bt_cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((NavigationnActivity)NavigationnActivity.mContext).onBackPressed();
+            }
+        });
 
 
         bt_ok.setOnClickListener(new View.OnClickListener() {

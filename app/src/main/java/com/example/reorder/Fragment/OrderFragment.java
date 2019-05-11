@@ -68,6 +68,7 @@ public class OrderFragment extends Fragment {
     private LinearLayout ll_seat;
     private TextView tv_selected_seat;
     private Button bt_order;
+    private Button bt_cancle;
     private Bundle bundle;
     private RecyclerView rv_item;
     private List<CartInfo> currentCartInfo;
@@ -126,6 +127,7 @@ public class OrderFragment extends Fragment {
         ll_seat=view.findViewById(R.id.ll_seat);
         tv_selected_seat=view.findViewById(R.id.tv_selected_seat);
         bt_order=view.findViewById(R.id.bt_order);
+        bt_cancle=view.findViewById(R.id.bt_cancle);
         rv_item=view.findViewById(R.id.rv_order);
         rv_item.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         currentCartInfo=CurrentCartInfo.getCart().getCartInfoList();
@@ -263,6 +265,12 @@ public class OrderFragment extends Fragment {
             }
         });
 
+        bt_cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((NavigationnActivity)NavigationnActivity.mContext).onBackPressed();
+            }
+        });
 
         return view;
     }

@@ -4,12 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragment.CartFragment">
+    tools:context=".Activity.CartFragment">
+
+
+
 
     <!-- TODO: Update blank fragment layout -->
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
 
         <LinearLayout
             android:layout_width="303dp"
@@ -95,14 +99,16 @@
 
         <Button
             android:id="@+id/bt_cart_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="160dp"
-            android:layout_marginLeft="160dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_width="75dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="170dp"
+            android:layout_marginLeft="170dp"
+            android:layout_marginEnd="150dp"
+            android:layout_marginRight="150dp"
             android:layout_marginBottom="152dp"
+            android:background="@drawable/button_style"
             android:text="Order"
+            android:textColor="#715c4b"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.006"

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragment.OrderFragment">
+    tools:context=".Activity.OrderFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <android.support.constraint.ConstraintLayout
@@ -36,7 +36,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Do you want to reserve a seat?"
+                android:textColor="#715c4b"
+                android:text="좌석을 예약하시겠습니까?"
                 android:textSize="18dp" />
 
             <RadioGroup
@@ -90,19 +91,19 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_order"
-            android:layout_width="363dp"
-            android:layout_height="247dp"
+            android:layout_width="305dp"
+            android:layout_height="229dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="276dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_order"
-            app:layout_constraintVertical_bias="0.838" />
+            app:layout_constraintVertical_bias="0.107" />
 
         <RadioGroup
             android:id="@+id/rg_eat"
@@ -155,11 +156,22 @@
 
                 <Button
                     android:id="@+id/bt_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
-                    android:text="Order" />
+                    android:background="@drawable/button_style"
+                    android:text="Order"
+                    android:textColor="#715c4b"
+                    />
 
+                <Button
+                    android:id="@+id/bt_cancle"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="60dp"
+                    android:background="@drawable/button_style"
+                    android:text="Cancle"
+                    android:textColor="#715c4b" />
             </LinearLayout>
         </LinearLayout>
 

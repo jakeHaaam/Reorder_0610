@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f7f6f6"
-    tools:context=".Fragment.StoreFragment">
+    tools:context=".Activity.StoreFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_menu"
@@ -20,17 +20,22 @@
         android:layout_marginLeft="50dp"
         android:layout_marginTop="40dp"
         android:text="TextView"
+        android:gravity="center"
+        android:textColor="#715c4b"
         android:textSize="30dp"
         android:textStyle="bold" />
 
 
     <Button
         android:id="@+id/bt_bookmark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="300dp"
+        android:layout_width="75dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="280dp"
         android:layout_marginTop="130dp"
-        android:text="찜" />
+        android:background="@drawable/button_style"
+        android:text="찜"
+        android:textColor="#715c4b"
+        android:textStyle="bold" />
 
 
 </FrameLayout>

@@ -47,6 +47,7 @@
                 android:layout_marginLeft="25dp"
                 android:layout_weight="1"
                 android:text="TextView"
+                android:gravity="right"
                 android:textColor="#aa886d"
                 android:textSize="18dp"
                 android:textStyle="bold" />

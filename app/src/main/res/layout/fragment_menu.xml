@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.MenuFragment">
+    tools:context=".Activity.MenuFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -23,7 +23,9 @@
             android:layout_weight="8"
             android:gravity="center"
             android:text="상품이름"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:textColor="#715c4b"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/menu_price"
@@ -32,6 +34,7 @@
             android:layout_weight="8"
             android:gravity="center"
             android:text="가격"
+            android:textColor="#715c4b"
             android:textSize="20dp" />
 
         <Button
@@ -54,6 +57,8 @@
         <Button
             android:id="@+id/bt_up"
             android:layout_width="30dp"
+
+
             android:layout_height="30dp"
             android:layout_weight="1"
             android:background="#FFF"
@@ -90,6 +95,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:text="3000"
+            android:textColor="#aa886d"
             android:textSize="20dp" />
 
         <TextView
@@ -105,18 +111,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_gravity="center"
+        android:layout_marginTop="110dp"
         android:gravity="center"
-        android:layout_marginTop="80dp">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/bt_go_cart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="75dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginRight="30dp"
-            android:text="담  기" />
+            android:background="@drawable/button_style"
+            android:text="담  기"
+            android:textColor="#715c4b"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/bt_cancle"
+            android:layout_width="75dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/button_style"
+            android:text="취  소"
+            android:textColor="#715c4b"
+            android:textStyle="bold" />
 
 
     </LinearLayout>

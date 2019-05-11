@@ -208,10 +208,14 @@ public class NavigationnActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        Fragment fragment=getSupportFragmentManager().findFragmentById(R.id.container);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if(fragment!=homeFragment)
+                super.onBackPressed();
+            else{
+            }
         }
     }
 
@@ -253,7 +257,13 @@ public class NavigationnActivity extends AppCompatActivity
         }
 //            // Handle the camera action
         else if (id == R.id.nav_logout) {
-            replaceFragment(2);
+            CurrentUserInfo.getUser().getUserInfo().setId(0);
+            CurrentUserInfo.getUser().getUserInfo().setClientId(null);
+            CurrentUserInfo.getUser().getUserInfo().setClient_mileage(0);
+            CurrentUserInfo.getUser().getUserInfo().setClient_password(null);
+            Log.d("logout",""+CurrentUserInfo.getUser().getUserInfo().getClient_id());
+            Toast.makeText(this,"로그아웃 되었습니다",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent (NavigationnActivity.this,LoginActivity.class));
         }
 //
 //        } else if (id == R.id.nav_slideshow) {

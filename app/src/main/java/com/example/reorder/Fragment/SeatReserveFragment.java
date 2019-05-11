@@ -44,6 +44,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private Button bt_order_ok;
+    private Button bt_order_cancle;
     private GridLayout grid;
     private Context context;
     String url= serverURL.getUrl();
@@ -94,6 +95,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_seat_reserve, container, false);
         bt_order_ok=view.findViewById(R.id.bt_order_ok);
+        bt_order_cancle=view.findViewById(R.id.bt_order_cancle);
         grid= view.findViewById(R.id.grid);
         context=grid.getContext();
         checked_count=0;
@@ -178,6 +180,12 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                 else
                     Toast.makeText(getContext(),"좌석을 선택 해주세요.", Toast.LENGTH_SHORT).show();
             }
+        });
+
+        bt_order_cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((NavigationnActivity)NavigationnActivity.mContext).onBackPressed();}
         });
 
         return view;

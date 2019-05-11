@@ -4,60 +4,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.HomeFragment">
+    tools:context=".Activity.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
 
     <Button
         android:id="@+id/bt_bookmark"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="40dp"
         android:layout_marginTop="50dp"
         android:layout_toLeftOf="@+id/bt_near_store"
-        android:background="#fff"
-        android:text="M y  매 장" />
+        android:background="@drawable/home_button_style"
+        android:text="My 매장"
+        android:textColor="#aa886d"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/bt_near_store"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="150dp"
+        android:layout_marginLeft="155dp"
         android:layout_marginTop="50dp"
         android:layout_marginRight="0dp"
         android:layout_marginBottom="0dp"
-        android:background="#fff"
-        android:text="가 까 운   매 장" />
+        android:background="@drawable/home_button_style"
+        android:text="가까운 매장"
+        android:textColor="#aa886d"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/bt_map"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="280dp"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="270dp"
         android:layout_marginTop="50dp"
         android:layout_toRightOf="@+id/bt_near_store"
-        android:background="#fff"
-        android:text="지           도" />
+        android:background="@drawable/home_button_style"
+        android:text="지    도"
+        android:textColor="#aa886d"
+        android:textStyle="bold" />
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lv_near_store"
         android:layout_width="320dp"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:layout_centerHorizontal="true"
 
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="70dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lv_bookmark_store"
         android:layout_width="320dp"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
         android:layout_gravity="center"
+        android:layout_marginTop="70dp"
         android:visibility="invisible" />
 
     <android.support.v4.view.ViewPager
@@ -67,4 +73,4 @@
         android:layout_height="match_parent">
     </android.support.v4.view.ViewPager>
 
-    </FrameLayout>
+</FrameLayout>
