@@ -12,6 +12,11 @@ import com.example.reorder.Activity.NavigationnActivity;
 import com.example.reorder.Adapter.StoreAdapter;
 import com.example.reorder.R;
 import com.example.reorder.globalVariables.CurrentSelectCategory;
+import com.example.reorder.globalVariables.CurrentStoreInfo;
+import com.example.reorder.info.StoreInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Dialog extends AppCompatDialogFragment {
     private Button bt_korean;
@@ -23,7 +28,20 @@ public class Dialog extends AppCompatDialogFragment {
     private Button bt_fastfood;
     private Button bt_no_filter;
     private StoreAdapter storeAdapter;
-    //private DialogListener listener;
+
+    public void categorychange(String category){
+        List<StoreInfo> storeInfos = new ArrayList<>();
+        if(CurrentSelectCategory.getSt_category().equals("")){
+            storeInfos=CurrentStoreInfo.getStore().getStoreInfoList();
+        }else {
+            for (StoreInfo storeInfo : CurrentStoreInfo.getStore().getStoreInfoList()) {
+                if (storeInfo.getStore_category().equals(CurrentSelectCategory.getSt_category())) {
+                    storeInfos.add(storeInfo);
+                }
+            }
+        }
+        ((NavigationnActivity)NavigationnActivity.mContext).categoryChanged(storeInfos);
+    }
 
     @Override
     public android.app.Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -47,7 +65,8 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("패스트푸드");
                 Log.d("category",CurrentSelectCategory.getSt_category());
-                ((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
+                categorychange("패스트푸드");
+                //((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
 //                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
 //                navigationnActivity.categoryChanged();
                 dismiss();
@@ -59,7 +78,8 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("스낵");
                 Log.d("category",CurrentSelectCategory.getSt_category());
-                ((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
+                categorychange("스낵");
+                //((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
 //                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
 //                navigationnActivity.categoryChanged();
                 dismiss();
@@ -71,7 +91,8 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("");
                 Log.d("category",CurrentSelectCategory.getSt_category());
-                ((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
+                categorychange("");
+                //((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
 //                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
 //                navigationnActivity.categoryChanged();
                 dismiss();
@@ -82,7 +103,8 @@ public class Dialog extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("중식");
-                ((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
+                categorychange("중식");
+                //((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
 //                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
 //                navigationnActivity.categoryChanged();
                 dismiss();
@@ -94,8 +116,9 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("일식");
                 Log.d("category",CurrentSelectCategory.getSt_category());
-                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
-                navigationnActivity.categoryChanged();
+                categorychange("일식");
+                //NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
+                //navigationnActivity.categoryChanged();
                 dismiss();
             }
         });
@@ -105,8 +128,9 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("한식");
                 Log.d("category",CurrentSelectCategory.getSt_category());
-                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
-                navigationnActivity.categoryChanged();
+                categorychange("한식");
+//                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
+//                navigationnActivity.categoryChanged();
                 dismiss();
             }
         });
@@ -116,7 +140,8 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("카페");
                 Log.d("category",CurrentSelectCategory.getSt_category());
-                ((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
+                categorychange("카페");
+                //((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
 //                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
 //                navigationnActivity.categoryChanged();
                 dismiss();
@@ -128,7 +153,8 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("양식");
                 Log.d("category",CurrentSelectCategory.getSt_category());
-                ((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
+                categorychange("양식");
+                //((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
 //                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
 //                navigationnActivity.categoryChanged();
                 dismiss();

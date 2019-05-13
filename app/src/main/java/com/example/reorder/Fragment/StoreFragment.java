@@ -9,14 +9,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.reorder.Adapter.MenuAdapter;
+import com.example.reorder.Api.BookMarkApi;
 import com.example.reorder.R;
+import com.example.reorder.Result.BookMarkResult;
 import com.example.reorder.globalVariables.CurrentSelectStore;
+import com.example.reorder.globalVariables.CurrentStoreInfo;
 import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
+import com.example.reorder.globalVariables.CurrentUserInfo;
+import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.StoreMenuInfo;
 
+import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class StoreFragment extends Fragment {
@@ -29,6 +42,7 @@ public class StoreFragment extends Fragment {
     private TextView tv_store_name;
     private List<StoreMenuInfo> currentStoreMenuInfo;
     private Button bt_bookmark;
+    String url= serverURL.getUrl();
 
 
     // TODO: Rename and change types of parameters
@@ -77,6 +91,48 @@ public class StoreFragment extends Fragment {
         currentStoreMenuInfo=CurrentStoreMenuInfo.getStoreMenu().getStoreMenuInfoList();
         menu_adapter=new MenuAdapter(currentStoreMenuInfo,inflater.getContext());
         rv_menu.setAdapter(menu_adapter);
+
+        bt_bookmark=view.findViewById(R.id.bt_bookmark);
+        bt_bookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id = CurrentUserInfo.getUser().getUserInfo().getId();
+                int store_id = CurrentSelectStore.getSt_id();
+                try {
+                    HashMap<String, String> input = new HashMap<>();
+                    input.put("id", String.valueOf(id));
+                    input.put("store_id", String.valueOf(store_id));
+                    input.put("store_name", CurrentSelectStore.getSt_name());
+                    input.put("store_category", CurrentSelectStore.getSt_category());
+                    Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
+                    BookMarkApi retrofitApi = retrofit.create(BookMarkApi.class);
+                    retrofitApi.postBookmarkInfo(input).enqueue(new Callback<BookMarkResult>() {
+                        @Override
+                        public void onResponse(Call<BookMarkResult> call, Response<BookMarkResult> response) {
+                            if(response.isSuccessful()) {
+                                BookMarkResult map=response.body();
+                                if(map!=null) {
+                                    switch (map.getResult()) {
+                                        case 0://삭제
+                                            Toast.makeText(getActivity(),"북마크를 삭제했습니다.", Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case 1:
+                                            Toast.makeText(getActivity(),"북마크를 등록했습니다.", Toast.LENGTH_SHORT).show();
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<BookMarkResult> call, Throwable t) {
+                            t.printStackTrace();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         return view;
     }

@@ -85,11 +85,7 @@ public class HomeFragment extends Fragment implements LocationListener {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-    public void categoryChanged(){
-        store_adapter.notifyDataSetChanged();
-        lv_near_store.setAdapter(store_adapter);
-        Log.d("category","fm");
-    }
+
 
     private Button bt_near_store;
     private Button bt_bookmark;
@@ -97,8 +93,8 @@ public class HomeFragment extends Fragment implements LocationListener {
     private ViewPager pager;
     private RecyclerView lv_bookmark_store;
     private RecyclerView lv_near_store;
-    private RecyclerView.Adapter store_adapter;
-    private RecyclerView.Adapter bookmark_store_adapter;
+    public RecyclerView.Adapter store_adapter;
+    public RecyclerView.Adapter bookmark_store_adapter;
     private List<StoreInfo> currentStoreInfos;
     private List<BookMarkStoreInfo> currentBookMarkStoreList;
     private ImageButton bt_filter;
@@ -158,6 +154,7 @@ public class HomeFragment extends Fragment implements LocationListener {
         currentStoreInfos = CurrentStoreInfo.getStore().getStoreInfoList();
         store_adapter = new StoreAdapter(currentStoreInfos,inflater.getContext());
         lv_near_store.setAdapter(store_adapter);
+
 
 
 
@@ -341,5 +338,10 @@ public class HomeFragment extends Fragment implements LocationListener {
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+    public void categoryChanged(List<StoreInfo> storeInfos){
+        store_adapter = new StoreAdapter(storeInfos,getLayoutInflater().getContext());
+        lv_near_store.setAdapter(store_adapter);
+        Log.d("category","fm");
     }
 }

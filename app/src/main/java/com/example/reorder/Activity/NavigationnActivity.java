@@ -66,10 +66,10 @@ public class NavigationnActivity extends AppCompatActivity
     public static Context mContext;
     String url= serverURL.getUrl();
 
-    public void categoryChanged(){
+    public void categoryChanged(List<StoreInfo> storeInfos){
         //homeFragment.getActivity().
         HomeFragment hf = (HomeFragment)getSupportFragmentManager().findFragmentById(R.id.container);
-        hf.categoryChanged();
+        hf.categoryChanged(storeInfos);
         Log.d("category","activity");
     }
 
