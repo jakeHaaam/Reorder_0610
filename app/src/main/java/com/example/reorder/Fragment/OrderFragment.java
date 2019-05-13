@@ -133,7 +133,6 @@ public class OrderFragment extends Fragment {
         rg_eat=view.findViewById(R.id.rg_eat);
         rg_seat=view.findViewById(R.id.rg_seat);
         ll_seat=view.findViewById(R.id.ll_seat);
-        tv_selected_seat=view.findViewById(R.id.tv_selected_seat);
         bt_order=view.findViewById(R.id.bt_order);
         rv_item=view.findViewById(R.id.rv_order);
         rv_item.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
@@ -165,108 +164,129 @@ public class OrderFragment extends Fragment {
         bt_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ArrayList<ArrayList<String>> test=new ArrayList<ArrayList<String>>();
-                JSONArray jsonArray=new JSONArray();
-                //ArrayList<String> list=new ArrayList<>();
+                List<JSONObject> list=new ArrayList<>();
                 if(rb_take_out.isChecked()||rb_eat_here.isChecked() && rb_seat_no.isChecked()){
-                    try {
-                        for(int i=0;i<CurrentCartInfo.getCart().getCartInfoList().size();i++) {
-                            String id=String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
-                            String store_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getStore_id()+1);
-                            String menu_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_id());
-                            String menu_name=CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_name();
-                            String menu_price=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
-                            String menu_count=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
+                    if(CurrentCartInfo.getCart().getCartInfoList().size()>1) {//주문 갯수 1개 이상 시
+                        try {
+                            for (int i = 0; i < CurrentCartInfo.getCart().getCartInfoList().size(); i++) {
+                                String id = String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
+                                String store_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getStore_id() + 1);
+                                String menu_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_id());
+                                String menu_name = CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_name();
+                                String menu_price = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
+                                String menu_count = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
 
-                            JSONObject object=new JSONObject();
-                            object.put("id",id);
-                            object.put("store_id",store_id);
-                            object.put("menu_id",menu_id);
-                            object.put("menu_name",menu_name);
-                            object.put("menu_price",menu_price);
-                            object.put("menu_count",menu_count);
-                            jsonArray.put(object);
-                            //object.add("id",CurrentUserInfo.getUser().getUserInfo().getId());
-
-//                        if(i==0) {
-//                            list.add(i, "{");
-//                            list.add(i + 1, id);
-//                            list.add(i + 2, store_id);
-//                            list.add(i + 3, menu_id);
-//                            list.add(i + 4, menu_name);
-//                            list.add(i + 5, menu_price);
-//                            list.add(i + 6, menu_count);
-//                            list.add(i + 7, "}");
-//                        }else{
-//                            list.add(i*6+1,",");
-//                            list.add(i, "{");
-//                            list.add(i + 1, id);
-//                            list.add(i + 2, store_id);
-//                            list.add(i + 3, menu_id);
-//                            list.add(i + 4, menu_name);
-//                            list.add(i + 5, menu_price);
-//                            list.add(i + 6, menu_count);
-//                            list.add(i + 7, "}");
-//                        }
-                            //Log.d("list test",list.get(0)+"/"+list.get(1)+"/"+list.get(2)+"/"+list.get(3)+"/"+list.get(4)+"/"+list.get(5)+"/"+list.get(6)+"/"+list.get(7));
-                            //test.add(list);
-                            //Log.d("array test",""+test.get(i));
-                        }
-                    }catch (JSONException e){
-                        e.printStackTrace();
-                    }
-                    JSONObject jsonObject=new JSONObject();
-                    try {
-                        jsonObject.put("order",jsonArray);//이게 필요해
-                        Log.d("input2",""+jsonObject);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        //HashMap<String, JSONObject> input=new HashMap<>();
-                        //input.put("order",jsonObject);//필요없어
-                        //Log.d("input3",""+input);
-
-                        Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
-                        OrderApi orderApi = retrofit.create(OrderApi.class);
-                        //Call<OrderResult> call= orderApi.getResult(jsonObject);
-                        orderApi.getResult(jsonObject).enqueue(new Callback<OrderResult>() {
-                            @Override
-                            public void onResponse(Call<OrderResult> call, Response<OrderResult> response) {
-                                Log.d("respone","respone");
-                                if(response.isSuccessful()){
-                                    Log.d("respone is successful","respone is successful");
-                                    OrderResult map=response.body();
-                                    if(map!=null){
-                                        Log.d("body is not null","body is not null");
-                                        switch (map.getResult()){
-                                            case 1://성공
-                                                OrderState.setOrder_id(map.getOrder_id());
-                                                OrderState.setOrder_state(map.getOrder_state());
-                                                Toast.makeText(getContext(),"주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
-                                                //장바구니에서 삭제하는 페이지 구현
-                                                CurrentCartInfo.getCart().setCartInfoList(null);
-                                                CurrentCartInfo.setCart(null);
-                                                ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(1);
-                                                break;
-                                            case 0:
-                                                Toast.makeText(getContext(),"주문이 전송되지 않았습니다.", Toast.LENGTH_SHORT).show();
-                                                break;
+                                JSONObject object = new JSONObject();
+                                object.put("id", id);
+                                object.put("store_id", store_id);
+                                object.put("menu_id", menu_id);
+                                object.put("menu_name", menu_name);
+                                object.put("menu_price", menu_price);
+                                object.put("menu_count", menu_count);
+                                list.add(object);
+                                //Log.d("list",list.toString());
+                            }
+                            try {
+                                Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
+                                OrderApi orderApi = retrofit.create(OrderApi.class);
+                                orderApi.getResult(list).enqueue(new Callback<OrderResult>() {
+                                    @Override
+                                    public void onResponse(Call<OrderResult> call, Response<OrderResult> response) {
+                                        Log.d("respone", "respone");
+                                        if (response.isSuccessful()) {
+                                            Log.d("respone is successful", "respone is successful");
+                                            OrderResult map = response.body();
+                                            if (map != null) {
+                                                Log.d("body is not null", "body is not null");
+                                                switch (map.getResult()) {
+                                                    case 1://성공
+                                                        OrderState.setOrder_id(map.getOrder_id());
+                                                        OrderState.setOrder_state(map.getOrder_state());
+                                                        Toast.makeText(getContext(), "주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
+                                                        ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(1);
+                                                        break;
+                                                    case 0:
+                                                        Toast.makeText(getContext(), "주문이 전송되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                                                        break;
+                                                }
+                                            }
                                         }
                                     }
-                                }
-                            }
 
-                            @Override
-                            public void onFailure(Call<OrderResult> call, Throwable t) {
-                                t.printStackTrace();
+                                    @Override
+                                    public void onFailure(Call<OrderResult> call, Throwable t) {
+                                        t.printStackTrace();
+                                        Log.d("order", "fail");
+                                    }
+                                });
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.d("order", "catch");
                             }
-                        });
-                    }catch (Exception e){
-                        e.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else {//주문 갯수 1개 시
+                        try {
+                                String id = String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
+                                String store_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getStore_id() + 1);
+                                String menu_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_id());
+                                String menu_name = CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_name();
+                                String menu_price = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_price());
+                                String menu_count = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_count());
+                            try {
+                                HashMap<String, String> input=new HashMap<>();
+                                input.put("id",id);
+                                input.put("store_id",store_id);
+                                input.put("menu_id",menu_id);
+                                input.put("menu_name",menu_name);
+                                input.put("menu_price",menu_price);
+                                input.put("menu_count",menu_count);
+                                Log.d("order","input= "+input);
+                                Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
+                                OrderApi orderApi = retrofit.create(OrderApi.class);
+                                orderApi.getResult(input).enqueue(new Callback<OrderResult>() {
+                                    @Override
+                                    public void onResponse(Call<OrderResult> call, Response<OrderResult> response) {
+                                        Log.d("respone", "respone");
+                                        if (response.isSuccessful()) {
+                                            Log.d("respone is successful", "respone is successful");
+                                            OrderResult map = response.body();
+                                            if (map != null) {
+                                                Log.d("body is not null", "body is not null");
+                                                switch (map.getResult()) {
+                                                    case 1://성공
+                                                        OrderState.setOrder_id(map.getOrder_id());
+                                                        OrderState.setOrder_state(map.getOrder_state());
+                                                        Toast.makeText(getContext(), "주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
+                                                        ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(1);
+                                                        break;
+                                                    case 0:
+                                                        Toast.makeText(getContext(), "주문이 전송되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                                                        break;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<OrderResult> call, Throwable t) {
+                                        t.printStackTrace();
+                                        Log.d("order", "fail");
+                                    }
+                                });
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.d("order", "catch");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-                else if(rb_eat_here.isChecked() && rb_seat_yes.isChecked()){
+
+                else if(rb_eat_here.isChecked() && rb_seat_yes.isChecked()){//좌석 예약시 페이지 이동
 
                     try {
                         String st_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getStore_id());

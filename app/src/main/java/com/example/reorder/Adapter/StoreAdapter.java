@@ -1,18 +1,23 @@
 package com.example.reorder.Adapter;
 
 import android.content.Context;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.example.reorder.Activity.NavigationnActivity;
 import com.example.reorder.R;
 import com.example.reorder.Result.StoreIdResult;
 import com.example.reorder.Api.StoreIdApi;
+import com.example.reorder.globalVariables.CurrentLocation;
+import com.example.reorder.globalVariables.CurrentSelectCategory;
 import com.example.reorder.globalVariables.CurrentSelectStore;
 import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
 import com.example.reorder.globalVariables.serverURL;
@@ -29,7 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.app.PendingIntent.getActivity;
 
-public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> {
+public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> implements Filterable {
     List<StoreInfo> currentStoreInfo;
     Context context;
     public String storeinfo_id;
@@ -54,11 +59,32 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
 
-        viewHolder.id.setText(Integer.toString(currentStoreInfo.get(i).getId()));
-        viewHolder.st_id.setText(Integer.toString(currentStoreInfo.get(i).getStore_id()));
-        viewHolder.st_name.setText(currentStoreInfo.get(i).getStore_name());
-        viewHolder.st_category.setText(currentStoreInfo.get(i).getStore_category());
+        Location mylocation=new Location("mylocation");
+        mylocation.setLatitude(CurrentLocation.getLat());
+        mylocation.setLongitude(CurrentLocation.getLng());
+        Log.d("my location",""+mylocation.getLatitude()+"//"+mylocation.getLongitude());
 
+        if(CurrentSelectCategory.getSt_category()=="") {
+            Location st_location=new Location("st_location");
+            viewHolder.id.setText(Integer.toString(currentStoreInfo.get(i).getId()));
+            viewHolder.st_id.setText(Integer.toString(currentStoreInfo.get(i).getStore_id()));
+            viewHolder.st_name.setText(currentStoreInfo.get(i).getStore_name());
+            viewHolder.st_category.setText(currentStoreInfo.get(i).getStore_category());
+
+            st_location.setLatitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lat()));
+            st_location.setLongitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lng()));
+            double distance=mylocation.distanceTo(st_location);
+            viewHolder.st_dis.setText(String.valueOf(distance));
+            Log.d("distance",""+viewHolder.st_dis.getText());
+            Log.d("distance",""+distance);
+        }
+        else if(CurrentSelectCategory.getSt_category()
+                .equals(currentStoreInfo.get(i).getStore_category())){
+            viewHolder.id.setText(Integer.toString(currentStoreInfo.get(i).getId()));
+            viewHolder.st_id.setText(Integer.toString(currentStoreInfo.get(i).getStore_id()));
+            viewHolder.st_name.setText(currentStoreInfo.get(i).getStore_name());
+            viewHolder.st_category.setText(currentStoreInfo.get(i).getStore_category());
+        }
 
         // list item click
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -117,9 +143,14 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         return currentStoreInfo.size();
     }
 
+    @Override
+    public Filter getFilter() {//필터
+        return null;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView id,st_id,st_name,st_lat,st_lng,st_category;
+        TextView id,st_id,st_name,st_category,st_dis;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -128,6 +159,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
             st_id=itemView.findViewById(R.id.tv_near_store_id);
             st_name=itemView.findViewById(R.id.tv_near_store_name);
             st_category=itemView.findViewById(R.id.tv_near_store_category);
+            st_dis=itemView.findViewById(R.id.tv_dis);
         }
     }
 

@@ -3,6 +3,7 @@ package com.example.reorder.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -53,8 +54,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NavigationnActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentReplaceable {
-
-    private Fragment homeFragment;
+    static String FT = "FT";
+    public Fragment homeFragment= new HomeFragment();
     private Fragment storeFragment;
     private Fragment testFragment;
     private Fragment CartFragment;
@@ -65,6 +66,13 @@ public class NavigationnActivity extends AppCompatActivity
     public static Context mContext;
     String url= serverURL.getUrl();
 
+    public void categoryChanged(){
+        //homeFragment.getActivity().
+        HomeFragment hf = (HomeFragment)getSupportFragmentManager().findFragmentById(R.id.container);
+        hf.categoryChanged();
+        Log.d("category","activity");
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +82,7 @@ public class NavigationnActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
 
-        homeFragment = new HomeFragment();
+        //homeFragment = new HomeFragment();
         storeFragment=new StoreFragment();
         CartFragment=new CartFragment();
         OrderFragment=new OrderFragment();
@@ -169,20 +177,14 @@ public class NavigationnActivity extends AppCompatActivity
                                 }
                             }
                         }
-
                         @Override
                         public void onFailure(Call<CartResult> call, Throwable t) {
-
                             t.printStackTrace();
                         }
                     });
-
                 }catch (Exception e){
                     e.printStackTrace();
-
                 }
-
-
             }
         });
 

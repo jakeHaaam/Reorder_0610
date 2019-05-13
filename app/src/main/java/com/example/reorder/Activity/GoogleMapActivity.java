@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -124,12 +125,19 @@ public class GoogleMapActivity extends FragmentActivity implements
         for(int i=0;i<count;i++){
             st_lat=Double.parseDouble(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_lat());
             st_lng=Double.parseDouble(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_lng());
+            Log.d("map", CurrentStoreInfo.getStore().getStoreInfoList()
+                    .get(i).getStore_name());
             LatLng stPoint=new LatLng(st_lat,st_lng);
-            map.addMarker(new MarkerOptions().position(stPoint)
-                    .title(CurrentStoreInfo.getStore().getStoreInfoList()
-                            .get(i).getStore_name())).showInfoWindow();
-        }
 
+//            MarkerOptions markerOptions=new MarkerOptions();
+//            markerOptions.position(stPoint)
+//                    .title(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_name());
+//                map.addMarker(markerOptions).showInfoWindow();
+
+            map.addMarker(new MarkerOptions().position(stPoint)
+                    .title(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_name()))
+                    .showInfoWindow();//왜 마지막 생성된 마커에만 인포가 뜰까?
+        }
         map.setOnMarkerClickListener(this);
     }
 
@@ -174,7 +182,7 @@ public class GoogleMapActivity extends FragmentActivity implements
         Double myLat=location.getLatitude();
         Double myLot=location.getLongitude();
         map.addMarker(new MarkerOptions().position(curPoint).title("현재 위치"));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 17));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 16));
         tv_location.setText("현재위치: "+myLat+", "+myLot);
     }
 

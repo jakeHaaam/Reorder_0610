@@ -37,7 +37,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="#715c4b"
-                android:text="좌석을 예약하시겠습니까?"
+                android:text="테이블을 예약하시겠습니까?"
                 android:textSize="18dp" />
 
             <RadioGroup
@@ -163,35 +163,10 @@
                     android:text="Order"
                     android:textColor="#715c4b"
                     />
-
-                <Button
-                    android:id="@+id/bt_cancle"
-                    android:layout_width="75dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="60dp"
-                    android:background="@drawable/button_style"
-                    android:text="Cancle"
-                    android:textColor="#715c4b" />
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_selected_seat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="선택한 좌석: "
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.828" />
+
     </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

@@ -4,7 +4,7 @@ public class OrderAndSeatResult {
     int result;
     int oreder_id;
     int order_state;
-    int id;
+    int id;//좌석번호
 
     public int getResult() {
         return result;

@@ -57,17 +57,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         viewHolder.tv_menu_name.setText(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_name());
         viewHolder.tv_menu_price.setText(Integer.toString(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price()));
         viewHolder.tv_menu_count.setText(Integer.toString(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_count()));
-        viewHolder.cb_cart.setChecked(true);
+//        viewHolder.cb_cart.setChecked(true);
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("cb","list");
                 if(viewHolder.cb_cart.isChecked()){
-                    viewHolder.cb_cart.toggle();
+                    //viewHolder.cb_cart.toggle();
                     Log.d("cb","go false");
                 }else {
-                    viewHolder.cb_cart.toggle();
+                    //viewHolder.cb_cart.toggle();
                     Log.d("cb","go true");
                 }
             }
@@ -95,7 +95,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             tv_menu_name = itemView.findViewById(R.id.tv_menu_name);
             tv_menu_price = itemView.findViewById(R.id.tv_menu_price);
             tv_menu_count=itemView.findViewById(R.id.tv_menu_count);
-            cb_cart=itemView.findViewById(R.id.cb_cart);
+            //cb_cart=itemView.findViewById(R.id.cb_cart);
         }
     }
 }

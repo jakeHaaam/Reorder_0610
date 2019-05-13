@@ -9,6 +9,15 @@
     <!-- TODO: Update blank fragment layout -->
 
 
+    <ImageButton
+        android:id="@+id/bt_filter"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:src="@drawable/filter4"
+        android:layout_gravity="right"
+        android:layout_marginRight="63dp"
+        android:layout_marginTop="87dp"/>
+
     <Button
         android:id="@+id/bt_bookmark"
         android:layout_width="100dp"
@@ -16,8 +25,8 @@
         android:layout_marginLeft="40dp"
         android:layout_marginTop="50dp"
         android:layout_toLeftOf="@+id/bt_near_store"
-        android:background="@drawable/home_button_style"
         android:text="My 매장"
+        android:background="@drawable/home_button_style"
         android:textColor="#aa886d"
         android:textStyle="bold" />
 
