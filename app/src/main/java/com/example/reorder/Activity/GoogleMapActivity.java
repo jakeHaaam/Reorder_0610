@@ -184,7 +184,6 @@ public class GoogleMapActivity extends FragmentActivity implements
         Double myLot=location.getLongitude();
         map.addMarker(new MarkerOptions().position(curPoint).title("현재 위치"));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 16));
-        tv_location.setText("현재위치: "+myLat+", "+myLot);
     }
 
     public void onLastLocationButtonClicked(View view) {
@@ -208,7 +207,6 @@ public class GoogleMapActivity extends FragmentActivity implements
                     Double myLot=location.getLongitude();
                     map.addMarker(new MarkerOptions().position(myLocation).title("현재 위치"));
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 17));
-                    tv_location.setText("현재위치: "+myLat+", "+myLot);
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "location is null", Toast.LENGTH_SHORT).show();
@@ -241,7 +239,6 @@ public class GoogleMapActivity extends FragmentActivity implements
                                 final LatLng myLocation= new LatLng(location.getLatitude(),location.getLongitude());
                                 map.addMarker(new MarkerOptions().position(myLocation).title("현재 위치"));
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation,17));
-                                tv_location.setText("현재 위치: "+myLocation.latitude + ", " + myLocation.longitude);
                             }
                             else
                                 Toast.makeText(getApplicationContext(),"location is null", Toast.LENGTH_SHORT).show();

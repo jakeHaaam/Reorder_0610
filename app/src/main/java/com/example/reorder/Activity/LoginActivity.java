@@ -75,7 +75,6 @@ public class LoginActivity extends AppCompatActivity {
         ArrayList<String> listpermission=new ArrayList<>();
 
         for(String permission: permissions){
-
             if(ContextCompat.checkSelfPermission(this,permission)==PackageManager.PERMISSION_DENIED){
                 //권한이 허가가 안 되었을 경우 요청할 권한을 모집하는 부분
                 listpermission.add(permission);

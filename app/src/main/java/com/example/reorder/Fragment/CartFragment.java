@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.reorder.Activity.NavigationnActivity;
 import com.example.reorder.Adapter.CartAdapter;
@@ -110,6 +111,7 @@ public class CartFragment extends Fragment {
                                     switch (deleteCartResult.getResult()) {
                                         case 1:
                                             Log.d("delete", "카트 삭제 성공");
+                                            Toast.makeText(getContext(),"장바구니의 모든 제품이 삭제 되었습니다.",Toast.LENGTH_SHORT).show();
                                             ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(1);
                                             break;
                                         case 0:
