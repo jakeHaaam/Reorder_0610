@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="180dp"
+    android:gravity="center"
+    >
+
+    <Button
+        android:id="@+id/bt_korean"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="한식"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/home_button_style"
+        android:textColor="#aa886d"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/bt_west"
+        android:layout_toRightOf="@+id/bt_korean"
+        android:layout_marginLeft="20dp"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="양식"
+        android:textSize="20dp"
+        android:background="@drawable/home_button_style"
+        android:textColor="#aa886d"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/bt_cafe"
+        android:layout_toRightOf="@+id/bt_west"
+        android:layout_marginLeft="20dp"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="카페"
+        android:textSize="20dp"
+        android:background="@drawable/home_button_style"
+        android:textColor="#aa886d"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/bt_snack"
+        android:layout_toRightOf="@+id/bt_cafe"
+        android:layout_marginLeft="20dp"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="분식"
+        android:textSize="20dp"
+        android:background="@drawable/home_button_style"
+        android:textColor="#aa886d"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/bt_japanese"
+        android:layout_below="@+id/bt_korean"
+        android:layout_marginTop="20dp"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="일식"
+        android:textSize="20dp"
+        android:background="@drawable/home_button_style"
+        android:textColor="#aa886d"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/bt_chinese"
+        android:layout_below="@+id/bt_west"
+        android:layout_toRightOf="@+id/bt_japanese"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="중식"
+        android:textSize="20dp"
+        android:background="@drawable/home_button_style"
+        android:textColor="#aa886d"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/bt_fastfood"
+        android:layout_below="@+id/bt_west"
+        android:layout_toRightOf="@+id/bt_chinese"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:text="패스트푸드"
+        android:textSize="17dp"
+        android:background="@drawable/home_button_style"
+        android:textColor="#aa886d"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/bt_no_filter"
+        android:layout_below="@+id/bt_west"
+        android:layout_toRightOf="@+id/bt_fastfood"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="전체"
+        android:textSize="20dp"
+        android:background="@drawable/home_button_style"
+        android:textColor="#aa886d"
+        android:textStyle="bold"/>
+
+</RelativeLayout>
