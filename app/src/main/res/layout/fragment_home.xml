@@ -59,16 +59,15 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lv_near_store"
-        android:layout_width="320dp"
+        android:layout_width="380dp"
         android:layout_height="450dp"
         android:layout_centerHorizontal="true"
-
         android:layout_gravity="center"
         android:layout_marginTop="70dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lv_bookmark_store"
-        android:layout_width="320dp"
+        android:layout_width="380dp"
         android:layout_height="450dp"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
