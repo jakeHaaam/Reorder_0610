@@ -16,11 +16,24 @@ import android.widget.TextView;
 
 import com.example.reorder.Activity.NavigationnActivity;
 import com.example.reorder.Adapter.CartAdapter;
+import com.example.reorder.Api.CartSetApi;
+import com.example.reorder.Api.DeleteCartApi;
 import com.example.reorder.R;
+import com.example.reorder.Result.CartResult;
+import com.example.reorder.Result.DeleteCartResult;
 import com.example.reorder.globalVariables.CurrentCartInfo;
+import com.example.reorder.globalVariables.CurrentUserInfo;
+import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.CartInfo;
 
+import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CartFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -31,11 +44,13 @@ public class CartFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private Button bt_delete;
     private Button bt_cart_order;
     private RecyclerView rv_cart;
     private TextView tv_cart_total_price;
     private List<CartInfo> currentCartInfo;
     private RecyclerView.Adapter cart_adapter;
+    String url= serverURL.getUrl();
 
     private OnFragmentInteractionListener mListener;
 
@@ -77,6 +92,43 @@ public class CartFragment extends Fragment {
         currentCartInfo=CurrentCartInfo.getCart().getCartInfoList();
         cart_adapter=new CartAdapter(currentCartInfo,inflater.getContext());
         rv_cart.setAdapter(cart_adapter);
+
+        bt_delete=view.findViewById(R.id.bt_delete);
+        bt_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    String id= String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
+                    Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
+                    DeleteCartApi deleteCartApi = retrofit.create(DeleteCartApi.class);
+                    deleteCartApi.getid(id).enqueue(new Callback<DeleteCartResult>() {
+                        @Override
+                        public void onResponse(Call<DeleteCartResult> call, Response<DeleteCartResult> response) {
+                            if (response.isSuccessful()) {
+                                DeleteCartResult deleteCartResult = response.body();
+                                if (deleteCartResult != null) {
+                                    switch (deleteCartResult.getResult()) {
+                                        case 1:
+                                            Log.d("delete", "카트 삭제 성공");
+                                            ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(1);
+                                            break;
+                                        case 0:
+                                            Log.d("delete", "fail");
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<DeleteCartResult> call, Throwable t) {
+                            t.printStackTrace();
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
 
         bt_cart_order=view.findViewById(R.id.bt_cart_order);
         bt_cart_order.setOnClickListener(new View.OnClickListener() {

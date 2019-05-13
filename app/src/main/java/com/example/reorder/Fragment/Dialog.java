@@ -31,7 +31,7 @@ public class Dialog extends AppCompatDialogFragment {
         LayoutInflater inflater=getActivity().getLayoutInflater();
         View view=inflater.inflate(R.layout.layout_dialog,null);
         builder.setView(view)
-                .setTitle("필터");
+                .setTitle("원하는 카테고리를 선택하세요.");
 
         bt_cafe=view.findViewById(R.id.bt_cafe);
         bt_west=view.findViewById(R.id.bt_west);
@@ -47,8 +47,9 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("패스트푸드");
                 Log.d("category",CurrentSelectCategory.getSt_category());
-                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
-                navigationnActivity.categoryChanged();
+                ((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
+//                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
+//                navigationnActivity.categoryChanged();
                 dismiss();
             }
         });
@@ -58,8 +59,9 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("스낵");
                 Log.d("category",CurrentSelectCategory.getSt_category());
-                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
-                navigationnActivity.categoryChanged();
+                ((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
+//                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
+//                navigationnActivity.categoryChanged();
                 dismiss();
             }
         });
@@ -69,8 +71,9 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("");
                 Log.d("category",CurrentSelectCategory.getSt_category());
-                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
-                navigationnActivity.categoryChanged();
+                ((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
+//                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
+//                navigationnActivity.categoryChanged();
                 dismiss();
             }
         });
@@ -79,8 +82,9 @@ public class Dialog extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("중식");
-                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
-                navigationnActivity.categoryChanged();
+                ((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
+//                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
+//                navigationnActivity.categoryChanged();
                 dismiss();
             }
         });
@@ -112,8 +116,9 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("카페");
                 Log.d("category",CurrentSelectCategory.getSt_category());
-                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
-                navigationnActivity.categoryChanged();
+                ((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
+//                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
+//                navigationnActivity.categoryChanged();
                 dismiss();
             }
         });
@@ -123,8 +128,9 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("양식");
                 Log.d("category",CurrentSelectCategory.getSt_category());
-                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
-                navigationnActivity.categoryChanged();
+                ((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
+//                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
+//                navigationnActivity.categoryChanged();
                 dismiss();
             }
         });

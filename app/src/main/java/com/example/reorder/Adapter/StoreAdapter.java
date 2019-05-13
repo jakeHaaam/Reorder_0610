@@ -73,7 +73,11 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
             st_location.setLatitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lat()));
             st_location.setLongitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lng()));
             double distance=Math.round((mylocation.distanceTo(st_location)));
-            viewHolder.st_dis.setText(String.valueOf(distance)+"m");
+            if(distance>1000) {
+                viewHolder.st_dis.setText(String.valueOf(Math.round(distance)/1000.0) + "km");
+            }else {
+                viewHolder.st_dis.setText(String.valueOf(distance) + "m");
+            }
 
             //각 뷰에 연결
             viewHolder.id.setText(Integer.toString(currentStoreInfo.get(i).getId()));

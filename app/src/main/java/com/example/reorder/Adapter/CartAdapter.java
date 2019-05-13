@@ -59,7 +59,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         viewHolder.tv_menu_count.setText(Integer.toString(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_count()));
 //        viewHolder.cb_cart.setChecked(true);
 
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        /*viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("cb","list");
@@ -71,7 +71,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     Log.d("cb","go true");
                 }
             }
-        });
+        });*/
     }
 
     @Override
@@ -79,10 +79,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         return currentCartInfo.size();
     }
 
-//    public ArrayList<Integer> getChecked(){
-//        int size=
-//        return
-//    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_menu_name;
