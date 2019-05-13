@@ -158,7 +158,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
 
                             for (int i = 0; i < CurrentCartInfo.getCart().getCartInfoList().size(); i++) {
                                 String id = String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
-                                String store_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getStore_id() + 1);
+                                String store_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getStore_id());
                                 String menu_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_id());
                                 String menu_name = CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_name();
                                 String menu_price = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
@@ -213,7 +213,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                     }else {//주문 1개시
                         try {
                                 String id=String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
-                                String store_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getStore_id()+1);
+                                String store_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getStore_id());
                                 String menu_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_id());
                                 String menu_name=CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_name();
                                 String menu_price=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_price());

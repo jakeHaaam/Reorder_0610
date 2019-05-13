@@ -170,7 +170,7 @@ public class OrderFragment extends Fragment {
                         try {
                             for (int i = 0; i < CurrentCartInfo.getCart().getCartInfoList().size(); i++) {
                                 String id = String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
-                                String store_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getStore_id() + 1);
+                                String store_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getStore_id());
                                 String menu_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_id());
                                 String menu_name = CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_name();
                                 String menu_price = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
@@ -230,7 +230,7 @@ public class OrderFragment extends Fragment {
                     else {//주문 갯수 1개 시
                         try {
                                 String id = String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
-                                String store_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getStore_id() + 1);
+                                String store_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getStore_id());
                                 String menu_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_id());
                                 String menu_name = CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_name();
                                 String menu_price = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_price());

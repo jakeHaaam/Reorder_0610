@@ -40,7 +40,7 @@
         android:layout_marginRight="0dp"
         android:layout_marginBottom="0dp"
         android:background="@drawable/home_button_style"
-        android:text="가까운 매장"
+        android:text="전체 매장"
         android:textColor="#aa886d"
         android:textStyle="bold" />
 

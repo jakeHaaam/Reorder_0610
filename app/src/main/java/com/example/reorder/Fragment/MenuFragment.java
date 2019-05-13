@@ -17,6 +17,7 @@ import com.example.reorder.R;
 import com.example.reorder.Result.JoinResult;
 import com.example.reorder.Api.CartSetApi;
 import com.example.reorder.globalVariables.CurrentMenuInfo;
+import com.example.reorder.globalVariables.CurrentSelectStore;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.CartInfo;
@@ -167,7 +168,7 @@ public class MenuFragment extends Fragment {
                 final String menu_name=CurrentMenuInfo.getMenu_name();
                 int menu_price=CurrentMenuInfo.getMenu_price();
                 int menu_count=CurrentMenuInfo.getMenu_count();
-                int store_id=CurrentMenuInfo.getStoreinfo_id();
+                int store_id= CurrentSelectStore.getSt_id();
 
                 try {
                     HashMap<String, String> input = new HashMap<>();
@@ -176,7 +177,7 @@ public class MenuFragment extends Fragment {
                     input.put("menu_name", menu_name);
                     input.put("menu_price", String.valueOf(menu_price));
                     input.put("menu_count", String.valueOf(menu_count));
-                    input.put("store_id",String.valueOf(store_id+1));
+                    input.put("store_id",String.valueOf(store_id));
 
                     Retrofit retrofit = new Retrofit.Builder().baseUrl(url)
                             .addConverterFactory(GsonConverterFactory.create()).build();

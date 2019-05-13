@@ -22,6 +22,7 @@ public class Dialog extends AppCompatDialogFragment {
     private Button bt_chinese;
     private Button bt_fastfood;
     private Button bt_no_filter;
+    private StoreAdapter storeAdapter;
     //private DialogListener listener;
 
     @Override
@@ -48,7 +49,6 @@ public class Dialog extends AppCompatDialogFragment {
                 Log.d("category",CurrentSelectCategory.getSt_category());
                 NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
                 navigationnActivity.categoryChanged();
-
                 dismiss();
             }
         });
@@ -58,7 +58,8 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("스낵");
                 Log.d("category",CurrentSelectCategory.getSt_category());
-
+                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
+                navigationnActivity.categoryChanged();
                 dismiss();
             }
         });
@@ -68,6 +69,8 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("");
                 Log.d("category",CurrentSelectCategory.getSt_category());
+                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
+                navigationnActivity.categoryChanged();
                 dismiss();
             }
         });
@@ -76,6 +79,8 @@ public class Dialog extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("중식");
+                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
+                navigationnActivity.categoryChanged();
                 dismiss();
             }
         });
@@ -85,6 +90,8 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("일식");
                 Log.d("category",CurrentSelectCategory.getSt_category());
+                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
+                navigationnActivity.categoryChanged();
                 dismiss();
             }
         });
@@ -94,6 +101,8 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("한식");
                 Log.d("category",CurrentSelectCategory.getSt_category());
+                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
+                navigationnActivity.categoryChanged();
                 dismiss();
             }
         });
@@ -103,6 +112,8 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("카페");
                 Log.d("category",CurrentSelectCategory.getSt_category());
+                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
+                navigationnActivity.categoryChanged();
                 dismiss();
             }
         });
@@ -112,6 +123,8 @@ public class Dialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 CurrentSelectCategory.setSt_category("양식");
                 Log.d("category",CurrentSelectCategory.getSt_category());
+                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
+                navigationnActivity.categoryChanged();
                 dismiss();
             }
         });

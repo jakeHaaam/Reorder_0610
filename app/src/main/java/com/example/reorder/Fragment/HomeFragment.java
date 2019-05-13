@@ -87,6 +87,7 @@ public class HomeFragment extends Fragment implements LocationListener {
     }
     public void categoryChanged(){
         store_adapter.notifyDataSetChanged();
+        lv_near_store.setAdapter(store_adapter);
         Log.d("category","fm");
     }
 
@@ -96,7 +97,6 @@ public class HomeFragment extends Fragment implements LocationListener {
     private ViewPager pager;
     private RecyclerView lv_bookmark_store;
     private RecyclerView lv_near_store;
-    private Button bt_cart;
     private RecyclerView.Adapter store_adapter;
     private RecyclerView.Adapter bookmark_store_adapter;
     private List<StoreInfo> currentStoreInfos;

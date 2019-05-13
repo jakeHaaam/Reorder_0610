@@ -3,6 +3,7 @@ package com.example.reorder.Adapter;
 import android.content.Context;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.StoreInfo;
 import com.example.reorder.info.StoreMenuInfo;
 
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -65,6 +67,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         Log.d("my location",""+mylocation.getLatitude()+"//"+mylocation.getLongitude());
 
         if(CurrentSelectCategory.getSt_category()=="") {
+            viewHolder.card.setVisibility(View.VISIBLE);
             //거리 계산
             Location st_location=new Location("st_location");
             st_location.setLatitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lat()));
@@ -80,10 +83,24 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         }
         else if(CurrentSelectCategory.getSt_category()
                 .equals(currentStoreInfo.get(i).getStore_category())){
+            viewHolder.card.setVisibility(View.VISIBLE);
+            Location st_location=new Location("st_location");
+            st_location.setLatitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lat()));
+            st_location.setLongitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lng()));
+            double distance=Math.round((mylocation.distanceTo(st_location)));
+            viewHolder.st_dis.setText(String.valueOf(distance)+"m");
+
             viewHolder.id.setText(Integer.toString(currentStoreInfo.get(i).getId()));
             viewHolder.st_id.setText(Integer.toString(currentStoreInfo.get(i).getStore_id()));
             viewHolder.st_name.setText(currentStoreInfo.get(i).getStore_name());
             viewHolder.st_category.setText(currentStoreInfo.get(i).getStore_category());
+        }
+        else if(!CurrentSelectCategory.getSt_category()
+                .equals(currentStoreInfo.get(i).getStore_category())){
+            viewHolder.card.setVisibility(View.GONE);
+//            currentStoreInfo.remove(i);
+//            notifyItemRemoved(i);
+//            notifyItemRangeChanged(i,currentStoreInfo.size());
         }
 
         // list item click
@@ -151,10 +168,11 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView id,st_id,st_name,st_category,st_dis;
-
+        CardView card;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            card=itemView.findViewById(R.id.card);
             id=itemView.findViewById(R.id.tv_id);
             st_id=itemView.findViewById(R.id.tv_near_store_id);
             st_name=itemView.findViewById(R.id.tv_near_store_name);
