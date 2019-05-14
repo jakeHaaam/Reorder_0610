@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,23 +127,23 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
             bt.setId(j + 1);//id=1,2,3,4 이런식으로 할당 받아짐
             bt.setText(String.valueOf(j + 1));
             if(seat_state[j]==0){ //"0"은 사용 가능한 상태
-                bt.setBackgroundColor(Color.WHITE);
+                bt.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.seat_able_button));
                 bt.setOnClickListener(this);}
             else if(seat_state[j]==1){//"1"은 예약중인 상태-예약 불가
-                bt.setBackgroundColor(Color.YELLOW);
+                bt.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.seat_reserved_button));
                 bt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getContext(),"선택한 테이블은 예약중인 좌석입니다.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),"선택한 테이블은 예약상태 입니다.",Toast.LENGTH_SHORT).show();
                     }
                 });
                 }
             else if(seat_state[j]==2){//"2"는 현재 사용중인 상태-예약 불가
-                bt.setBackgroundColor(Color.GREEN);
+                bt.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.seat_using_button));
                 bt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getContext(),"선택한 테이블은 사용중인 좌석입니다.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),"선택한 테이블은 사용중입니다.",Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -306,7 +307,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
 
             if (seat_checked[id] != true) {
                 seat_checked[id]=true;
-                v.setBackgroundColor(Color.BLUE);
+                v.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.seat_onclick));
                 Toast.makeText(getContext(),id+"번 테이블을 선택 하셨습니다.",Toast.LENGTH_SHORT).show();
                 checked_count++;
                 select_id=id;
@@ -314,7 +315,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
             else{
                 seat_checked[id]=false;
                 checked_count--;
-                v.setBackgroundColor(Color.WHITE);
+                v.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.seat_able_button));
                 Toast.makeText(getContext(),id+"번 테이블 선택을 해제 하셨습니다.",Toast.LENGTH_SHORT).show();
                 select_id=-1;
             }
@@ -325,7 +326,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
             else{
                 checked_count--;
                 seat_checked[id]=false;
-                v.setBackgroundColor(Color.WHITE);
+                v.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.seat_able_button));
                 select_id=-1;
             }
         }

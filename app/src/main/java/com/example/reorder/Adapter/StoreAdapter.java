@@ -76,7 +76,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
             Location st_location=new Location("st_location");
             st_location.setLatitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lat()));
             st_location.setLongitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lng()));
-            double distance=Math.round((mylocation.distanceTo(st_location)));
+            double distance=Math.round((mylocation.distanceTo(st_location)/10));
             if(distance>1000) {
                 viewHolder.st_dis.setText(String.valueOf(Math.round(distance)/1000.0) + "km");
             }else {
@@ -88,28 +88,6 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
             viewHolder.st_id.setText(Integer.toString(currentStoreInfo.get(i).getStore_id()));
             viewHolder.st_name.setText(currentStoreInfo.get(i).getStore_name());
             viewHolder.st_category.setText(currentStoreInfo.get(i).getStore_category());
-
-//        else if(CurrentSelectCategory.getSt_category()
-//                .equals(currentStoreInfo.get(i).getStore_category())){
-//            viewHolder.card.setVisibility(View.VISIBLE);
-//            Location st_location=new Location("st_location");
-//            st_location.setLatitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lat()));
-//            st_location.setLongitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lng()));
-//            double distance=Math.round((mylocation.distanceTo(st_location)));
-//            viewHolder.st_dis.setText(String.valueOf(distance)+"m");
-//
-//            viewHolder.id.setText(Integer.toString(currentStoreInfo.get(i).getId()));
-//            viewHolder.st_id.setText(Integer.toString(currentStoreInfo.get(i).getStore_id()));
-//            viewHolder.st_name.setText(currentStoreInfo.get(i).getStore_name());
-//            viewHolder.st_category.setText(currentStoreInfo.get(i).getStore_category());
-//        }
-//        else if(!CurrentSelectCategory.getSt_category()
-//                .equals(currentStoreInfo.get(i).getStore_category())){
-//            viewHolder.card.setVisibility(View.GONE);
-////            currentStoreInfo.remove(i);
-////            notifyItemRemoved(i);
-////            notifyItemRangeChanged(i,currentStoreInfo.size());
-//        }
 
         // list item click
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
