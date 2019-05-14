@@ -57,7 +57,7 @@ public class GoogleMapActivity extends FragmentActivity implements
         count=intent.getExtras().getInt("count");
         bt_current=(Button)findViewById(R.id.bt_current);
 
-        tv_location = (TextView)findViewById(R.id.tv_location);
+        //tv_location = (TextView)findViewById(R.id.tv_location);
         //현재위치 설정
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -251,14 +251,15 @@ public class GoogleMapActivity extends FragmentActivity implements
     @Override
     public boolean onMarkerClick(Marker marker) {
         //마커 클릭시 구현
-        if(!marker.isInfoWindowShown()){
-            marker.showInfoWindow();
-        }else {
+//        if(!marker.isInfoWindowShown()){
+//            marker.showInfoWindow();
+//        }else if(marker.isInfoWindowShown()) {
+            Log.d("marker","show");
             String st_name = marker.getTitle();
             Intent HomeIntent = new Intent(getApplicationContext(), NavigationnActivity.class); //this 대신 getActivity() : 현재의 context받아올 수 있음
             HomeIntent.putExtra("map", st_name);
             startActivity(HomeIntent);
-        }
+        //}
         return true;
     }
 }
