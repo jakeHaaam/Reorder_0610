@@ -8,6 +8,19 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <TextView
+        android:id="@+id/tv_beacon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="버튼을 클릭하세요"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bt_beacon"
+        android:text="비콘 탐지"
+        android:layout_marginTop="100dp" />
 
     <ImageButton
         android:id="@+id/bt_filter"
