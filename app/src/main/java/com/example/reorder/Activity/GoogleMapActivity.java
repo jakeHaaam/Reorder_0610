@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+
 public class GoogleMapActivity extends FragmentActivity implements
         OnMapReadyCallback,GoogleMap.OnMarkerClickListener,
         GoogleApiClient.ConnectionCallbacks,
@@ -41,12 +42,10 @@ public class GoogleMapActivity extends FragmentActivity implements
         LocationListener {
 
     Button bt_current;
-    int camera_checked = 0;
     GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
     private FusedLocationProviderClient mFusedLocationClient;
     private static final int REQUEST_CODE_PERMISSIONS = 1000;
-    TextView tv_location;
     int count;
 
     @Override
@@ -137,9 +136,10 @@ public class GoogleMapActivity extends FragmentActivity implements
             }*/
             map.addMarker(new MarkerOptions().position(stPoint)
                     .title(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_name()));
-                    //.showInfoWindow();//왜 마지막 생성된 마커에만 인포가 뜰까?
+
         }
         map.setOnMarkerClickListener(this);
+        map.setOnInfoWindowClickListener(infoWindowClickListener);
     }
 
     @Override
@@ -251,15 +251,17 @@ public class GoogleMapActivity extends FragmentActivity implements
     @Override
     public boolean onMarkerClick(Marker marker) {
         //마커 클릭시 구현
-//        if(!marker.isInfoWindowShown()){
-//            marker.showInfoWindow();
-//        }else if(marker.isInfoWindowShown()) {
-            Log.d("marker","show");
+        marker.showInfoWindow();
+        return true;
+    }
+    GoogleMap.OnInfoWindowClickListener infoWindowClickListener=new GoogleMap.OnInfoWindowClickListener() {
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+
             String st_name = marker.getTitle();
             Intent HomeIntent = new Intent(getApplicationContext(), NavigationnActivity.class); //this 대신 getActivity() : 현재의 context받아올 수 있음
             HomeIntent.putExtra("map", st_name);
             startActivity(HomeIntent);
-        //}
-        return true;
-    }
+        }
+    };
 }

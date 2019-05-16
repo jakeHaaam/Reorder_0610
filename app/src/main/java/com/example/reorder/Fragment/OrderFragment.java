@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.reorder.Activity.NavigationnActivity;
 import com.example.reorder.Adapter.CartAdapter;
+import com.example.reorder.Adapter.OrderAdapter;
 import com.example.reorder.Api.OrderAndSeatApi;
 import com.example.reorder.Api.OrderApi;
 import com.example.reorder.Api.RetrofitApi;
@@ -30,6 +31,7 @@ import com.example.reorder.Result.OrderResult;
 import com.example.reorder.Result.StoreSeatResult;
 import com.example.reorder.globalVariables.CurrentCartInfo;
 import com.example.reorder.globalVariables.CurrentSeatInfo;
+import com.example.reorder.globalVariables.CurrentSelectCartInfo;
 import com.example.reorder.globalVariables.CurrentStoreSeatInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.OrderState;
@@ -79,8 +81,8 @@ public class OrderFragment extends Fragment {
     private Button bt_order;
     private Bundle bundle;
     private RecyclerView rv_item;
-    private List<CartInfo> currentCartInfo;
-    private RecyclerView.Adapter cart_adapter;
+    private List<CartInfo> currentSelectCartInfo;
+    private RecyclerView.Adapter order_adapter;
     String url= serverURL.getUrl();
 
     // TODO: Rename and change types of parameters
@@ -136,9 +138,9 @@ public class OrderFragment extends Fragment {
         bt_order=view.findViewById(R.id.bt_order);
         rv_item=view.findViewById(R.id.rv_order);
         rv_item.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
-        currentCartInfo=CurrentCartInfo.getCart().getCartInfoList();
-        cart_adapter=new CartAdapter(currentCartInfo,inflater.getContext());
-        rv_item.setAdapter(cart_adapter);
+        currentSelectCartInfo= CurrentSelectCartInfo.getCart().getCartInfoList();
+        order_adapter=new OrderAdapter(currentSelectCartInfo,inflater.getContext());
+        rv_item.setAdapter(order_adapter);
         //장바구니에서 선택된 제품만 주문하는게 아니라서 장바구니 아이템/어댑터 사용
         if(bundle!=null) {
             ArrayList<Integer> seat = getActivity().getIntent().getExtras().getIntegerArrayList("bundle");
@@ -166,15 +168,15 @@ public class OrderFragment extends Fragment {
             public void onClick(View v) {
                 List<JSONObject> list=new ArrayList<>();
                 if(rb_take_out.isChecked()||rb_eat_here.isChecked() && rb_seat_no.isChecked()){
-                    if(CurrentCartInfo.getCart().getCartInfoList().size()>1) {//주문 갯수 1개 이상 시
+                    if(CurrentSelectCartInfo.getCart().getCartInfoList().size()>1) {//주문 갯수 1개 이상 시
                         try {
-                            for (int i = 0; i < CurrentCartInfo.getCart().getCartInfoList().size(); i++) {
+                            for (int i = 0; i < CurrentSelectCartInfo.getCart().getCartInfoList().size(); i++) {
                                 String id = String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
-                                String store_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getStore_id());
-                                String menu_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_id());
-                                String menu_name = CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_name();
-                                String menu_price = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
-                                String menu_count = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
+                                String store_id = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getStore_id());
+                                String menu_id = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_id());
+                                String menu_name = CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_name();
+                                String menu_price = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
+                                String menu_count = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
 
                                 JSONObject object = new JSONObject();
                                 object.put("id", id);
@@ -229,12 +231,12 @@ public class OrderFragment extends Fragment {
                     }
                     else {//주문 갯수 1개 시
                         try {
-                                String id = String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
-                                String store_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getStore_id());
-                                String menu_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_id());
-                                String menu_name = CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_name();
-                                String menu_price = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_price());
-                                String menu_count = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_count());
+                            String id = String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
+                            String store_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getStore_id());
+                            String menu_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_id());
+                            String menu_name = CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_name();
+                            String menu_price = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_price());
+                            String menu_count = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_count());
                             try {
                                 HashMap<String, String> input=new HashMap<>();
                                 input.put("id",id);

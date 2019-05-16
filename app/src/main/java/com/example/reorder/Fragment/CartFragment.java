@@ -23,10 +23,13 @@ import com.example.reorder.R;
 import com.example.reorder.Result.CartResult;
 import com.example.reorder.Result.DeleteCartResult;
 import com.example.reorder.globalVariables.CurrentCartInfo;
+import com.example.reorder.globalVariables.CurrentSelectCartInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.CartInfo;
 
+import java.text.BreakIterator;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,11 +39,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.example.reorder.Adapter.CartAdapter.selected;
+
 public class CartFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static TextView tv_cart_total_price;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -48,12 +54,14 @@ public class CartFragment extends Fragment {
     private Button bt_delete;
     private Button bt_cart_order;
     private RecyclerView rv_cart;
-    private TextView tv_cart_total_price;
+    //private TextView tv_cart_total_price;
     private List<CartInfo> currentCartInfo;
     private RecyclerView.Adapter cart_adapter;
+    private List<CartInfo> currentSelectCartInfo;
     String url= serverURL.getUrl();
 
     private OnFragmentInteractionListener mListener;
+
 
     public CartFragment() {
         // Required empty public constructor
@@ -85,9 +93,8 @@ public class CartFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view =inflater.inflate(R.layout.fragment_cart, container, false);
-        Log.d("cart","카트에 담은 총 금액:"+sumTotalPrice());
         tv_cart_total_price=view.findViewById(R.id.tv_cart_total_price);
-        tv_cart_total_price.setText(Integer.toString(sumTotalPrice()));
+        tv_cart_total_price.setText(Integer.toString(0));
         rv_cart=view.findViewById(R.id.rv_cart);
         rv_cart.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         currentCartInfo=CurrentCartInfo.getCart().getCartInfoList();
@@ -136,19 +143,25 @@ public class CartFragment extends Fragment {
         bt_cart_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(5);
+                int count=0;
+                for(int i=0;i<CurrentCartInfo.getCart().getCartInfoList().size();i++){
+                    if(selected[i]){
+                        count++;
+                    }
+                }
+
+                if(CurrentCartInfo.getCart().getCartInfoList().size()==0){
+                    Toast.makeText(getContext(), "장바구니에 담은 제품이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+                else if(count==0) {
+                    Toast.makeText(getContext(), "선택된 제품이 없습니다.", Toast.LENGTH_SHORT).show();
+                }else {
+                    CurrentSelectCartInfo.getCart().setCartInfoList(CartAdapter.cartInfoList);
+                    ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(5);
+                }
             }
         });
         return view;
-    }
-
-    public int sumTotalPrice(){
-        int totalprice=0;
-        for(int i=0;i< CurrentCartInfo.getCart().getCartInfoList().size();++i){
-            totalprice+=(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price())
-                    *(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
-        }
-        return totalprice;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

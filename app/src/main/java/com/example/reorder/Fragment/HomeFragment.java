@@ -46,7 +46,6 @@ import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
-import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 
@@ -61,7 +60,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class HomeFragment extends Fragment implements LocationListener, BeaconConsumer {
+public class HomeFragment extends Fragment implements LocationListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -97,9 +96,6 @@ public class HomeFragment extends Fragment implements LocationListener, BeaconCo
         }
     }
 
-    private BeaconManager beaconManager;
-    private Button bt_beacon;
-    private TextView tv_beacon;
     private List<Beacon> beaconList=new ArrayList<>();
     private Button bt_near_store;
     private Button bt_bookmark;
@@ -126,30 +122,6 @@ public class HomeFragment extends Fragment implements LocationListener, BeaconCo
         bt_filter=view.findViewById(R.id.bt_filter);
         lv_bookmark_store=view.findViewById(R.id.lv_bookmark_store);
         lv_near_store=view.findViewById(R.id.lv_near_store);
-        tv_beacon=view.findViewById(R.id.tv_beacon);
-        bt_beacon=view.findViewById(R.id.bt_beacon);
-        // 버튼이 클릭되면 textView 에 비콘들의 정보를 뿌린다.
-        bt_beacon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 아래에 있는 handleMessage를 부르는 함수. 맨 처음에는 0초간격이지만 한번 호출되고 나면
-                // 1초마다 불러온다.
-                Log.d("2","2");
-                handler.sendEmptyMessage(0);
-            }
-        });
-
-        // 실제로 비콘을 탐지하기 위한 비콘매니저 객체를 초기화
-        beaconManager = BeaconManager.getInstanceForApplication(getContext());
-        // 여기가 중요한데, 기기에 따라서 setBeaconLayout 안의 내용을 바꿔줘야 하는듯 싶다.
-        // 필자의 경우에는 아래처럼 하니 잘 동작했음.
-        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
-        ///ibeacon 숫자도 해봤지만 작동 안됨 m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24
-
-        // 비콘 탐지를 시작한다. 실제로는 서비스를 시작하는것.
-        beaconManager.bind(this);
-        Log.d("7","7");
-
 
         locationManager= (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
 
@@ -382,73 +354,4 @@ public class HomeFragment extends Fragment implements LocationListener, BeaconCo
         lv_near_store.setAdapter(store_adapter);
         Log.d("category","fm");
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        beaconManager.unbind(this);
-        Log.d("6","6");
-    }
-
-    @Override
-    public void onBeaconServiceConnect() {
-        beaconManager.addRangeNotifier(new RangeNotifier() {
-            @Override
-            // 비콘이 감지되면 해당 함수가 호출된다. Collection<Beacon> beacons에는 감지된 비콘의 리스트가,
-            // region에는 비콘들에 대응하는 Region 객체가 들어온다.
-            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-                if (beacons.size() > 0) {
-                    Log.d("5","5");
-                    beaconList.clear();
-                    for (Beacon beacon : beacons) {
-                        beaconList.add(beacon);
-//                        if(beacon.getId3().equals(Identifier.parse("24000"))){
-//                            Toast.makeText(getApplicationContext(),"깐뚜",Toast.LENGTH_SHORT).show();
-//                        }else if(beacon.getId3().equals(Identifier.parse("23999"))) {
-//                            Toast.makeText(getApplicationContext(),"자드",Toast.LENGTH_SHORT).show();
-//                        }
-//                        Log.d("beacon",beacon.getId3() +"");
-//                        Log.d("beacon",beacon.getManufacturer()+"/" + beacon.getMeasurementCount() + "/" + beacon.getPacketCount() +"/" + beacon.getRssi() +"/" + beacon.getServiceUuid() +"/" + beacon.getTxPower());
-                    }
-                    Log.d("11",beaconList.toString());
-                }
-            }
-            //if(beaconList.get(2).equals(beacons.getId3()))
-        });
-
-        try {
-            beaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId", null, null, null));
-        } catch (RemoteException e) {   }
-    }
-
-    @Override
-    public Context getApplicationContext() {
-        return null;
-    }
-
-    @Override
-    public void unbindService(ServiceConnection serviceConnection) {
-
-    }
-
-    @Override
-    public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
-        return false;
-    }
-
-    Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            tv_beacon.setText("");
-            Log.d("1","1");
-            // 비콘의 아이디와 거리를 측정하여 textView에 넣는다.
-            for(Beacon beacon : beaconList){
-                tv_beacon.append("ID : " + beacon.getId3() + " / " + "Distance : " + Double.parseDouble(String.format("%.3f", beacon.getDistance())) + "m\n");
-                Log.d("3","3");
-            }
-
-            // 자기 자신을 1초마다 호출
-            handler.sendEmptyMessageDelayed(0, 1000);
-            Log.d("4","4");
-        }
-    };
 }

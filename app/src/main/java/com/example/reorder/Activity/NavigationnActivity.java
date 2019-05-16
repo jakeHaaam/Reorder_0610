@@ -2,9 +2,13 @@ package com.example.reorder.Activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -17,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +49,19 @@ import com.example.reorder.info.CartInfo;
 import com.example.reorder.info.StoreInfo;
 import com.example.reorder.info.StoreMenuInfo;
 
+import org.altbeacon.beacon.Beacon;
+import org.altbeacon.beacon.BeaconConsumer;
+import org.altbeacon.beacon.BeaconManager;
+import org.altbeacon.beacon.BeaconParser;
+import org.altbeacon.beacon.Identifier;
+import org.altbeacon.beacon.RangeNotifier;
+import org.altbeacon.beacon.Region;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import retrofit2.Call;
@@ -53,11 +71,14 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NavigationnActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FragmentReplaceable {
-    static String FT = "FT";
+        implements NavigationView.OnNavigationItemSelectedListener, FragmentReplaceable, BeaconConsumer {
+
+    public static int bea_st_id;//깐뚜1번 자드 2번
+    public static boolean bool_beacon;
+    private BeaconManager beaconManager;
+    private List<Beacon> beaconList=new ArrayList<>();
     public Fragment homeFragment= new HomeFragment();
     private Fragment storeFragment;
-    private Fragment testFragment;
     private Fragment CartFragment;
     private Fragment OrderFragment;
     private Fragment SeatReserveFragment;
@@ -89,6 +110,21 @@ public class NavigationnActivity extends AppCompatActivity
         SeatReserveFragment=new SeatReserveFragment();
         MenuFragment=new MenuFragment();
         setDefaultFragment();
+
+        if(bool_beacon){
+            onBeaconServiceConnect();
+        }
+
+        Log.d("beacon",""+bool_beacon);
+
+        // 실제로 비콘을 탐지하기 위한 비콘매니저 객체를 초기화
+        beaconManager = BeaconManager.getInstanceForApplication(getApplication());
+        // 여기가 중요한데, 기기에 따라서 setBeaconLayout 안의 내용을 바꿔줘야 하는듯 싶다.
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
+
+        // 비콘 탐지를 시작한다. 실제로는 서비스를 시작하는것.
+        beaconManager.bind(this);
+        Log.d("7","7");
 
         //구글맵에서 받아온 st_name를 현재 스토어에 저장되어있는 st_name들과 비교해서 해당 store로 이동 구현
         Intent intent=getIntent();
@@ -311,4 +347,69 @@ public class NavigationnActivity extends AppCompatActivity
         transaction.commit();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        beaconManager.unbind(this);
+        Log.d("6","6");
+    }
+
+    @Override
+    public void onBeaconServiceConnect() {
+        Log.d("beacon",""+bool_beacon);//여기가 아예 안 와
+        beaconManager.addRangeNotifier(new RangeNotifier() {
+            @Override
+            // 비콘이 감지되면 해당 함수가 호출된다. Collection<Beacon> beacons에는 감지된 비콘의 리스트가,
+            // region에는 비콘들에 대응하는 Region 객체가 들어온다.
+            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+
+                if(bool_beacon) {
+                    if (beacons.size() > 0) {
+                        Log.d("5", "5");
+                        beaconList.clear();
+                        for (Beacon beacon : beacons) {
+                            beaconList.add(beacon);
+                            Log.d("beacon",beacon.getId3().toString());
+                            if(bea_st_id==1) {
+                                if (beacon.getId3().toString().equals("24000")) {
+                                    Log.d("beacon", "깐뚜");
+                                    Toast.makeText(getApplication(), "깐뚜", Toast.LENGTH_SHORT).show();
+                                    bool_beacon = false;
+                                    break;
+                                }
+                            }else if(bea_st_id==2){
+                                if (beacon.getId3().toString().equals("23999")){
+                                    Log.d("beacon","자드");
+                                    Toast.makeText(getApplication(),"자드",Toast.LENGTH_SHORT).show();
+                                    bool_beacon=false;
+                                    break;
+                                }
+                            }
+                        }
+                        Log.d("11", beaconList.toString());
+                        Toast.makeText(getApplication(), "감지가 되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+        Log.d("beacon", "test끝");
+        try {
+            beaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId", null, null, null));
+        } catch (RemoteException e) {   }
+    }
+
+    @Override
+    public Context getApplicationContext() {
+        return null;
+    }
+
+    @Override
+    public void unbindService(ServiceConnection serviceConnection) {
+
+    }
+
+    @Override
+    public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
+        return false;
+    }
 }

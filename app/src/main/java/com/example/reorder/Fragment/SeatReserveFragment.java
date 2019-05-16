@@ -22,6 +22,7 @@ import com.example.reorder.Api.OrderAndSeatApi;
 import com.example.reorder.Result.OrderAndSeatResult;
 import com.example.reorder.globalVariables.CurrentCartInfo;
 import com.example.reorder.globalVariables.CurrentSeatInfo;
+import com.example.reorder.globalVariables.CurrentSelectCartInfo;
 import com.example.reorder.globalVariables.CurrentStoreSeatInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.OrderState;
@@ -137,7 +138,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                         Toast.makeText(getContext(),"선택한 테이블은 예약상태 입니다.",Toast.LENGTH_SHORT).show();
                     }
                 });
-                }
+            }
             else if(seat_state[j]==2){//"2"는 현재 사용중인 상태-예약 불가
                 bt.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.seat_using_button));
                 bt.setOnClickListener(new View.OnClickListener() {
@@ -153,17 +154,17 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 if(select_id!=-1){
-                    if(CurrentCartInfo.getCart().getCartInfoList().size()>1) {//주문 2개이상시
+                    if(CurrentSelectCartInfo.getCart().getCartInfoList().size()>1) {//주문 2개이상시
                         try {
                             List<JSONObject> list = new ArrayList<>();
 
-                            for (int i = 0; i < CurrentCartInfo.getCart().getCartInfoList().size(); i++) {
+                            for (int i = 0; i < CurrentSelectCartInfo.getCart().getCartInfoList().size(); i++) {
                                 String id = String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
-                                String store_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getStore_id());
-                                String menu_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_id());
-                                String menu_name = CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_name();
-                                String menu_price = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
-                                String menu_count = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
+                                String store_id = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getStore_id());
+                                String menu_id = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_id());
+                                String menu_name = CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_name();
+                                String menu_price = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
+                                String menu_count = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
                                 String seat_id = String.valueOf(select_id);
 
                                 JSONObject object = new JSONObject();
@@ -194,6 +195,19 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                                 OrderState.setOrder_id(orderAndSeatResult.getOreder_id());
                                                 OrderState.setOrder_state(orderAndSeatResult.getOrder_state());
                                                 Toast.makeText(getContext(), "주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
+                                                if(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()==1)//깐뚜이면
+                                                {
+                                                    NavigationnActivity.bool_beacon=true;
+                                                    NavigationnActivity.bea_st_id=1;
+                                                }
+                                                else if(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()==2)//자드이면
+                                                {
+                                                    NavigationnActivity.bool_beacon=true;
+                                                    NavigationnActivity.bea_st_id=2;
+                                                }
+                                                Log.d("beacon","test 전");
+                                                ((NavigationnActivity)NavigationnActivity.mContext).onBeaconServiceConnect();
+                                                Log.d("beacon","test 성공");
                                                 ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(1);
                                                 break;
                                             case 0:
@@ -202,7 +216,6 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                         }
                                     }
                                 }
-
                                 @Override
                                 public void onFailure(Call<OrderAndSeatResult> call, Throwable t) {
                                     t.printStackTrace();
@@ -213,24 +226,24 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                         }
                     }else {//주문 1개시
                         try {
-                                String id=String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
-                                String store_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getStore_id());
-                                String menu_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_id());
-                                String menu_name=CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_name();
-                                String menu_price=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_price());
-                                String menu_count=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_count());
-                                String seat_id=String.valueOf(select_id);
-                                HashMap<String,String> input=new HashMap<>();
-                                input.put("id",id);
-                                input.put("store_id",store_id);
-                                input.put("menu_id",menu_id);
-                                input.put("menu_name",menu_name);
-                                input.put("menu_price",menu_price);
-                                input.put("menu_count",menu_count);
-                                input.put("seat_id",seat_id);
-                                Log.d("order","input= "+input);
+                            String id=String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
+                            String store_id=String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id());
+                            String menu_id=String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getMenu_id());
+                            String menu_name=CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getMenu_name();
+                            String menu_price=String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getMenu_price());
+                            String menu_count=String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getMenu_count());
+                            String seat_id=String.valueOf(select_id);
+                            HashMap<String,String> input=new HashMap<>();
+                            input.put("id",id);
+                            input.put("store_id",store_id);
+                            input.put("menu_id",menu_id);
+                            input.put("menu_name",menu_name);
+                            input.put("menu_price",menu_price);
+                            input.put("menu_count",menu_count);
+                            input.put("seat_id",seat_id);
+                            Log.d("order","input= "+input);
 
-                                Retrofit retrofit = new Retrofit.Builder()
+                            Retrofit retrofit = new Retrofit.Builder()
                                     .baseUrl(url)
                                     .addConverterFactory(GsonConverterFactory.create())
                                     .build();
@@ -247,6 +260,19 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                                 OrderState.setOrder_id(orderAndSeatResult.getOreder_id());
                                                 OrderState.setOrder_state(orderAndSeatResult.getOrder_state());
                                                 Toast.makeText(getContext(),"주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
+                                                if(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()==1)//깐뚜이면
+                                                {
+                                                    NavigationnActivity.bool_beacon=true;
+                                                    NavigationnActivity.bea_st_id=1;
+                                                }
+                                                else if(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()==2)//자드이면
+                                                {
+                                                    NavigationnActivity.bool_beacon=true;
+                                                    NavigationnActivity.bea_st_id=2;
+                                                }
+                                                Log.d("beacon","test 전");
+                                                ((NavigationnActivity)NavigationnActivity.mContext).onBeaconServiceConnect();
+                                                Log.d("beacon","test 성공");
                                                 ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(1);
                                                 break;
                                             case 0:
