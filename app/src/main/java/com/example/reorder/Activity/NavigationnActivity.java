@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.reorder.Api.FragmentReplaceable;
 
+import com.example.reorder.Api.RetrofitApi;
 import com.example.reorder.Api.StoreIdApi;
 import com.example.reorder.Fragment.CartFragment;
 import com.example.reorder.Fragment.HomeFragment;
@@ -38,6 +39,7 @@ import com.example.reorder.Fragment.StoreFragment;
 import com.example.reorder.R;
 import com.example.reorder.Result.CartResult;
 import com.example.reorder.Api.CartSetApi;
+import com.example.reorder.Result.LoginResult;
 import com.example.reorder.Result.StoreIdResult;
 import com.example.reorder.globalVariables.CurrentCartInfo;
 import com.example.reorder.globalVariables.CurrentSelectStore;
@@ -48,6 +50,7 @@ import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.CartInfo;
 import com.example.reorder.info.StoreInfo;
 import com.example.reorder.info.StoreMenuInfo;
+import com.example.reorder.info.UserInfo;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -62,6 +65,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -85,6 +89,7 @@ public class NavigationnActivity extends AppCompatActivity
     private Fragment MenuFragment;
     private ImageButton bt_cart;
     public static Context mContext;
+    private ImageButton bt_refresh;
     String url= serverURL.getUrl();
 
     public void categoryChanged(List<StoreInfo> storeInfos){
@@ -237,6 +242,62 @@ public class NavigationnActivity extends AppCompatActivity
         View nav_header_view=navigationView.getHeaderView(0);
         TextView tv_nav_nicname=(TextView)nav_header_view.findViewById(R.id.tv_nav_nicname);
         tv_nav_nicname.setText(CurrentUserInfo.getUser().getUserInfo().getClient_id());
+
+        // 마일리지 추가
+        final TextView tv_mileage=(TextView)nav_header_view.findViewById(R.id.tv_mileage);
+        tv_mileage.setText(CurrentUserInfo.getUser().getUserInfo().getClient_mileage()+"");
+
+        bt_refresh=nav_header_view.findViewById(R.id.bt_refresh);
+        bt_refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    HashMap<String, String> input = new HashMap<>();
+                    input.put("client_id",CurrentUserInfo.getUser().getUserInfo().getClient_id());
+                    input.put("client_password", LoginActivity.refresh_password);
+                    Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
+                    RetrofitApi retrofitApi = retrofit.create(RetrofitApi.class);
+                    retrofitApi.postLoginUserInfo(input).enqueue(new Callback<LoginResult>() {
+                        @Override
+                        public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+                            if (response.isSuccessful()) {
+                                LoginResult map = response.body();
+                                Log.d("11111",map.getResult() +"");
+                                if (map != null) {
+                                    switch (map.getResult()) {
+                                        case -1:
+                                            Toast.makeText(mContext,"잘못된 비밀번호 입니다.",Toast.LENGTH_SHORT).show();
+                                            Log.d("mileage", "잘못된 비밀번호입니다");
+                                            break;
+                                        case 0:
+                                            Toast.makeText(mContext,"가입되지 않은 이메일입니다.",Toast.LENGTH_SHORT).show();
+                                            Log.d("mileage", "가입되지 않은 이메일입니다");
+                                            break;
+                                        case 1:
+                                            Log.d("mileage", "마일리지 새로고침 성공");
+                                            UserInfo userinfo = map.getUser();
+                                            CurrentUserInfo.getUser().setUserInfo(userinfo);
+                                            tv_mileage.setText(CurrentUserInfo.getUser().getUserInfo().getClient_mileage()+"");
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+
+
+                        @Override
+                        public void onFailure(Call<LoginResult> call, Throwable t) {
+                            t.printStackTrace();
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
     }
 
     @Override

@@ -2,14 +2,8 @@ package com.example.reorder.Result;
 
 public class OrderResult {
     int result;
-    int order_id;
+    int oreder_serial;
     int order_state;
-
-    public OrderResult(int result, int order_id, int order_state) {
-        this.result = result;
-        this.order_id = order_id;
-        this.order_state = order_state;
-    }
 
     public int getResult() {
         return result;
@@ -19,12 +13,12 @@ public class OrderResult {
         this.result = result;
     }
 
-    public int getOrder_id() {
-        return order_id;
+    public int getOreder_serial() {
+        return oreder_serial;
     }
 
-    public void setOrder_id(int order_id) {
-        this.order_id = order_id;
+    public void setOreder_serial(int oreder_serial) {
+        this.oreder_serial = oreder_serial;
     }
 
     public int getOrder_state() {

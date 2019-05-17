@@ -202,7 +202,7 @@ public class OrderFragment extends Fragment {
                                                 Log.d("body is not null", "body is not null");
                                                 switch (map.getResult()) {
                                                     case 1://성공
-                                                        OrderState.setOrder_id(map.getOrder_id());
+                                                        OrderState.setOrder_id(map.getOreder_serial());
                                                         OrderState.setOrder_state(map.getOrder_state());
                                                         Toast.makeText(getContext(), "주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
                                                         ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(1);
@@ -259,7 +259,7 @@ public class OrderFragment extends Fragment {
                                                 Log.d("body is not null", "body is not null");
                                                 switch (map.getResult()) {
                                                     case 1://성공
-                                                        OrderState.setOrder_id(map.getOrder_id());
+                                                        OrderState.setOrder_id(map.getOreder_serial());
                                                         OrderState.setOrder_state(map.getOrder_state());
                                                         Toast.makeText(getContext(), "주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
                                                         ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(1);

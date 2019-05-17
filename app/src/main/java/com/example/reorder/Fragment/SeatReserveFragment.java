@@ -192,7 +192,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                         OrderAndSeatResult orderAndSeatResult = response.body();
                                         switch (orderAndSeatResult.getResult()) {
                                             case 1:
-                                                OrderState.setOrder_id(orderAndSeatResult.getOreder_id());
+                                                OrderState.setOrder_id(orderAndSeatResult.getOreder_serial());
                                                 OrderState.setOrder_state(orderAndSeatResult.getOrder_state());
                                                 Toast.makeText(getContext(), "주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
                                                 if(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()==1)//깐뚜이면
@@ -257,7 +257,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                         OrderAndSeatResult orderAndSeatResult= response.body();
                                         switch (orderAndSeatResult.getResult()){
                                             case 1:
-                                                OrderState.setOrder_id(orderAndSeatResult.getOreder_id());
+                                                OrderState.setOrder_id(orderAndSeatResult.getOreder_serial());
                                                 OrderState.setOrder_state(orderAndSeatResult.getOrder_state());
                                                 Toast.makeText(getContext(),"주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
                                                 if(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()==1)//깐뚜이면

@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     Button bt_login_ok;
     TextView registerButton;
     final static int PERMISSION_REQUEST_CODE=1000;
+    public static String refresh_password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                         userLogin.Login(et_login_id.getText().toString(), et_login_password.getText().toString(), new Intent(LoginActivity.this, NavigationnActivity.class), LoginActivity.this);
                     }
                 }
+                refresh_password=et_login_password.getText().toString();
             }
         });
     }
