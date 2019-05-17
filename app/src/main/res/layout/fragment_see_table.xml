@@ -3,12 +3,77 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DAD8D8"
     tools:context=".Fragment.SeeTableFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="500dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="70dp">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/grid_see_table">
+
+            </GridLayout>
+        </HorizontalScrollView>
+
+    </ScrollView>
+
+    <TextView
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/seat_able"
+        android:background="#fff"/>
+    <TextView
+        android:layout_marginLeft="65dp"
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv1"
+        android:text="사용 가능한 좌석"
+        android:textSize="17dp"/>
+
+    <TextView
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="80dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/seat_book"
+        android:background="#ff0" />
+    <TextView
+        android:layout_marginLeft="65dp"
+        android:layout_marginTop="90dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv2"
+        android:text="사용중인 좌석"
+        android:textSize="17dp"/>
+
+    <TextView
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="80dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/seat_using"
+        android:background="#f00" />
+    <TextView
+        android:layout_marginLeft="245dp"
+        android:layout_marginTop="90dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv3"
+        android:text="사용중인 좌석"
+        android:textSize="17dp"/>
 
 </FrameLayout>

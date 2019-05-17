@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +12,23 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.reorder.Activity.NavigationnActivity;
 import com.example.reorder.Adapter.MenuAdapter;
 import com.example.reorder.Api.BookMarkApi;
+import com.example.reorder.Api.SeeTableApi;
 import com.example.reorder.R;
 import com.example.reorder.Result.BookMarkResult;
+import com.example.reorder.Result.SeeTableResult;
+import com.example.reorder.globalVariables.CurrentSeatInfo;
+import com.example.reorder.globalVariables.CurrentSeeTableInfo;
 import com.example.reorder.globalVariables.CurrentSelectStore;
 import com.example.reorder.globalVariables.CurrentStoreInfo;
 import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.serverURL;
+import com.example.reorder.info.SeatInfo;
 import com.example.reorder.info.StoreMenuInfo;
+import com.example.reorder.info.StoreSeatInfo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -98,7 +106,42 @@ public class StoreFragment extends Fragment {
         bt_table_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //db에게 해당 스토어id를 보내고 store에 현재 테이블 관련 데이터값 받고 replace
+                String st_id=String.valueOf(CurrentSelectStore.getSt_id());
+                try {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(url)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    final SeeTableApi seeTableApi = retrofit.create(SeeTableApi.class);
+                    seeTableApi.gettable(st_id).enqueue(new Callback<SeeTableResult>(){
+                        @Override
+                        public void onResponse(Call<SeeTableResult> call, Response<SeeTableResult> response) {
+                            if(response.isSuccessful()){
+                                SeeTableResult seeTableResult=response.body();
+                                switch (seeTableResult.getResult()){
+                                    case 1://성공
+                                        StoreSeatInfo storeSeatInfo=seeTableResult.getStoreSeatInfo();
+                                        CurrentSeeTableInfo.getStoreSeat().setStoreSeatInfo(storeSeatInfo);
+                                        //getStoreSeat이용해도 되는건지 잘 모름 일단 사용
+                                        List<SeatInfo> seatInfos=seeTableResult.getSeatInfos();//좌석 상태받는 애
+                                        CurrentSeatInfo.getSeat().setSeatInfoList(seatInfos);
+                                        ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(3);
+                                        break;
+                                    case 0://실패
+                                        Log.d("see table result","result=0");
+                                        break;
+                                }
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<SeeTableResult> call, Throwable t) {
+                            t.printStackTrace();
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
 

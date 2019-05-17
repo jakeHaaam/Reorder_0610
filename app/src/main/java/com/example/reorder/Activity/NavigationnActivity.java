@@ -1,5 +1,6 @@
 package com.example.reorder.Activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,7 +13,7 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
+
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -38,6 +39,7 @@ import com.example.reorder.Fragment.HomeFragment;
 import com.example.reorder.Fragment.MenuFragment;
 import com.example.reorder.Fragment.OrderFragment;
 import com.example.reorder.Fragment.SeatReserveFragment;
+import com.example.reorder.Fragment.SeeTableFragment;
 import com.example.reorder.Fragment.StoreFragment;
 import com.example.reorder.R;
 import com.example.reorder.Result.CartResult;
@@ -93,6 +95,7 @@ public class NavigationnActivity extends AppCompatActivity
     private List<Beacon> beaconList=new ArrayList<>();
     public Fragment homeFragment= new HomeFragment();
     private Fragment storeFragment;
+    private Fragment SeeTableFragment;
     private Fragment CartFragment;
     private Fragment OrderFragment;
     private Fragment SeatReserveFragment;
@@ -124,6 +127,7 @@ public class NavigationnActivity extends AppCompatActivity
         OrderFragment=new OrderFragment();
         SeatReserveFragment=new SeatReserveFragment();
         MenuFragment=new MenuFragment();
+        SeeTableFragment=new SeeTableFragment();
         setDefaultFragment();
 
         if(bool_beacon){
@@ -362,7 +366,7 @@ public class NavigationnActivity extends AppCompatActivity
         }
 //            // Handle the camera action
         else if(id==R.id.nav_table_out){//테이블 사용 안함 클릭시
-            AlertDialog.Builder builder=new AlertDialog.Builder(getApplication());
+            AlertDialog.Builder builder=new AlertDialog.Builder(NavigationnActivity.this);
             builder.setTitle("테이블 비움 처리")
                     .setMessage("사용중이신 테이블을 다 사용하셨습니까?")
                     .setPositiveButton("네", new DialogInterface.OnClickListener() {
@@ -383,7 +387,6 @@ public class NavigationnActivity extends AppCompatActivity
                                             switch (seatResult.getResult()){
                                                 case 1://성공
                                                     Toast.makeText(getApplication(),"사용중인 테이블을 비움처리 하였습니다.",Toast.LENGTH_SHORT).show();
-                                                    jad_seat_check=true;
                                                     break;
                                                 case 0://실패
                                                     Toast.makeText(getApplication(),"사용중인 테이블 비움처리 오류가 발생하였습니다.",Toast.LENGTH_SHORT).show();
@@ -407,7 +410,7 @@ public class NavigationnActivity extends AppCompatActivity
                             finish();
                         }
                     });
-            builder.show();
+            builder.show();//횩흔님 작품
         }
 
         transaction.addToBackStack(null);
@@ -433,7 +436,7 @@ public class NavigationnActivity extends AppCompatActivity
         }else if (fragmentId==2){
             transaction.replace(R.id.container, storeFragment);
         }else if (fragmentId==3){
-
+            transaction.replace(R.id.container, SeeTableFragment);
         } else if (fragmentId==4){
             transaction.replace(R.id.container, CartFragment);
         }else if (fragmentId==5) {

@@ -4,11 +4,20 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.GridView;
+import android.widget.Toast;
 
 import com.example.reorder.R;
+import com.example.reorder.globalVariables.CurrentSeatInfo;
+import com.example.reorder.globalVariables.CurrentSeeTableInfo;
+
+import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +36,11 @@ public class SeeTableFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private GridLayout grid_see_table;
+    private Context context;
+    int checked_count,max_count;
+    private static int[] seat_state;
+    public static boolean[] seat_checked;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +79,39 @@ public class SeeTableFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_see_table, container, false);
+        View view=inflater.inflate(R.layout.fragment_see_table,container,false);
+        grid_see_table=view.findViewById(R.id.grid_see_table);
+
+        grid_see_table= view.findViewById(R.id.grid);
+        context=grid_see_table.getContext();
+        checked_count=0;
+        max_count=1;
+
+        int st_num= CurrentSeeTableInfo.getStoreSeat().getStoreSeatInfo().getSeat_num();
+        int st_row=CurrentSeeTableInfo.getStoreSeat().getStoreSeatInfo().getSeat_row();
+        seat_state=new int[st_num];
+        seat_checked=new boolean[st_num+1];//seat갯수 만큼 불린형 생성
+        Arrays.fill(seat_checked,false);//불린형 false로 초기화
+        grid_see_table.setColumnCount(st_row);//<-여기에 받아오는 행렬의 행값 입력 해주면 해당 행까지만 나오고 자동으로 다음 열로 이동해서 생성 됨
+        for(int j=0;j<st_num;j++)//버튼 동적 생성 부분
+        {
+            seat_state[j]= CurrentSeatInfo.getSeat().getSeatInfoList().get(j).getSeat_statement();//db에서 받아온 seat_state를 seat_id에 맞춰 집어넣어줘야 함
+            final Button bt = new Button(context);
+            bt.setId(j + 1);//id=1,2,3,4 이런식으로 할당 받아짐
+            bt.setText(String.valueOf(j + 1));
+            if(seat_state[j]==0){ //"0"은 사용 가능한 상태
+                bt.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.seat_able_button));
+            }
+            else if(seat_state[j]==1){//"1"은 예약중인 상태-예약 불가
+                bt.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.seat_reserved_button));
+            }
+            else if(seat_state[j]==2){//"2"는 현재 사용중인 상태-예약 불가
+                bt.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.seat_using_button));
+            }
+            grid_see_table.addView(bt);
+        }
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -81,8 +127,8 @@ public class SeeTableFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
         }
     }
 

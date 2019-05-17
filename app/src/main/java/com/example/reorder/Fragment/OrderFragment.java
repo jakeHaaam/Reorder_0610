@@ -298,8 +298,7 @@ public class OrderFragment extends Fragment {
                                 .addConverterFactory(GsonConverterFactory.create())
                                 .build();
                         StoreSeatApi storeSeatApi = retrofit.create(StoreSeatApi.class);
-                        storeSeatApi.getResult(st_id)
-                                .enqueue(new Callback<StoreSeatResult>() {
+                        storeSeatApi.getResult(st_id).enqueue(new Callback<StoreSeatResult>() {
                                     @Override
                                     public void onResponse(Call<StoreSeatResult> call, Response<StoreSeatResult> response) {
                                         Log.d("store_seat","respone");

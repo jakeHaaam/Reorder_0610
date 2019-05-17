@@ -111,8 +111,6 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
         checked_count=0;
         max_count=1;
 
-        final SeatReserveFragment seatReserveFragment=new SeatReserveFragment();
-
         Log.d("seat",""+CurrentStoreSeatInfo.getStoreSeat().getStoreSeatInfo().getSeat_num());
         int st_num= CurrentStoreSeatInfo.getStoreSeat().getStoreSeatInfo().getSeat_num();
         int st_row=CurrentStoreSeatInfo.getStoreSeat().getStoreSeatInfo().getSeat_row();
