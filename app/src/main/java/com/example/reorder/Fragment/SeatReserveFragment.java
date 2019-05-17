@@ -1,7 +1,6 @@
 package com.example.reorder.Fragment;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,20 +14,17 @@ import android.widget.GridLayout;
 import android.widget.Toast;
 
 import com.example.reorder.Activity.NavigationnActivity;
-import com.example.reorder.Api.OrderApi;
 import com.example.reorder.R;
-import com.example.reorder.Adapter.StoreAdapter;
 import com.example.reorder.Api.OrderAndSeatApi;
 import com.example.reorder.Result.OrderAndSeatResult;
-import com.example.reorder.globalVariables.CurrentCartInfo;
 import com.example.reorder.globalVariables.CurrentSeatInfo;
 import com.example.reorder.globalVariables.CurrentSelectCartInfo;
 import com.example.reorder.globalVariables.CurrentStoreSeatInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
-import com.example.reorder.globalVariables.OrderState;
+import com.example.reorder.globalVariables.CurrentUsingSeatInfo;
+import com.example.reorder.globalVariables.SeatOrderState;
 import com.example.reorder.globalVariables.serverURL;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -190,8 +186,9 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                         OrderAndSeatResult orderAndSeatResult = response.body();
                                         switch (orderAndSeatResult.getResult()) {
                                             case 1:
-                                                OrderState.setOrder_id(orderAndSeatResult.getOreder_serial());
-                                                OrderState.setOrder_state(orderAndSeatResult.getOrder_state());
+                                                SeatOrderState.setOrder_id(orderAndSeatResult.getOreder_serial());//주문 고유번호
+                                                SeatOrderState.setOrder_state(orderAndSeatResult.getOrder_state());//주문상태
+                                                SeatOrderState.setId(orderAndSeatResult.getId());//좌석 고유번호
                                                 Toast.makeText(getContext(), "주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
                                                 if(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()==1)//깐뚜이면
                                                 {
@@ -202,6 +199,9 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                                 {
                                                     NavigationnActivity.bool_beacon=true;
                                                     NavigationnActivity.bea_st_id=2;
+                                                }
+                                                else {//두곳 다 아니면
+                                                    CurrentUsingSeatInfo.setSeat_id(select_id);
                                                 }
                                                 Log.d("beacon","test 전");
                                                 ((NavigationnActivity)NavigationnActivity.mContext).onBeaconServiceConnect();
@@ -255,8 +255,9 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                         OrderAndSeatResult orderAndSeatResult= response.body();
                                         switch (orderAndSeatResult.getResult()){
                                             case 1:
-                                                OrderState.setOrder_id(orderAndSeatResult.getOreder_serial());
-                                                OrderState.setOrder_state(orderAndSeatResult.getOrder_state());
+                                                SeatOrderState.setOrder_id(orderAndSeatResult.getOreder_serial());//주문 고유번호
+                                                SeatOrderState.setOrder_state(orderAndSeatResult.getOrder_state());//주문상태
+                                                SeatOrderState.setId(orderAndSeatResult.getId());//좌석 고유번호
                                                 Toast.makeText(getContext(),"주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
                                                 if(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()==1)//깐뚜이면
                                                 {
@@ -267,6 +268,9 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                                 {
                                                     NavigationnActivity.bool_beacon=true;
                                                     NavigationnActivity.bea_st_id=2;
+                                                }
+                                                else {//두곳 다 아니면
+                                                    CurrentUsingSeatInfo.setSeat_id(select_id);
                                                 }
                                                 Log.d("beacon","test 전");
                                                 ((NavigationnActivity)NavigationnActivity.mContext).onBeaconServiceConnect();

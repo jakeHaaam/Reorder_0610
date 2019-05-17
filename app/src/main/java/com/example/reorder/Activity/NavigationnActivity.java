@@ -52,6 +52,7 @@ import com.example.reorder.globalVariables.CurrentSelectStore;
 import com.example.reorder.globalVariables.CurrentStoreInfo;
 import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
+import com.example.reorder.globalVariables.CurrentUsingSeatInfo;
 import com.example.reorder.globalVariables.SeatOrderState;
 import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.CartInfo;
@@ -299,7 +300,6 @@ public class NavigationnActivity extends AppCompatActivity
                             }
                         }
 
-
                         @Override
                         public void onFailure(Call<LoginResult> call, Throwable t) {
                             t.printStackTrace();
@@ -366,51 +366,51 @@ public class NavigationnActivity extends AppCompatActivity
         }
 //            // Handle the camera action
         else if(id==R.id.nav_table_out){//테이블 사용 안함 클릭시
-            AlertDialog.Builder builder=new AlertDialog.Builder(NavigationnActivity.this);
-            builder.setTitle("테이블 비움 처리")
-                    .setMessage("사용중이신 테이블을 다 사용하셨습니까?")
-                    .setPositiveButton("네", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            try {
-                                String seat_id= String.valueOf(SeatOrderState.getId());
-                                Retrofit retrofit = new Retrofit.Builder()
-                                        .baseUrl(url)
-                                        .addConverterFactory(GsonConverterFactory.create())
-                                        .build();
-                                SeatApi seatApi=retrofit.create(SeatApi.class);
-                                seatApi.setUserCancle(seat_id).enqueue(new Callback<SeatResult>() {
-                                    @Override
-                                    public void onResponse(Call<SeatResult> call, Response<SeatResult> response) {
-                                        if(response.isSuccessful()){
-                                            SeatResult seatResult=response.body();
-                                            switch (seatResult.getResult()){
-                                                case 1://성공
-                                                    Toast.makeText(getApplication(),"사용중인 테이블을 비움처리 하였습니다.",Toast.LENGTH_SHORT).show();
-                                                    break;
-                                                case 0://실패
-                                                    Toast.makeText(getApplication(),"사용중인 테이블 비움처리 오류가 발생하였습니다.",Toast.LENGTH_SHORT).show();
-                                                    break;
+            if(CurrentUsingSeatInfo.getSeat_id()!=0) {//좌석 다 이용시 0으로 초기화해야함
+                AlertDialog.Builder builder = new AlertDialog.Builder(NavigationnActivity.this);
+                builder.setTitle("테이블 비움 처리")
+                        .setMessage("사용중이신 테이블을 다 사용하셨습니까?")
+                        .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    String seat_id = String.valueOf(SeatOrderState.getId());
+                                    Retrofit retrofit = new Retrofit.Builder()
+                                            .baseUrl(url)
+                                            .addConverterFactory(GsonConverterFactory.create())
+                                            .build();
+                                    SeatApi seatApi = retrofit.create(SeatApi.class);
+                                    seatApi.setUserCancle(seat_id).enqueue(new Callback<SeatResult>() {
+                                        @Override
+                                        public void onResponse(Call<SeatResult> call, Response<SeatResult> response) {
+                                            if (response.isSuccessful()) {
+                                                SeatResult seatResult = response.body();
+                                                switch (seatResult.getResult()) {
+                                                    case 1://성공
+                                                        CurrentUsingSeatInfo.setSeat_id(0);
+                                                        Toast.makeText(getApplication(), "사용중인 테이블을 비움처리 하였습니다.", Toast.LENGTH_SHORT).show();
+                                                        break;
+                                                    case 0://실패
+                                                        Toast.makeText(getApplication(), "사용중인 테이블 비움처리 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                                                        break;
+                                                }
                                             }
                                         }
-                                    }
-                                    @Override
-                                    public void onFailure(Call<SeatResult> call, Throwable t) {
-                                        t.printStackTrace();
-                                    }
-                                });
-                            }catch (Exception e){
-                                e.printStackTrace();
+                                        @Override
+                                        public void onFailure(Call<SeatResult> call, Throwable t) {
+                                            t.printStackTrace();
+                                        }
+                                    });
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
-                    })
-                    .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    });
-            builder.show();//횩흔님 작품
+                        })
+                        .setNegativeButton("아니오", null);
+                builder.show();
+            }else {
+                Toast.makeText(getApplication(),"사용중이신 좌석이 없습니다.",Toast.LENGTH_SHORT).show();
+            }
         }
 
         transaction.addToBackStack(null);
@@ -459,7 +459,6 @@ public class NavigationnActivity extends AppCompatActivity
 
     @Override
     public void onBeaconServiceConnect() {
-        Log.d("beacon",""+bool_beacon);//여기가 아예 안 와
         beaconManager.addRangeNotifier(new RangeNotifier() {
             @Override
             // 비콘이 감지되면 해당 함수가 호출된다. Collection<Beacon> beacons에는 감지된 비콘의 리스트가,
@@ -477,7 +476,7 @@ public class NavigationnActivity extends AppCompatActivity
                                 if (beacon.getId3().toString().equals("24000")) {
                                     Log.d("beacon", "깐뚜");
                                     //Toast.makeText(getApplication(), "깐뚜", Toast.LENGTH_SHORT).show();
-                                    AlertDialog.Builder builder=new AlertDialog.Builder(getApplication());
+                                    AlertDialog.Builder builder=new AlertDialog.Builder(NavigationnActivity.this);
                                     builder.setTitle("테이블 예약 확정")
                                             .setMessage("깐뚜치오에서 예약하신 테이블을 확정 지으시겠습니까?")
                                             .setPositiveButton("예약 확정", new DialogInterface.OnClickListener() {
@@ -497,6 +496,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                                     SeatResult seatResult=response.body();
                                                                     switch (seatResult.getResult()){
                                                                         case 1://성공
+                                                                            CurrentUsingSeatInfo.setSeat_id(SeatOrderState.getId());
                                                                             Toast.makeText(getApplication(),"테이블을 확정지으셨습니다.",Toast.LENGTH_SHORT).show();
                                                                             cantu_seat_check=true;
                                                                             break;
@@ -559,7 +559,7 @@ public class NavigationnActivity extends AppCompatActivity
                                 if (beacon.getId3().toString().equals("23999")){
                                     Log.d("beacon","자드");
                                     //Toast.makeText(getApplication(),"자드",Toast.LENGTH_SHORT).show();
-                                    AlertDialog.Builder builder=new AlertDialog.Builder(getApplication());
+                                    AlertDialog.Builder builder=new AlertDialog.Builder(NavigationnActivity.this);
                                     builder.setTitle("테이블 예약 확정")
                                             .setMessage("자연드림에서 예약하신 테이블을 확정 지으시겠습니까?")
                                             .setPositiveButton("예약 확정", new DialogInterface.OnClickListener() {
@@ -579,6 +579,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                                     SeatResult seatResult=response.body();
                                                                     switch (seatResult.getResult()){
                                                                         case 1://성공
+                                                                            CurrentUsingSeatInfo.setSeat_id(SeatOrderState.getId());
                                                                             Toast.makeText(getApplication(),"테이블을 확정지으셨습니다.",Toast.LENGTH_SHORT).show();
                                                                             jad_seat_check=true;
                                                                             break;
@@ -651,8 +652,11 @@ public class NavigationnActivity extends AppCompatActivity
                             for (int i=0;i<beaconList.size();i++){
                                 if(beaconList.get(i).getId3().toString().equals("24000")){//감지된 비콘리스트에서 해당매장의 비콘의id3가 있으면
                                     seat_count=0;
-                                }else {//감지된 비콘 리스트에서 해당 매장의 비콘의id3가 없으면
-                                    if(seat_count>=3600) {//비콘감지가 안된게 1시간이 지나면
+                                    Log.d("out","찍힌다 더 가라");
+                                }else if(!(beaconList.get(i).getId3().toString().equals("24000"))){//감지된 비콘 리스트에서 해당 매장의 비콘의id3가 없으면
+                                    Log.d("out","없네?");
+                                    if(seat_count>=10) {//비콘감지가 안된게 1시간이 지나면
+                                        Log.d("out","여기는?");
                                         //자리 없애기 retofit
                                         try {
                                             String seat_id = String.valueOf(SeatOrderState.getId());
@@ -669,7 +673,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                         SeatResult seatResult = response.body();
                                                         switch (seatResult.getResult()) {
                                                             case 1://성공
-                                                                AlertDialog.Builder builder = new AlertDialog.Builder(getApplication());
+                                                                AlertDialog.Builder builder = new AlertDialog.Builder(NavigationnActivity.this);
                                                                 builder.setTitle("테이블 비움 처리")
                                                                         .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")
                                                                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -698,13 +702,15 @@ public class NavigationnActivity extends AppCompatActivity
                                         }
                                     }else {
                                         seat_count += 1;
+                                        Log.d("out","안보인다 비콘");
+                                        Toast.makeText(getApplication(),seat_count,Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }
                         }
                     };
                     timer.schedule(timerTask,1000);//타이머실행
-                    if(seat_count>=3600) {
+                    if(seat_count>=10) {
                         timer.cancel();//타이머종료
                         seat_count=0;
                     }
@@ -719,7 +725,7 @@ public class NavigationnActivity extends AppCompatActivity
                                 if (beaconList.get(i).getId3().toString().equals("23999")) {//감지된 비콘리스트에서 해당매장의 비콘의id3가 있으면
                                     seat_count = 0;
                                 } else {//감지된 비콘 리스트에서 해당 매장의 비콘의id3가 없으면
-                                    if (seat_count >= 3600) {//비콘감지가 안된게 1시간이 지나면
+                                    if (seat_count >= 10) {//비콘감지가 안된게 1시간이 지나면
                                         //자리 없애기 retofit
                                         try {
                                             String seat_id = String.valueOf(SeatOrderState.getId());
@@ -736,7 +742,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                         SeatResult seatResult = response.body();
                                                         switch (seatResult.getResult()) {
                                                             case 1://성공
-                                                                AlertDialog.Builder builder = new AlertDialog.Builder(getApplication());
+                                                                AlertDialog.Builder builder = new AlertDialog.Builder(NavigationnActivity.this);
                                                                 builder.setTitle("테이블 비움 처리")
                                                                         .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")
                                                                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -764,14 +770,15 @@ public class NavigationnActivity extends AppCompatActivity
                                             e.printStackTrace();
                                         }
                                     } else {
-                                        seat_count += 1;//1초의 딜레이로 이걸 계속 확인해줘야하는 코드 필요
+                                        seat_count += 1;
+                                        Toast.makeText(getApplication(),seat_count,Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }
                         }
                     };
                     timer1.schedule(timerTask1,1000);//타이머실행
-                    if(seat_count>=3600) {
+                    if(seat_count>=10) {
                         timer1.cancel();//타이머종료
                         seat_count=0;
                     }

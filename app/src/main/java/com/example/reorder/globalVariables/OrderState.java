@@ -4,9 +4,6 @@ public class OrderState {
     public static int order_id;
     public static int order_state;
 
-    public OrderState() {
-    }
-
     public static int getOrder_id() {
         return order_id;
     }
