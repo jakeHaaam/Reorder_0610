@@ -42,6 +42,7 @@ public class StoreFragment extends Fragment {
     private TextView tv_store_name;
     private List<StoreMenuInfo> currentStoreMenuInfo;
     private Button bt_bookmark;
+    private Button bt_table_check;
     String url= serverURL.getUrl();
 
 
@@ -91,6 +92,15 @@ public class StoreFragment extends Fragment {
         currentStoreMenuInfo=CurrentStoreMenuInfo.getStoreMenu().getStoreMenuInfoList();
         menu_adapter=new MenuAdapter(currentStoreMenuInfo,inflater.getContext());
         rv_menu.setAdapter(menu_adapter);
+
+
+        bt_table_check=view.findViewById(R.id.bt_table_check);
+        bt_table_check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         bt_bookmark=view.findViewById(R.id.bt_bookmark);
         bt_bookmark.setOnClickListener(new View.OnClickListener() {
