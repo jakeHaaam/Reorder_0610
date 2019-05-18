@@ -789,12 +789,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                     AlertDialog.Builder builder = new AlertDialog.Builder(NavigationnActivity.this);
                                                     builder.setTitle("테이블 비움 처리")
                                                             .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")
-                                                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    finish();
-                                                                }
-                                                            });
+                                                            .setPositiveButton("확인", null);
                                                     builder.show();
                                                     break;
                                                 case 0://실패
@@ -853,12 +848,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                         AlertDialog.Builder builder = new AlertDialog.Builder(NavigationnActivity.this);
                                                         builder.setTitle("테이블 비움 처리")
                                                                 .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")
-                                                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                                                                    @Override
-                                                                    public void onClick(DialogInterface dialog, int which) {
-                                                                        finish();
-                                                                    }
-                                                                });
+                                                                .setPositiveButton("확인", null);
                                                         builder.show();
                                                         cantu_seat_check = false;//좌석 사용이 끝났으니 false
                                                         break;
