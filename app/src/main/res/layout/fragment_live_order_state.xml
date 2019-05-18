@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.LiveOrderStateFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="주문 준비상태"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:textSize="40dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이곳에 없는 주문은 모두 제조가 완료되어 과거 주문 목록 페이지로 가시기 바랍니다."
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="607dp"
+        android:textSize="20dp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="140dp"
+        android:layout_width="match_parent"
+        android:layout_height="460dp"
+        android:id="@+id/lv_live"></android.support.v7.widget.RecyclerView>
+
+</FrameLayout>

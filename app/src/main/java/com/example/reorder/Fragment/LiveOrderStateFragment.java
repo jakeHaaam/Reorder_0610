@@ -4,30 +4,28 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.GridLayout;
-import android.widget.GridView;
-import android.widget.Toast;
 
+import com.example.reorder.Adapter.LiveOrderStateAdapter;
 import com.example.reorder.R;
-import com.example.reorder.globalVariables.CurrentSeatInfo;
-import com.example.reorder.globalVariables.CurrentSeeTableInfo;
+import com.example.reorder.globalVariables.CurrentLiveOrderStateInfo;
+import com.example.reorder.info.LiveOrderStateInfo;
 
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SeeTableFragment.OnFragmentInteractionListener} interface
+ * {@link LiveOrderStateFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SeeTableFragment#newInstance} factory method to
+ * Use the {@link LiveOrderStateFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SeeTableFragment extends Fragment {
+public class LiveOrderStateFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -36,15 +34,13 @@ public class SeeTableFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private GridLayout grid_see_table;
-    private Context context;
-    int checked_count,max_count;
-    private static int[] seat_state;
-    public static boolean[] seat_checked;
+    private List<LiveOrderStateInfo> liveOrderStateInfos;
+    private RecyclerView lv_live;
+    private RecyclerView.Adapter live_order_state_adapter;
 
     private OnFragmentInteractionListener mListener;
 
-    public SeeTableFragment() {
+    public LiveOrderStateFragment() {
         // Required empty public constructor
     }
 
@@ -54,11 +50,11 @@ public class SeeTableFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SeeTableFragment.
+     * @return A new instance of fragment LiveOrderStateFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SeeTableFragment newInstance(String param1, String param2) {
-        SeeTableFragment fragment = new SeeTableFragment();
+    public static LiveOrderStateFragment newInstance(String param1, String param2) {
+        LiveOrderStateFragment fragment = new LiveOrderStateFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -79,38 +75,14 @@ public class SeeTableFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_see_table,container,false);
-        grid_see_table=view.findViewById(R.id.grid_see_table);
+        //return inflater.inflate(R.layout.fragment_live_order_state, container, false);
+        View view=inflater.inflate(R.layout.fragment_live_order_state, container, false);
 
-        grid_see_table= view.findViewById(R.id.grid_see_table);
-        context=grid_see_table.getContext();
-        checked_count=0;
-        max_count=1;
-
-        int st_num= CurrentSeeTableInfo.getStoreSeat().getStoreSeatInfo().getSeat_num();
-        int st_row=CurrentSeeTableInfo.getStoreSeat().getStoreSeatInfo().getSeat_row();
-        seat_state=new int[st_num];
-        seat_checked=new boolean[st_num+1];//seat갯수 만큼 불린형 생성
-        Arrays.fill(seat_checked,false);//불린형 false로 초기화
-        grid_see_table.setColumnCount(st_row);//<-여기에 받아오는 행렬의 행값 입력 해주면 해당 행까지만 나오고 자동으로 다음 열로 이동해서 생성 됨
-        for(int j=0;j<st_num;j++)//버튼 동적 생성 부분
-        {
-            seat_state[j]= CurrentSeatInfo.getSeat().getSeatInfoList().get(j).getSeat_statement();//db에서 받아온 seat_state를 seat_id에 맞춰 집어넣어줘야 함
-            final Button bt = new Button(context);
-            bt.setId(j + 1);//id=1,2,3,4 이런식으로 할당 받아짐
-            bt.setText(String.valueOf(j + 1));
-            if(seat_state[j]==0){ //"0"은 사용 가능한 상태
-                bt.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.seat_able_button));
-            }
-            else if(seat_state[j]==1){//"1"은 예약중인 상태-예약 불가
-                bt.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.seat_reserved_button));
-            }
-            else if(seat_state[j]==2){//"2"는 현재 사용중인 상태-예약 불가
-                bt.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.seat_using_button));
-            }
-            grid_see_table.addView(bt);
-        }
-
+        lv_live=view.findViewById(R.id.lv_live);
+        lv_live.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
+        liveOrderStateInfos= CurrentLiveOrderStateInfo.getLiveOrderState().getLiveOrderStateInfos();
+        live_order_state_adapter=new LiveOrderStateAdapter(liveOrderStateInfos,inflater.getContext());
+        lv_live.setAdapter(live_order_state_adapter);
         return view;
     }
 

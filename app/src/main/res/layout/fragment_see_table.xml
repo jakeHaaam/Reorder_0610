@@ -21,7 +21,8 @@
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/grid_see_table">
+                android:id="@+id/grid_see_table"
+                android:orientation="horizontal">
 
             </GridLayout>
         </HorizontalScrollView>

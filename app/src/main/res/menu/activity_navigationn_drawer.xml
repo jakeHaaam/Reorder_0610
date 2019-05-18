@@ -18,6 +18,15 @@
             android:id="@+id/nav_table_out"
             android:icon="@drawable/ic_seat"
             android:title="Using Table Out" />
+
+        <item
+            android:id="@+id/nav_live_order_state"
+            android:icon="@drawable/live"
+            android:title="주문 준비상태" />
+        <item
+            android:id="@+id/nav_past_order"
+            android:icon="@drawable/past"
+            android:title="과거 주문내역" />
     </group>
 
 </menu>

@@ -6,10 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -24,18 +21,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.reorder.Api.FragmentReplaceable;
 
+import com.example.reorder.Api.LiveOrderStateApi;
 import com.example.reorder.Api.RetrofitApi;
 import com.example.reorder.Api.SeatApi;
 import com.example.reorder.Api.StoreIdApi;
 import com.example.reorder.Fragment.CartFragment;
 import com.example.reorder.Fragment.HomeFragment;
+import com.example.reorder.Fragment.LiveOrderStateFragment;
 import com.example.reorder.Fragment.MenuFragment;
 import com.example.reorder.Fragment.OrderFragment;
 import com.example.reorder.Fragment.SeatReserveFragment;
@@ -44,10 +42,12 @@ import com.example.reorder.Fragment.StoreFragment;
 import com.example.reorder.R;
 import com.example.reorder.Result.CartResult;
 import com.example.reorder.Api.CartSetApi;
+import com.example.reorder.Result.LiveOrderStateResult;
 import com.example.reorder.Result.LoginResult;
 import com.example.reorder.Result.SeatResult;
 import com.example.reorder.Result.StoreIdResult;
 import com.example.reorder.globalVariables.CurrentCartInfo;
+import com.example.reorder.globalVariables.CurrentLiveOrderStateInfo;
 import com.example.reorder.globalVariables.CurrentSelectStore;
 import com.example.reorder.globalVariables.CurrentStoreInfo;
 import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
@@ -56,6 +56,7 @@ import com.example.reorder.globalVariables.CurrentUsingSeatInfo;
 import com.example.reorder.globalVariables.SeatOrderState;
 import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.CartInfo;
+import com.example.reorder.info.LiveOrderStateInfo;
 import com.example.reorder.info.StoreInfo;
 import com.example.reorder.info.StoreMenuInfo;
 import com.example.reorder.info.UserInfo;
@@ -64,19 +65,13 @@ import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
-import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -101,6 +96,7 @@ public class NavigationnActivity extends AppCompatActivity
     private Fragment OrderFragment;
     private Fragment SeatReserveFragment;
     private Fragment MenuFragment;
+    private Fragment LiveOrderStateFragment=new LiveOrderStateFragment();
     private ImageButton bt_cart;
     public static Context mContext;
     private ImageButton bt_refresh;
@@ -411,6 +407,51 @@ public class NavigationnActivity extends AppCompatActivity
             }
         }
 
+        else if(id==R.id.nav_live_order_state){//실시간 주문 현황 버튼 클릭시
+            //레트로핏-서버에 client_id를 전송->서버는 order테이블에 해당 client_id가 들어있는 data 모두 전송(time,state)
+            try{
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(url)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                LiveOrderStateApi liveOrderStateApi = retrofit.create(LiveOrderStateApi.class);
+                Log.d("LiveOrderState","시작");
+                liveOrderStateApi.getLiveOrderState(String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()))
+                        .enqueue(new Callback<LiveOrderStateResult>() {
+                            @Override
+                            public void onResponse(Call<LiveOrderStateResult> call, Response<LiveOrderStateResult> response) {
+                                Log.d("LiveOrderState","respone");
+                                if(response.isSuccessful()){
+                                    LiveOrderStateResult liveOrderStateResult=response.body();
+                                    switch (liveOrderStateResult.getResult()){
+                                        case 1://성공
+                                            List<LiveOrderStateInfo> liveOrderStateInfos=liveOrderStateResult.getLiveOrderStateInfoList();
+                                            CurrentLiveOrderStateInfo.getLiveOrderState().setLiveOrderStateInfos(liveOrderStateInfos);
+                                            Log.d("LiveOrderState","case1");
+                                            replaceFragment(8);
+                                            break;
+                                        case 0://실패
+                                            Log.d("LiveOrderState","case0");
+                                            break;
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<LiveOrderStateResult> call, Throwable t) {
+                                t.printStackTrace();
+                                Log.d("LiveOrderState","fail");
+                            }
+                        });
+            }catch (Exception e){
+                e.printStackTrace();
+                Log.d("LiveOrderState","catch");
+            }
+        }
+        else if(id==R.id.nav_past_order){//과거 주문내역 버튼 클릭시
+
+        }
+
         transaction.addToBackStack(null);
         transaction.commit();
 
@@ -443,7 +484,10 @@ public class NavigationnActivity extends AppCompatActivity
             transaction.replace(R.id.container, SeatReserveFragment);
         }else if (fragmentId==7) {
             transaction.replace(R.id.container, MenuFragment);
+        }else if (fragmentId==8) {
+            transaction.replace(R.id.container, LiveOrderStateFragment);
         }
+
         transaction.addToBackStack(null);//뒤로가기라는 스텍에 계속 저장중
         transaction.commit();
     }

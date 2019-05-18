@@ -107,20 +107,24 @@ public class StoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //db에게 해당 스토어id를 보내고 store에 현재 테이블 관련 데이터값 받고 replace
-                String st_id=String.valueOf(CurrentSelectStore.getSt_id());
+                String store_id=String.valueOf(CurrentSelectStore.getSt_id());
                 try {
                     Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl(url)
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
                     final SeeTableApi seeTableApi = retrofit.create(SeeTableApi.class);
-                    seeTableApi.gettable(st_id).enqueue(new Callback<SeeTableResult>(){
+                    seeTableApi.gettable(store_id).enqueue(new Callback<SeeTableResult>(){
                         @Override
                         public void onResponse(Call<SeeTableResult> call, Response<SeeTableResult> response) {
+                            Log.d("See table Retrofit 통과:","Retrofit 통과");
                             if(response.isSuccessful()){
+                                Log.d("See table Retrofit 통과2:","Retrofit 통과2");
                                 SeeTableResult seeTableResult=response.body();
+                                Log.d("see table body 부분",response.body()+"");
                                 switch (seeTableResult.getResult()){
                                     case 1://성공
+                                        Log.d("See table Retrofit 마지막:","Retrofit 통과마지막");
                                         StoreSeatInfo storeSeatInfo=seeTableResult.getStoreSeatInfo();
                                         CurrentSeeTableInfo.getStoreSeat().setStoreSeatInfo(storeSeatInfo);
                                         //getStoreSeat이용해도 되는건지 잘 모름 일단 사용
@@ -136,10 +140,12 @@ public class StoreFragment extends Fragment {
                         }
                         @Override
                         public void onFailure(Call<SeeTableResult> call, Throwable t) {
+                            Log.d("See table Retrofit실패","Retrofit 실패");
                             t.printStackTrace();
                         }
                     });
                 }catch (Exception e){
+                    Log.d("See table실패catch","Retrofit 실패catch");
                     e.printStackTrace();
                 }
             }
