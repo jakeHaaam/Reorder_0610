@@ -44,8 +44,16 @@ public class PastOrderAdapter  extends RecyclerView.Adapter<PastOrderAdapter.Vie
             mileage=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getUsed_mileage();//한 order당 1개만 담음
             allprice+=Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_count()) *
                     Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_price());
+            if(pastOrderInfoList.size()==1){//지금까지 주문 내역이 1개만 있으면 이걸 달아줘야 해
+                viewHolder.order_time.setText(orTime);
+                viewHolder.complate_time.setText(comTime);
+                viewHolder.menu_name.setText(name);
+                viewHolder.menu_count.setText(count);
+                viewHolder.used_mileage.setText(mileage);//이제 allprice도 계산 해야해
+                viewHolder.all_price.setText(String.valueOf(allprice));
+            }
         }
-        else {//인덱스 1부터
+        else if(i<pastOrderInfoList.size()-1){//인덱스 1부터 마지막 인덱스 전까지
             if(orTime.isEmpty())//초기화 후 비워져있으면
             {
                 orTime=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getOrder_date();//한 order당 1개만 담음
@@ -80,15 +88,14 @@ public class PastOrderAdapter  extends RecyclerView.Adapter<PastOrderAdapter.Vie
                         allprice = 0;//null로 초기화
                     }
                 }
-                else {//뒤에 비교할 대상자가 없으면=본인이 마지막이면
-                    viewHolder.order_time.setText(orTime);
-                    viewHolder.complate_time.setText(comTime);
-                    viewHolder.menu_name.setText(name);
-                    viewHolder.menu_count.setText(count);
-                    viewHolder.used_mileage.setText(mileage);//이제 allprice도 계산 해야해
-                    viewHolder.all_price.setText(String.valueOf(allprice));
-                }
             }else {//새로운 오더시간이다
+                viewHolder.order_time.setText(orTime);
+                viewHolder.complate_time.setText(comTime);
+                viewHolder.menu_name.setText(name);
+                viewHolder.menu_count.setText(count);
+                viewHolder.used_mileage.setText(mileage);//이제 allprice도 계산 해야해
+                viewHolder.all_price.setText(String.valueOf(allprice));
+
                 orTime=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getOrder_date();//한 order당 1개만 담음
                 comTime=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getComplate_time();//한 order당 1개만 담음
                 name=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_name();
@@ -96,18 +103,38 @@ public class PastOrderAdapter  extends RecyclerView.Adapter<PastOrderAdapter.Vie
                 mileage=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getUsed_mileage();//한 order당 1개만 담음
                 allprice+=Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_count()) *
                         Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_price());
+            }
+        }else if(i==pastOrderInfoList.size()){//마지막 순서이면
+            if(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i-1).getOrder_date()
+                    .equals(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getOrder_date())){//이 전 아이템이랑 같은 order이면
 
-                //내가 마지막순서이면
-                if(i==pastOrderInfoList.size()-1){
-                    viewHolder.order_time.setText(orTime);
-                    viewHolder.complate_time.setText(comTime);
-                    viewHolder.menu_name.setText(name);
-                    viewHolder.menu_count.setText(count);
-                    viewHolder.used_mileage.setText(mileage);//이제 allprice도 계산 해야해
-                    viewHolder.all_price.setText(String.valueOf(allprice));
-                }
+                name+="\n" + CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_name();
+                count+="\n" + CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_count();
+                allprice+=Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_count()) *
+                        Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_price());
+                viewHolder.order_time.setText(orTime);
+                viewHolder.complate_time.setText(comTime);
+                viewHolder.menu_name.setText(name);
+                viewHolder.menu_count.setText(count);
+                viewHolder.used_mileage.setText(mileage);//이제 allprice도 계산 해야해
+                viewHolder.all_price.setText(String.valueOf(allprice));
+            }else {//혼자만의 order이면
+                orTime=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getOrder_date();//한 order당 1개만 담음
+                comTime=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getComplate_time();//한 order당 1개만 담음
+                name=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_name();
+                count=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_count();
+                mileage=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getUsed_mileage();//한 order당 1개만 담음
+                allprice+=Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_count()) *
+                        Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_price());
+                viewHolder.order_time.setText(orTime);
+                viewHolder.complate_time.setText(comTime);
+                viewHolder.menu_name.setText(name);
+                viewHolder.menu_count.setText(count);
+                viewHolder.used_mileage.setText(mileage);//이제 allprice도 계산 해야해
+                viewHolder.all_price.setText(String.valueOf(allprice));
             }
         }
+
     }
 
     @Override
