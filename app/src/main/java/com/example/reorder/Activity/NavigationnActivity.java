@@ -1,6 +1,7 @@
 package com.example.reorder.Activity;
 
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 import com.example.reorder.Api.FragmentReplaceable;
 
 import com.example.reorder.Api.LiveOrderStateApi;
+import com.example.reorder.Api.PastOrderApi;
 import com.example.reorder.Api.RetrofitApi;
 import com.example.reorder.Api.SeatApi;
 import com.example.reorder.Api.StoreIdApi;
@@ -36,6 +38,7 @@ import com.example.reorder.Fragment.HomeFragment;
 import com.example.reorder.Fragment.LiveOrderStateFragment;
 import com.example.reorder.Fragment.MenuFragment;
 import com.example.reorder.Fragment.OrderFragment;
+import com.example.reorder.Fragment.PastOrderFragment;
 import com.example.reorder.Fragment.SeatReserveFragment;
 import com.example.reorder.Fragment.SeeTableFragment;
 import com.example.reorder.Fragment.StoreFragment;
@@ -44,10 +47,12 @@ import com.example.reorder.Result.CartResult;
 import com.example.reorder.Api.CartSetApi;
 import com.example.reorder.Result.LiveOrderStateResult;
 import com.example.reorder.Result.LoginResult;
+import com.example.reorder.Result.PastOrderResult;
 import com.example.reorder.Result.SeatResult;
 import com.example.reorder.Result.StoreIdResult;
 import com.example.reorder.globalVariables.CurrentCartInfo;
 import com.example.reorder.globalVariables.CurrentLiveOrderStateInfo;
+import com.example.reorder.globalVariables.CurrentPastOrderInfo;
 import com.example.reorder.globalVariables.CurrentSelectStore;
 import com.example.reorder.globalVariables.CurrentStoreInfo;
 import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
@@ -57,6 +62,7 @@ import com.example.reorder.globalVariables.SeatOrderState;
 import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.CartInfo;
 import com.example.reorder.info.LiveOrderStateInfo;
+import com.example.reorder.info.PastOrderInfo;
 import com.example.reorder.info.StoreInfo;
 import com.example.reorder.info.StoreMenuInfo;
 import com.example.reorder.info.UserInfo;
@@ -96,11 +102,13 @@ public class NavigationnActivity extends AppCompatActivity
     private Fragment OrderFragment;
     private Fragment SeatReserveFragment;
     private Fragment MenuFragment;
+    private Fragment pastOrderFragment=new PastOrderFragment();
     private Fragment LiveOrderStateFragment=new LiveOrderStateFragment();
     private ImageButton bt_cart;
     public static Context mContext;
     private ImageButton bt_refresh;
     String url= serverURL.getUrl();
+
 
     public void categoryChanged(List<StoreInfo> storeInfos){
         //homeFragment.getActivity().
@@ -408,7 +416,6 @@ public class NavigationnActivity extends AppCompatActivity
         }
 
         else if(id==R.id.nav_live_order_state){//실시간 주문 현황 버튼 클릭시
-            //레트로핏-서버에 client_id를 전송->서버는 order테이블에 해당 client_id가 들어있는 data 모두 전송(time,state)
             try{
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(url)
@@ -430,7 +437,8 @@ public class NavigationnActivity extends AppCompatActivity
                                             Log.d("LiveOrderState","case1");
                                             replaceFragment(8);
                                             break;
-                                        case 0://실패
+                                        case 0://실패or 내역 없음
+                                            Toast.makeText(getApplication(),"현재 준비중인 제품이 없습니다.주문 내역을 확인해 보세요.",Toast.LENGTH_SHORT).show();
                                             Log.d("LiveOrderState","case0");
                                             break;
                                     }
@@ -449,7 +457,46 @@ public class NavigationnActivity extends AppCompatActivity
             }
         }
         else if(id==R.id.nav_past_order){//과거 주문내역 버튼 클릭시
+            //레트로핏-서버에 client_id를 전송->서버는 order테이블에 해당 client_id가 들어있는 data 모두 전송(time,state)
+            try{
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(url)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                PastOrderApi pastOrderApi = retrofit.create(PastOrderApi.class);
+                Log.d("PastOrderApi","시작");
+                pastOrderApi.getPastOrder(String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()))
+                        .enqueue(new Callback<PastOrderResult>() {
+                            @Override
+                            public void onResponse(Call<PastOrderResult> call, Response<PastOrderResult> response) {
+                                Log.d("PastOrderApi","respone");
+                                if(response.isSuccessful()){
+                                    PastOrderResult pastOrderResult=response.body();
+                                    switch (pastOrderResult.getResult()){
+                                        case 1://성공
+                                            List<PastOrderInfo> pastOrderInfos=pastOrderResult.getPastOrderInfos();
+                                            CurrentPastOrderInfo.getPastOrder().setPastOrderInfoList(pastOrderInfos);
+                                            Log.d("PastOrderApi","case1");
+                                            replaceFragment(9);
+                                            break;
+                                        case 0://실패or 내역 없음
+                                            Toast.makeText(getApplication(),"과거 주문하신 내역이 없습니다.",Toast.LENGTH_SHORT).show();
+                                            Log.d("PastOrderApi","case0");
+                                            break;
+                                    }
+                                }
+                            }
 
+                            @Override
+                            public void onFailure(Call<PastOrderResult> call, Throwable t) {
+                                t.printStackTrace();
+                                Log.d("PastOrderResult","fail");
+                            }
+                        });
+            }catch (Exception e) {
+                e.printStackTrace();
+                Log.d("PastOrderResult", "catch");
+            }
         }
 
         transaction.addToBackStack(null);
@@ -486,6 +533,8 @@ public class NavigationnActivity extends AppCompatActivity
             transaction.replace(R.id.container, MenuFragment);
         }else if (fragmentId==8) {
             transaction.replace(R.id.container, LiveOrderStateFragment);
+        }else if (fragmentId==9) {
+            transaction.replace(R.id.container, pastOrderFragment);
         }
 
         transaction.addToBackStack(null);//뒤로가기라는 스텍에 계속 저장중
