@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -71,7 +73,7 @@ public class OrderFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private RadioButton rb_eat_here;
-    private RadioButton rb_take_out;
+    public static RadioButton rb_take_out;
     private RadioButton rb_seat_yes;
     private RadioButton rb_seat_no;
     private RadioGroup rg_seat;
@@ -79,12 +81,23 @@ public class OrderFragment extends Fragment {
     private LinearLayout ll_seat;
     private TextView tv_selected_seat;
     private Button bt_order;
+    private Button bt_order_cancle;
     private Bundle bundle;
     private RecyclerView rv_item;
     private List<CartInfo> currentSelectCartInfo;
     private RecyclerView.Adapter order_adapter;
-    String url= serverURL.getUrl();
-
+    String url = serverURL.getUrl();
+    private TextView tv_my_mileage;
+    private EditText et_use_mileage;
+    private TextView tv_before_totalprice;
+    private TextView tv_after_totalprice;
+    public static CheckBox cb_mileage;
+    private TextView tv_minus;
+    private Button bt_mileage_ok;
+    private TextView tv_save_mileage;
+    public  int mg_after_price;
+    public  int save_mileage;
+    public static int used_mileage=0;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -126,29 +139,57 @@ public class OrderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_order, container, false);
-        rb_eat_here=view.findViewById(R.id.rb_eat_here);
-        rb_take_out=view.findViewById(R.id.rb_take_out);
+        View view = inflater.inflate(R.layout.fragment_order, container, false);
+        used_mileage=0;
+        cb_mileage=view.findViewById(R.id.cb_mileage);
+        cb_mileage.setChecked(false);
+
+        rb_eat_here = view.findViewById(R.id.rb_eat_here);
+        rb_take_out = view.findViewById(R.id.rb_take_out);
         rb_take_out.setChecked(true);
-        rb_seat_yes=view.findViewById(R.id.rb_seat_yes);
-        rb_seat_no=view.findViewById(R.id.rb_seat_no);
-        rg_eat=view.findViewById(R.id.rg_eat);
-        rg_seat=view.findViewById(R.id.rg_seat);
-        ll_seat=view.findViewById(R.id.ll_seat);
-        bt_order=view.findViewById(R.id.bt_order);
-        rv_item=view.findViewById(R.id.rv_order);
+        rb_seat_yes = view.findViewById(R.id.rb_seat_yes);
+        rb_seat_no = view.findViewById(R.id.rb_seat_no);
+        rg_eat = view.findViewById(R.id.rg_eat);
+        rg_seat = view.findViewById(R.id.rg_seat);
+        ll_seat = view.findViewById(R.id.ll_seat);
+        bt_order = view.findViewById(R.id.bt_order);
+        bt_order_cancle=view.findViewById(R.id.bt_order_cancle);
+
+        tv_my_mileage = view.findViewById(R.id.tv_my_mileage);
+        tv_my_mileage.setText(Integer.toString(CurrentUserInfo.getUser().getUserInfo().getClient_mileage()));
+
+        et_use_mileage = view.findViewById(R.id.et_use_mileage);
+        et_use_mileage.setText(Integer.toString(used_mileage));
+
+        tv_before_totalprice = view.findViewById(R.id.tv_before_totalprice);
+        tv_before_totalprice.setText(Integer.toString(CartAdapter.totalprice));
+
+        tv_after_totalprice = view.findViewById(R.id.tv_after_totalprice);
+        tv_after_totalprice.setText(Integer.toString(CartAdapter.totalprice));
+
+        tv_save_mileage=view.findViewById(R.id.tv_save_mileage);
+        tv_save_mileage.setText(Integer.toString((int)(Integer.parseInt(tv_after_totalprice.getText().toString())*0.01)));
+
+        tv_minus=view.findViewById(R.id.tv_minus);
+
+        bt_mileage_ok=view.findViewById(R.id.bt_mileage_ok);
+
+
+        Log.d("mile","체크박스 false라고");
+        Log.d("mile","1:"+used_mileage);
+
+        rv_item = view.findViewById(R.id.rv_order);
         rv_item.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
-        currentSelectCartInfo= CurrentSelectCartInfo.getCart().getCartInfoList();
-        order_adapter=new OrderAdapter(currentSelectCartInfo,inflater.getContext());
+        currentSelectCartInfo = CurrentSelectCartInfo.getCart().getCartInfoList();
+        order_adapter = new OrderAdapter(currentSelectCartInfo, inflater.getContext());
         rv_item.setAdapter(order_adapter);
         //장바구니에서 선택된 제품만 주문하는게 아니라서 장바구니 아이템/어댑터 사용
-        if(bundle!=null) {
+        if (bundle != null) {
             ArrayList<Integer> seat = getActivity().getIntent().getExtras().getIntegerArrayList("bundle");
             if (seat != null) {
                 tv_selected_seat.setText(seat.toString());
                 tv_selected_seat.setVisibility(View.VISIBLE);
-            }
-            else
+            } else
                 tv_selected_seat.setVisibility(View.GONE);
         }
 
@@ -156,7 +197,7 @@ public class OrderFragment extends Fragment {
         rg_eat.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId == R.id.rb_eat_here)
+                if (checkedId == R.id.rb_eat_here)
                     ll_seat.setVisibility(View.VISIBLE);
                 else
                     ll_seat.setVisibility(View.GONE);
@@ -166,9 +207,21 @@ public class OrderFragment extends Fragment {
         bt_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<JSONObject> list=new ArrayList<>();
-                if(rb_take_out.isChecked()||rb_eat_here.isChecked() && rb_seat_no.isChecked()){
-                    if(CurrentSelectCartInfo.getCart().getCartInfoList().size()>1) {//주문 갯수 1개 이상 시
+                if(!cb_mileage.isChecked()){
+                    used_mileage=0;
+                }
+
+                else if((cb_mileage.isChecked()==true) &&((Integer.parseInt(et_use_mileage.getText().toString()) == 0) || (et_use_mileage.getText().toString().equals("")))){
+                    Toast.makeText(getContext(), "사용할 마일리지를 입력하고 OK 버튼을 눌러주십시오", Toast.LENGTH_SHORT).show();
+                }
+
+
+                List<JSONObject> list = new ArrayList<>();
+                if(!bt_order.isClickable()){
+                    Toast.makeText(getContext(), "사용할 마일리지를 입력 후 OK버튼을 눌러주시기 바랍니다", Toast.LENGTH_SHORT).show();
+                }
+                else if (rb_take_out.isChecked() || rb_eat_here.isChecked() && rb_seat_no.isChecked()) {
+                    if (CurrentSelectCartInfo.getCart().getCartInfoList().size() > 1) {//주문 갯수 1개 이상 시
                         try {
                             for (int i = 0; i < CurrentSelectCartInfo.getCart().getCartInfoList().size(); i++) {
                                 String id = String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
@@ -185,6 +238,7 @@ public class OrderFragment extends Fragment {
                                 object.put("menu_name", menu_name);
                                 object.put("menu_price", menu_price);
                                 object.put("menu_count", menu_count);
+                                object.put("used_mileage",String.valueOf(used_mileage));
                                 list.add(object);
                                 //Log.d("list",list.toString());
                             }
@@ -204,8 +258,10 @@ public class OrderFragment extends Fragment {
                                                     case 1://성공
                                                         OrderState.setOrder_id(map.getOreder_serial());
                                                         OrderState.setOrder_state(map.getOrder_state());
-                                                        Toast.makeText(getContext(), "주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(getContext(), "주문이 전송되었습니다. 주문번호는 "+map.getOreder_serial()+"입니다.", Toast.LENGTH_SHORT).show();
                                                         ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(1);
+                                                        cb_mileage.setChecked(false);
+                                                        rb_take_out.setChecked(true);
                                                         break;
                                                     case 0:
                                                         Toast.makeText(getContext(), "주문이 전송되지 않았습니다.", Toast.LENGTH_SHORT).show();
@@ -228,8 +284,7 @@ public class OrderFragment extends Fragment {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    }
-                    else {//주문 갯수 1개 시
+                    } else {//주문 갯수 1개 시
                         try {
                             String id = String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
                             String store_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getStore_id());
@@ -238,14 +293,15 @@ public class OrderFragment extends Fragment {
                             String menu_price = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_price());
                             String menu_count = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_count());
                             try {
-                                HashMap<String, String> input=new HashMap<>();
-                                input.put("id",id);
-                                input.put("store_id",store_id);
-                                input.put("menu_id",menu_id);
-                                input.put("menu_name",menu_name);
-                                input.put("menu_price",menu_price);
-                                input.put("menu_count",menu_count);
-                                Log.d("order","input= "+input);
+                                HashMap<String, String> input = new HashMap<>();
+                                input.put("id", id);
+                                input.put("store_id", store_id);
+                                input.put("menu_id", menu_id);
+                                input.put("menu_name", menu_name);
+                                input.put("menu_price", menu_price);
+                                input.put("menu_count", menu_count);
+                                input.put("used_mileage", String.valueOf(used_mileage));//
+                                Log.d("order", "input= " + input);
                                 Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
                                 OrderApi orderApi = retrofit.create(OrderApi.class);
                                 orderApi.getResult(input).enqueue(new Callback<OrderResult>() {
@@ -261,8 +317,10 @@ public class OrderFragment extends Fragment {
                                                     case 1://성공
                                                         OrderState.setOrder_id(map.getOreder_serial());
                                                         OrderState.setOrder_state(map.getOrder_state());
-                                                        Toast.makeText(getContext(), "주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(getContext(), "주문이 전송되었습니다. 주문번호는 "+map.getOreder_serial()+"입니다.", Toast.LENGTH_SHORT).show();
                                                         ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(1);
+                                                        cb_mileage.setChecked(false);
+                                                        rb_take_out.setChecked(true);
                                                         break;
                                                     case 0:
                                                         Toast.makeText(getContext(), "주문이 전송되지 않았습니다.", Toast.LENGTH_SHORT).show();
@@ -286,37 +344,37 @@ public class OrderFragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
-                }
-
-                else if(rb_eat_here.isChecked() && rb_seat_yes.isChecked()){//좌석 예약시 페이지 이동
+                } else if (rb_eat_here.isChecked() && rb_seat_yes.isChecked()) {//좌석 예약시 페이지 이동
 
                     try {
-                        String st_id=String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getStore_id());
+                        String st_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getStore_id());
                         //이거는 0해도됨->이유: 장바구니에는 어차피 같은 스토어만 저장 할 것이니깐
                         Retrofit retrofit = new Retrofit.Builder()
                                 .baseUrl(url)
                                 .addConverterFactory(GsonConverterFactory.create())
                                 .build();
                         StoreSeatApi storeSeatApi = retrofit.create(StoreSeatApi.class);
-                        storeSeatApi.getResult(st_id).enqueue(new Callback<StoreSeatResult>() {
+                        storeSeatApi.getResult(st_id)
+                                .enqueue(new Callback<StoreSeatResult>() {
                                     @Override
                                     public void onResponse(Call<StoreSeatResult> call, Response<StoreSeatResult> response) {
-                                        Log.d("store_seat","respone");
-                                        Log.d("store_seat",""+response.body());
-                                        if(response.isSuccessful())
-                                        {
-                                            Log.d("store_seat","respone성공");
-                                            StoreSeatResult storeSeatResult=response.body();
-                                            switch (storeSeatResult.getResult()){
+                                        Log.d("store_seat", "respone");
+                                        Log.d("store_seat", "" + response.body());
+                                        if (response.isSuccessful()) {
+                                            Log.d("store_seat", "respone성공");
+                                            StoreSeatResult storeSeatResult = response.body();
+                                            switch (storeSeatResult.getResult()) {
                                                 case 1://성공
-                                                    Log.d("store_seat","body성공");
-                                                    Log.d("store_seat",storeSeatResult.toString());
-                                                    List<SeatInfo> seatInfos=storeSeatResult.getSeatInfos();//좌석 상태받는 애
-                                                    StoreSeatInfo storeSeatInfo=storeSeatResult.getStoreSeatInfo();
+                                                    Log.d("store_seat", "body성공");
+                                                    Log.d("store_seat", storeSeatResult.toString());
+                                                    List<SeatInfo> seatInfos = storeSeatResult.getSeatInfos();//좌석 상태받는 애
+                                                    StoreSeatInfo storeSeatInfo = storeSeatResult.getStoreSeatInfo();
                                                     CurrentStoreSeatInfo.getStoreSeat().setStoreSeatInfo(storeSeatInfo);
                                                     CurrentSeatInfo.getSeat().setSeatInfoList(seatInfos);
-                                                    Log.d("seat",""+seatInfos);
-                                                    ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(6);
+                                                    Log.d("seat", "" + seatInfos);
+                                                    ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(6);
+                                                    cb_mileage.setChecked(false);
+                                                    rb_take_out.setChecked(true);
                                                     break;
                                                 case 0://실패
 //                                                    Toast.makeText(getContext(),"등록된 매장이 없습니다.",Toast.LENGTH_SHORT).show();
@@ -328,20 +386,87 @@ public class OrderFragment extends Fragment {
                                     public void onFailure(Call<StoreSeatResult> call, Throwable t) {
                                         t.printStackTrace();
                                         Log.d("store_seat", String.valueOf(call));
-                                        Log.d("store_seat","fail");
+                                        Log.d("store_seat", "fail");
                                     }
                                 });
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
-                        Log.d("bt_bookmark","excep");
+                        Log.d("bt_bookmark", "excep");
                     }
+                }
+
+
+
+            }
+        });
+
+        cb_mileage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(cb_mileage.isChecked()){
+                    tv_my_mileage.setVisibility(View.VISIBLE);
+                    tv_minus.setVisibility(View.VISIBLE);
+                    et_use_mileage.setVisibility(View.VISIBLE);
+                    bt_mileage_ok.setVisibility(View.VISIBLE);
+                    et_use_mileage.setText(Integer.toString(used_mileage));
+                    used_mileage=0;
+                    // bt_order.setClickable(false);
+                    Log.d("mile","used_mileage 체크시:"+used_mileage);
+                }else{
+                    tv_my_mileage.setVisibility(View.GONE);
+                    tv_minus.setVisibility(View.GONE);
+                    et_use_mileage.setVisibility(View.GONE);
+                    bt_mileage_ok.setVisibility(View.GONE);
+                    //  bt_order.setClickable(true);
+                    used_mileage=0;
+                    et_use_mileage.setText(Integer.toString(used_mileage));
+                    Log.d("mile","used_mileage 체크해제시:"+used_mileage);
                 }
             }
         });
 
+        bt_mileage_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("mile",et_use_mileage.getText()+"");
 
+                try {
+                    if (Integer.parseInt(et_use_mileage.getText().toString()) > CurrentUserInfo.getUser().getUserInfo().getClient_mileage()) {
+                        Toast.makeText(getContext(), "보유한 마일리지보다 더 큰 숫자는 입력할 수 없습니다", Toast.LENGTH_SHORT).show();
+                    } else if (Integer.parseInt(et_use_mileage.getText().toString()) % 100 != 0) {
+                        Toast.makeText(getContext(), "마일리지는 100원 단위로 사용할 수 있습니다", Toast.LENGTH_SHORT).show();
+                    } else if ((Integer.parseInt(et_use_mileage.getText().toString()) == 0) || (et_use_mileage.getText().toString().equals(""))) {
+                        Log.d("mile", et_use_mileage.getText() + "사용할마일리지를입력하여주십시오");
+                        Toast.makeText(getContext(), "사용할 마일리지를 입력하여 주십시오", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        used_mileage=(Integer.parseInt(et_use_mileage.getText().toString()));//사용할 마일리지 저장
+                        mg_after_price = CartAdapter.totalprice - Integer.parseInt(et_use_mileage.getText().toString());
+                        tv_after_totalprice.setText(Integer.toString(mg_after_price));
+                        save_mileage= (int)(mg_after_price*0.01);
+
+                        tv_save_mileage.setText(Integer.toString(save_mileage));
+                        Log.d("mile","used_mileage:"+used_mileage);
+
+                    }
+                }catch(NumberFormatException e){
+                    Toast.makeText(getContext(), "사용할 마일리지를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        bt_order_cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "주문이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(1);
+                cb_mileage.setChecked(false);
+                rb_take_out.setChecked(true);
+            }
+        });
         return view;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

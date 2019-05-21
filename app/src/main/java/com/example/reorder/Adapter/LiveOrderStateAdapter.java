@@ -35,12 +35,8 @@ public class LiveOrderStateAdapter extends RecyclerView.Adapter<LiveOrderStateAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        if(CurrentLiveOrderStateInfo.getLiveOrderState().getLiveOrderStateInfos().get(i).getOrder_state()==0){
-            viewHolder.order_state.setText("현재 제조중입니다.");
-        }
-        //viewHolder.order_state.setText(CurrentLiveOrderStateInfo.getLiveOrderState().getLiveOrderStateInfos().get(i).getOrder_state());
-        viewHolder.order_time.setText(String.valueOf(CurrentLiveOrderStateInfo.getLiveOrderState().getLiveOrderStateInfos().get(i).getOrder_serial()));
-        //현재 order_time에는 order_serial이 보여질 것임
+        viewHolder.order_state.setText("순번이 들어갈 에정.");
+        viewHolder.order_serial.setText(String.valueOf(CurrentLiveOrderStateInfo.getLiveOrderState().getLiveOrderStateInfos().get(i).getOrder_serial()));
     }
 
     @Override
@@ -50,11 +46,11 @@ public class LiveOrderStateAdapter extends RecyclerView.Adapter<LiveOrderStateAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView order_time,order_state;//일단 time에는 오더 serial찍어볼 예정
+        private TextView order_state,order_serial;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            order_time=itemView.findViewById(R.id.tv_order_time);
+            order_serial=itemView.findViewById(R.id.tv_order_serial);
             order_state=itemView.findViewById(R.id.tv_state);
         }
     }

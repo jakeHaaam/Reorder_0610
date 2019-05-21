@@ -1,6 +1,8 @@
 package com.example.reorder.Fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -37,6 +39,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.example.reorder.Fragment.OrderFragment.used_mileage;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -148,150 +152,162 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 if(select_id!=-1){
-                    if(CurrentSelectCartInfo.getCart().getCartInfoList().size()>1) {//주문 2개이상시
-                        try {
-                            List<JSONObject> list = new ArrayList<>();
-
-                            for (int i = 0; i < CurrentSelectCartInfo.getCart().getCartInfoList().size(); i++) {
-                                String id = String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
-                                String store_id = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getStore_id());
-                                String menu_id = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_id());
-                                String menu_name = CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_name();
-                                String menu_price = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
-                                String menu_count = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
-                                String seat_id = String.valueOf(select_id);
-
-                                JSONObject object = new JSONObject();
-                                object.put("id", id);
-                                object.put("store_id", store_id);
-                                object.put("menu_id", menu_id);
-                                object.put("menu_name", menu_name);
-                                object.put("menu_price", menu_price);
-                                object.put("menu_count", menu_count);
-                                object.put("seat_id", seat_id);
-                                list.add(object);
-                            }
-                            //메뉴아이디, 메뉴 수량 넣어야 해
-                            Retrofit retrofit = new Retrofit.Builder()
-                                    .baseUrl(url)
-                                    .addConverterFactory(GsonConverterFactory.create())
-                                    .build();
-                            OrderAndSeatApi orderAndSeatApi = retrofit.create(OrderAndSeatApi.class);
-                            orderAndSeatApi.getResult(list).enqueue(new Callback<OrderAndSeatResult>() {
+                    AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+                    builder.setTitle("테이블 예약 안내")
+                            .setMessage("30분 이내에 매장에 방문을 하시지 않으면 예약이 취소 됩니다.\n" +
+                                    "또한 매장 방문시 블루투스를 켜져 있어야 예약을 확정 지으실 수 있습니다.")
+                            .setPositiveButton("예", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onResponse(Call<OrderAndSeatResult> call, Response<OrderAndSeatResult> response) {
-                                    Log.d("respone", "respone");
-                                    if (response.isSuccessful()) {
-                                        Log.d("respone is successful", "respone is successful");
-                                        OrderAndSeatResult orderAndSeatResult = response.body();
-                                        switch (orderAndSeatResult.getResult()) {
-                                            case 1:
-                                                SeatOrderState.setOrder_id(orderAndSeatResult.getOreder_serial());//주문 고유번호
-                                                SeatOrderState.setOrder_state(orderAndSeatResult.getOrder_state());//주문상태
-                                                SeatOrderState.setId(orderAndSeatResult.getId());//좌석 고유번호
-                                                Toast.makeText(getContext(), "주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
-                                                if(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()==1)//깐뚜이면
-                                                {
-                                                    NavigationnActivity.bool_beacon=true;
-                                                    NavigationnActivity.bea_st_id=1;
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(CurrentSelectCartInfo.getCart().getCartInfoList().size()>1) {//주문 2개이상시
+                                        try {
+                                            List<JSONObject> list = new ArrayList<>();
+                                            for (int i = 0; i < CurrentSelectCartInfo.getCart().getCartInfoList().size(); i++) {
+                                                String id = String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
+                                                String store_id = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getStore_id());
+                                                String menu_id = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_id());
+                                                String menu_name = CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_name();
+                                                String menu_price = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
+                                                String menu_count = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
+                                                String seat_id = String.valueOf(select_id);
+
+                                                JSONObject object = new JSONObject();
+                                                object.put("id", id);
+                                                object.put("store_id", store_id);
+                                                object.put("menu_id", menu_id);
+                                                object.put("menu_name", menu_name);
+                                                object.put("menu_price", menu_price);
+                                                object.put("menu_count", menu_count);
+                                                object.put("seat_id", seat_id);
+                                                object.put("used_mileage",Integer.toString(used_mileage));
+                                                list.add(object);
+                                            }
+                                            //메뉴아이디, 메뉴 수량 넣어야 해
+                                            Retrofit retrofit = new Retrofit.Builder()
+                                                    .baseUrl(url)
+                                                    .addConverterFactory(GsonConverterFactory.create())
+                                                    .build();
+                                            OrderAndSeatApi orderAndSeatApi = retrofit.create(OrderAndSeatApi.class);
+                                            orderAndSeatApi.getResult(list).enqueue(new Callback<OrderAndSeatResult>() {
+                                                @Override
+                                                public void onResponse(Call<OrderAndSeatResult> call, Response<OrderAndSeatResult> response) {
+                                                    Log.d("respone", "respone");
+                                                    if (response.isSuccessful()) {
+                                                        Log.d("respone is successful", "respone is successful");
+                                                        OrderAndSeatResult orderAndSeatResult = response.body();
+                                                        switch (orderAndSeatResult.getResult()) {
+                                                            case 1:
+                                                                SeatOrderState.setOrder_id(orderAndSeatResult.getOreder_serial());//주문 고유번호
+                                                                SeatOrderState.setOrder_state(orderAndSeatResult.getOrder_state());//주문상태
+                                                                SeatOrderState.setId(orderAndSeatResult.getId());//좌석 고유번호
+                                                                Toast.makeText(getContext(), "주문이 전송되었습니다. 주문 번호는 "+orderAndSeatResult.getOreder_serial()+"입니다.", Toast.LENGTH_SHORT).show();
+                                                                if(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()==1)//깐뚜이면
+                                                                {
+                                                                    NavigationnActivity.bool_beacon=true;
+                                                                    NavigationnActivity.bea_st_id=1;
+                                                                }
+                                                                else if(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()==2)//자드이면
+                                                                {
+                                                                    NavigationnActivity.bool_beacon=true;
+                                                                    NavigationnActivity.bea_st_id=2;
+                                                                }
+                                                                else {//두곳 다 아니면
+                                                                    CurrentUsingSeatInfo.setSeat_id(select_id);
+                                                                }
+                                                                Log.d("beacon","test 전");
+                                                                ((NavigationnActivity)NavigationnActivity.mContext).onBeaconServiceConnect();
+                                                                Log.d("beacon","test 성공");
+                                                                ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(1);
+                                                                break;
+                                                            case 0:
+                                                                Toast.makeText(getContext(), "주문이 전송되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                                                                break;
+                                                        }
+                                                    }
                                                 }
-                                                else if(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()==2)//자드이면
-                                                {
-                                                    NavigationnActivity.bool_beacon=true;
-                                                    NavigationnActivity.bea_st_id=2;
+                                                @Override
+                                                public void onFailure(Call<OrderAndSeatResult> call, Throwable t) {
+                                                    t.printStackTrace();
                                                 }
-                                                else {//두곳 다 아니면
-                                                    CurrentUsingSeatInfo.setSeat_id(select_id);
+                                            });
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }else {//주문 1개시
+                                        try {
+                                            String id=String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
+                                            String store_id=String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id());
+                                            String menu_id=String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getMenu_id());
+                                            String menu_name=CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getMenu_name();
+                                            String menu_price=String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getMenu_price());
+                                            String menu_count=String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getMenu_count());
+                                            String seat_id=String.valueOf(select_id);
+                                            HashMap<String,String> input=new HashMap<>();
+                                            input.put("id",id);
+                                            input.put("store_id",store_id);
+                                            input.put("menu_id",menu_id);
+                                            input.put("menu_name",menu_name);
+                                            input.put("menu_price",menu_price);
+                                            input.put("menu_count",menu_count);
+                                            input.put("seat_id",seat_id);
+                                            input.put("used_mileage", String.valueOf(used_mileage));
+                                            Log.d("order","input= "+input);
+
+                                            Retrofit retrofit = new Retrofit.Builder()
+                                                    .baseUrl(url)
+                                                    .addConverterFactory(GsonConverterFactory.create())
+                                                    .build();
+                                            OrderAndSeatApi orderAndSeatApi=retrofit.create(OrderAndSeatApi.class);
+                                            orderAndSeatApi.getResult(input).enqueue(new Callback<OrderAndSeatResult>() {
+                                                @Override
+                                                public void onResponse(Call<OrderAndSeatResult> call, Response<OrderAndSeatResult> response) {
+                                                    Log.d("respone","respone");
+                                                    if(response.isSuccessful()){
+                                                        Log.d("respone is successful","respone is successful");
+                                                        OrderAndSeatResult orderAndSeatResult= response.body();
+                                                        switch (orderAndSeatResult.getResult()){
+                                                            case 1:
+                                                                SeatOrderState.setOrder_id(orderAndSeatResult.getOreder_serial());//주문 고유번호
+                                                                SeatOrderState.setOrder_state(orderAndSeatResult.getOrder_state());//주문상태
+                                                                SeatOrderState.setId(orderAndSeatResult.getId());//좌석 고유번호
+                                                                Toast.makeText(getContext(),"주문이 전송되었습니다. 주문 번호는 "+orderAndSeatResult.getOreder_serial()+"입니다.", Toast.LENGTH_SHORT).show();
+                                                                if(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()==1)//깐뚜이면
+                                                                {
+                                                                    NavigationnActivity.bool_beacon=true;
+                                                                    NavigationnActivity.bea_st_id=1;
+                                                                }
+                                                                else if(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()==2)//자드이면
+                                                                {
+                                                                    NavigationnActivity.bool_beacon=true;
+                                                                    NavigationnActivity.bea_st_id=2;
+                                                                }
+                                                                else {//두곳 다 아니면
+                                                                    CurrentUsingSeatInfo.setSeat_id(select_id);
+                                                                }
+                                                                Log.d("beacon","test 전");
+                                                                ((NavigationnActivity)NavigationnActivity.mContext).onBeaconServiceConnect();
+                                                                Log.d("beacon","test 성공");
+                                                                ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(1);
+                                                                break;
+                                                            case 0:
+                                                                Toast.makeText(getContext(),"주문이 전송되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                                                                break;
+                                                        }
+                                                    }
                                                 }
-                                                Log.d("beacon","test 전");
-                                                ((NavigationnActivity)NavigationnActivity.mContext).onBeaconServiceConnect();
-                                                Log.d("beacon","test 성공");
-                                                ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(1);
-                                                break;
-                                            case 0:
-                                                Toast.makeText(getContext(), "주문이 전송되지 않았습니다.", Toast.LENGTH_SHORT).show();
-                                                break;
+                                                @Override
+                                                public void onFailure(Call<OrderAndSeatResult> call, Throwable t) {
+                                                    t.printStackTrace();
+                                                }
+                                            });
+                                        }catch (Exception e){
+                                            e.printStackTrace();
                                         }
                                     }
                                 }
-                                @Override
-                                public void onFailure(Call<OrderAndSeatResult> call, Throwable t) {
-                                    t.printStackTrace();
-                                }
-                            });
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }else {//주문 1개시
-                        try {
-                            String id=String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
-                            String store_id=String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id());
-                            String menu_id=String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getMenu_id());
-                            String menu_name=CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getMenu_name();
-                            String menu_price=String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getMenu_price());
-                            String menu_count=String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getMenu_count());
-                            String seat_id=String.valueOf(select_id);
-                            HashMap<String,String> input=new HashMap<>();
-                            input.put("id",id);
-                            input.put("store_id",store_id);
-                            input.put("menu_id",menu_id);
-                            input.put("menu_name",menu_name);
-                            input.put("menu_price",menu_price);
-                            input.put("menu_count",menu_count);
-                            input.put("seat_id",seat_id);
-                            Log.d("order","input= "+input);
-
-                            Retrofit retrofit = new Retrofit.Builder()
-                                    .baseUrl(url)
-                                    .addConverterFactory(GsonConverterFactory.create())
-                                    .build();
-                            OrderAndSeatApi orderAndSeatApi=retrofit.create(OrderAndSeatApi.class);
-                            orderAndSeatApi.getResult(input).enqueue(new Callback<OrderAndSeatResult>() {
-                                @Override
-                                public void onResponse(Call<OrderAndSeatResult> call, Response<OrderAndSeatResult> response) {
-                                    Log.d("respone","respone");
-                                    if(response.isSuccessful()){
-                                        Log.d("respone is successful","respone is successful");
-                                        OrderAndSeatResult orderAndSeatResult= response.body();
-                                        switch (orderAndSeatResult.getResult()){
-                                            case 1:
-                                                SeatOrderState.setOrder_id(orderAndSeatResult.getOreder_serial());//주문 고유번호
-                                                SeatOrderState.setOrder_state(orderAndSeatResult.getOrder_state());//주문상태
-                                                SeatOrderState.setId(orderAndSeatResult.getId());//좌석 고유번호
-                                                Toast.makeText(getContext(),"주문이 전송되었습니다.", Toast.LENGTH_SHORT).show();
-                                                if(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()==1)//깐뚜이면
-                                                {
-                                                    NavigationnActivity.bool_beacon=true;
-                                                    NavigationnActivity.bea_st_id=1;
-                                                }
-                                                else if(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()==2)//자드이면
-                                                {
-                                                    NavigationnActivity.bool_beacon=true;
-                                                    NavigationnActivity.bea_st_id=2;
-                                                }
-                                                else {//두곳 다 아니면
-                                                    CurrentUsingSeatInfo.setSeat_id(select_id);
-                                                }
-                                                Log.d("beacon","test 전");
-                                                ((NavigationnActivity)NavigationnActivity.mContext).onBeaconServiceConnect();
-                                                Log.d("beacon","test 성공");
-                                                ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(1);
-                                                break;
-                                            case 0:
-                                                Toast.makeText(getContext(),"주문이 전송되지 않았습니다.", Toast.LENGTH_SHORT).show();
-                                                break;
-                                        }
-                                    }
-                                }
-                                @Override
-                                public void onFailure(Call<OrderAndSeatResult> call, Throwable t) {
-                                    t.printStackTrace();
-                                }
-                            });
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                    }
+                            })
+                            .setNegativeButton("취소", null);
+                    builder.show();
                 }
                 else
                     Toast.makeText(getContext(),"테이블을 선택 해주세요.", Toast.LENGTH_SHORT).show();

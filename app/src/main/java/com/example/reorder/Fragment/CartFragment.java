@@ -40,6 +40,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.reorder.Adapter.CartAdapter.selected;
+import static com.example.reorder.Fragment.OrderFragment.used_mileage;
 
 public class CartFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -158,6 +159,7 @@ public class CartFragment extends Fragment {
                 }else {
                     CurrentSelectCartInfo.getCart().setCartInfoList(CartAdapter.cartInfoList);
                     ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(5);
+                    used_mileage=0;
                 }
             }
         });
