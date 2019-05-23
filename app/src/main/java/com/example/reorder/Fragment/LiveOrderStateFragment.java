@@ -78,8 +78,11 @@ public class LiveOrderStateFragment extends Fragment {
         //return inflater.inflate(R.layout.fragment_live_order_state, container, false);
         View view=inflater.inflate(R.layout.fragment_live_order_state, container, false);
 
+        LinearLayoutManager manager=new LinearLayoutManager(getActivity());
+        manager.setReverseLayout(true);
+        manager.setStackFromEnd(true);
         lv_live=view.findViewById(R.id.lv_live);
-        lv_live.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
+        lv_live.setLayoutManager(manager);
         liveOrderStateInfos= CurrentLiveOrderStateInfo.getLiveOrderState().getLiveOrderStateInfos();
         live_order_state_adapter=new LiveOrderStateAdapter(liveOrderStateInfos,inflater.getContext());
         lv_live.setAdapter(live_order_state_adapter);

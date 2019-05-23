@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="360dp"
-    android:layout_height="140dp"
-    android:layout_marginLeft="25dp"
+    android:layout_width="330dp"
+    android:layout_height="100dp"
+    android:layout_gravity="center|top"
+    android:layout_marginLeft="40dp"
     android:layout_marginBottom="10dp"
     app:cardCornerRadius="20dp"
     app:strokeColor="#c0c0c0"
     app:strokeWidth="2dp">>
 
     <LinearLayout
-        android:layout_width="330dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -28,7 +28,7 @@
                 android:layout_marginLeft="30dp"
                 android:text="주문번호: "
                 android:textColor="#715c4b"
-                android:textSize="20dp"
+                android:textSize="17dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:text="주문번호: "
                 android:textColor="#715c4b"
-                android:textSize="20dp" />
+                android:textSize="17dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -52,7 +52,7 @@
                 android:layout_marginLeft="30dp"
                 android:text="순번: "
                 android:textColor="#715c4b"
-                android:textSize="20dp"
+                android:textSize="17dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:text="순번: "
                 android:textColor="#715c4b"
-                android:textSize="20dp" />
+                android:textSize="17dp" />
         </LinearLayout>
     </LinearLayout>
 </android.support.design.card.MaterialCardView>
