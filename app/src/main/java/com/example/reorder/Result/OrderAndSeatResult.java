@@ -2,7 +2,7 @@ package com.example.reorder.Result;
 
 public class OrderAndSeatResult {
     int result;
-    int oreder_serial;
+    int order_serial;
     int order_state;
     int id;//개개인의 고유 좌석번호
 
@@ -14,12 +14,12 @@ public class OrderAndSeatResult {
         this.result = result;
     }
 
-    public int getOreder_serial() {
-        return oreder_serial;
+    public int getOrder_serial() {
+        return order_serial;
     }
 
-    public void setOreder_serial(int oreder_serial) {
-        this.oreder_serial = oreder_serial;
+    public void setOrder_serial(int order_serial) {
+        this.order_serial = order_serial;
     }
 
     public int getOrder_state() {

@@ -391,25 +391,31 @@ public class NavigationnActivity extends AppCompatActivity
                                         @Override
                                         public void onResponse(Call<SeatResult> call, Response<SeatResult> response) {
                                             if (response.isSuccessful()) {
+                                                Log.d("ttt","1");
                                                 SeatResult seatResult = response.body();
                                                 switch (seatResult.getResult()) {
                                                     case 1://성공
                                                         CurrentUsingSeatInfo.setSeat_id(0);
+                                                        bool_beacon=false;
                                                         Toast.makeText(getApplication(), "사용중인 테이블을 비움처리 하였습니다.", Toast.LENGTH_SHORT).show();
+                                                        Log.d("ttt","2");
                                                         break;
                                                     case 0://실패
                                                         Toast.makeText(getApplication(), "사용중인 테이블 비움처리 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                                                        Log.d("ttt","3");
                                                         break;
                                                 }
                                             }
                                         }
                                         @Override
                                         public void onFailure(Call<SeatResult> call, Throwable t) {
+                                            Log.d("ttt","fail!!!");
                                             t.printStackTrace();
                                         }
                                     });
                                 } catch (Exception e) {
                                     e.printStackTrace();
+                                    Log.d("ttt","exxxx");
                                 }
                             }
                         })
@@ -825,6 +831,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                                     SeatResult seatResult=response.body();
                                                                     switch (seatResult.getResult()){
                                                                         case 1://성공
+                                                                            bool_beacon=false;
                                                                             Toast.makeText(getApplication(),"예약을 취소하였습니다.",Toast.LENGTH_SHORT).show();
                                                                             break;
                                                                         case 0://실패
@@ -854,18 +861,14 @@ public class NavigationnActivity extends AppCompatActivity
                 }
 
                 beaconList.clear();
-                Log.d("out","여기-1");
                 for (Beacon beacon : beacons) {
                     beaconList.add(beacon);
-                    Log.d("out", "여기0" + beaconList.toString()+"/"+beaconList.size());
                 }
                 if(cantu_seat_check){//깐뚜를 사용중인거면
                     boolean check=false;
-                    Log.d("out","여기1");
                     if(beaconList.size()==0) {
                         seat_count++;
                         if(seat_count>=10) {
-                            Log.d("out","다왔다"+seat_count);
                             cantu_seat_check = false;//좌석 사용이 끝났으니 false
                             try {
                                 String seat_id = String.valueOf(SeatOrderState.getId());
@@ -879,11 +882,11 @@ public class NavigationnActivity extends AppCompatActivity
                                     @Override
                                     public void onResponse(Call<SeatResult> call, Response<SeatResult> response) {
                                         if (response.isSuccessful()) {
-                                            Log.d("out","respone");
                                             SeatResult seatResult = response.body();
                                             switch (seatResult.getResult()) {
                                                 case 1://성공
                                                     Log.d("out","case1");
+                                                    bool_beacon=false;
                                                     AlertDialog.Builder builder = new AlertDialog.Builder(NavigationnActivity.this);
                                                     builder.setTitle("테이블 비움 처리")
                                                             .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")
@@ -908,25 +911,19 @@ public class NavigationnActivity extends AppCompatActivity
                         }
                     }else {
                         for (int i = 0; i < beaconList.size(); i++) {
-                            Log.d("out", "여기2");
                             if (beaconList.get(i).getId3().toString().equals("24000")) {//감지된 비콘리스트에서 해당매장의 비콘의id3가 있으면
-                                Log.d("out", "여기3");
                                 seat_count = 0;
                                 check = true;
                                 break;
                             } else {//감지된 비콘 리스트에서 해당 매장의 비콘의id3가 없으면
                                 check = false;
-                                Log.d("out", "없네?");
-                                Log.d("out", "여기4");
                             }
                         }
                         if (check) {
                             seat_count = 0;
-                            Log.d("out", "여기5");
+
                         } else {
-                            Log.d("out", "여기6");
                             if (seat_count >= 10) {//비콘감지가 안된게 1시간이 지나면
-                                Log.d("out", "여기는?");
                                 //자리 없애기 retofit
                                 try {
                                     String seat_id = String.valueOf(SeatOrderState.getId());
@@ -948,6 +945,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                                 .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")
                                                                 .setPositiveButton("확인", null);
                                                         builder.show();
+                                                        bool_beacon=false;
                                                         cantu_seat_check = false;//좌석 사용이 끝났으니 false
                                                         break;
                                                     case 0://실패
@@ -967,18 +965,15 @@ public class NavigationnActivity extends AppCompatActivity
                                 }
                             } else {
                                 seat_count++;
-                                Log.d("out", "안보인다 비콘" + seat_count);
                             }
                         }
                     }
                 }
                 if(jad_seat_check){//자드를 사용중인거면
                     boolean check=false;
-                    Log.d("out","여기1");
                     if(beaconList.size()==0) {
                         seat_count++;
                         if(seat_count>=10) {
-                            Log.d("out","다왔다"+seat_count);
                             jad_seat_check = false;//좌석 사용이 끝났으니 false
                             try {
                                 String seat_id = String.valueOf(SeatOrderState.getId());
@@ -992,11 +987,9 @@ public class NavigationnActivity extends AppCompatActivity
                                     @Override
                                     public void onResponse(Call<SeatResult> call, Response<SeatResult> response) {
                                         if (response.isSuccessful()) {
-                                            Log.d("out","respone");
                                             SeatResult seatResult = response.body();
                                             switch (seatResult.getResult()) {
                                                 case 1://성공
-                                                    Log.d("out","case1");
                                                     AlertDialog.Builder builder = new AlertDialog.Builder(NavigationnActivity.this);
                                                     builder.setTitle("테이블 비움 처리")
                                                             .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")
@@ -1021,25 +1014,18 @@ public class NavigationnActivity extends AppCompatActivity
                         }
                     }else {
                         for (int i = 0; i < beaconList.size(); i++) {
-                            Log.d("out", "여기2");
-                            if (beaconList.get(i).getId3().toString().equals("23999")) {//감지된 비콘리스트에서 해당매장의 비콘의id3가 있으면
-                                Log.d("out", "여기3");
+                            if (beaconList.get(i).getId3().toString().equals("23999")) {
                                 seat_count = 0;
                                 check = true;
                                 break;
                             } else {//감지된 비콘 리스트에서 해당 매장의 비콘의id3가 없으면
                                 check = false;
-                                Log.d("out", "없네?");
-                                Log.d("out", "여기4");
                             }
                         }
                         if (check) {
                             seat_count = 0;
-                            Log.d("out", "여기5");
                         } else {
-                            Log.d("out", "여기6");
                             if (seat_count >= 10) {//비콘감지가 안된게 1시간이 지나면
-                                Log.d("out", "여기는?");
                                 //자리 없애기 retofit
                                 try {
                                     String seat_id = String.valueOf(SeatOrderState.getId());
@@ -1056,6 +1042,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                 SeatResult seatResult = response.body();
                                                 switch (seatResult.getResult()) {
                                                     case 1://성공
+                                                        bool_beacon=false;
                                                         AlertDialog.Builder builder = new AlertDialog.Builder(NavigationnActivity.this);
                                                         builder.setTitle("테이블 비움 처리")
                                                                 .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")
@@ -1080,14 +1067,12 @@ public class NavigationnActivity extends AppCompatActivity
                                 }
                             } else {
                                 seat_count++;
-                                Log.d("out", "안보인다 비콘" + seat_count);
                             }
                         }
                     }
                 }
             }
         });
-        Log.d("beacon", "test끝");
         try {
             beaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId", null, null, null));
         } catch (RemoteException e) {   }
@@ -1107,4 +1092,3 @@ public class NavigationnActivity extends AppCompatActivity
         return false;
     }
 }
-

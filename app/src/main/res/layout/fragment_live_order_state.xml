@@ -10,23 +10,26 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="주문 준비상태"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"
-        android:textSize="40dp"/>
+        android:text="주문 준비상태"
+        android:textSize="35dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="이곳에 없는 주문은 모두 제조가 완료되어 과거 주문 목록 페이지로 가시기 바랍니다."
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="607dp"
-        android:textSize="20dp"/>
+   <!-- <TextView
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/live_order_stroke"
+        android:gravity="center"
+        android:text="과거 주문 목록   >"
+        android:textColor="#715c4b"
+        android:textSize="20dp"
+        android:textStyle="bold" />-->
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="140dp"
+        android:id="@+id/lv_live"
         android:layout_width="match_parent"
-        android:layout_height="460dp"
-        android:id="@+id/lv_live"></android.support.v7.widget.RecyclerView>
+        android:layout_height="483dp"
+        android:layout_marginTop="110dp"></android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

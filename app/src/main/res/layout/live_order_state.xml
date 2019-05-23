@@ -1,48 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="105dp"
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="360dp"
+    android:layout_height="140dp"
+    android:layout_marginLeft="25dp"
+    android:layout_marginBottom="10dp"
     app:cardCornerRadius="20dp"
-    android:layout_marginBottom="10dp">
+    app:strokeColor="#c0c0c0"
+    app:strokeWidth="2dp">>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="330dp"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_gravity="center"
         android:gravity="center"
-        android:layout_marginLeft="20dp">
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="39dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
                 android:text="주문번호: "
-                android:textSize="20dp"/>
+                android:textColor="#715c4b"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="주문번호: "
                 android:id="@+id/tv_order_serial"
-                android:textSize="20dp"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="주문번호: "
+                android:textColor="#715c4b"
+                android:textSize="20dp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="38dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
                 android:text="순번: "
-                android:textSize="20dp"/>
+                android:textColor="#715c4b"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/tv_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="순번: "
-                android:textSize="20dp"/>
+                android:textColor="#715c4b"
+                android:textSize="20dp" />
         </LinearLayout>
     </LinearLayout>
-</android.support.v7.widget.CardView>
+</android.support.design.card.MaterialCardView>

@@ -256,9 +256,9 @@ public class OrderFragment extends Fragment {
                                                 Log.d("body is not null", "body is not null");
                                                 switch (map.getResult()) {
                                                     case 1://성공
-                                                        OrderState.setOrder_id(map.getOreder_serial());
+                                                        OrderState.setOrder_id(map.getOrder_serial());
                                                         OrderState.setOrder_state(map.getOrder_state());
-                                                        Toast.makeText(getContext(), "주문이 전송되었습니다. 주문번호는 "+map.getOreder_serial()+"입니다.", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(getContext(), "주문이 전송되었습니다. 주문번호는 "+map.getOrder_serial()+"입니다.", Toast.LENGTH_SHORT).show();
                                                         ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(1);
                                                         cb_mileage.setChecked(false);
                                                         rb_take_out.setChecked(true);
@@ -315,9 +315,9 @@ public class OrderFragment extends Fragment {
                                                 Log.d("body is not null", "body is not null");
                                                 switch (map.getResult()) {
                                                     case 1://성공
-                                                        OrderState.setOrder_id(map.getOreder_serial());
+                                                        OrderState.setOrder_id(map.getOrder_serial());
                                                         OrderState.setOrder_state(map.getOrder_state());
-                                                        Toast.makeText(getContext(), "주문이 전송되었습니다. 주문번호는 "+map.getOreder_serial()+"입니다.", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(getContext(), "주문이 전송되었습니다. 주문번호는 "+map.getOrder_serial()+"입니다.", Toast.LENGTH_SHORT).show();
                                                         ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(1);
                                                         cb_mileage.setChecked(false);
                                                         rb_take_out.setChecked(true);
