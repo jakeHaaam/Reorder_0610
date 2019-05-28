@@ -111,7 +111,6 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
         checked_count=0;
         max_count=1;
 
-        Log.d("seat",""+CurrentStoreSeatInfo.getStoreSeat().getStoreSeatInfo().getSeat_num());
         int st_num= CurrentStoreSeatInfo.getStoreSeat().getStoreSeatInfo().getSeat_num();
         int st_row=CurrentStoreSeatInfo.getStoreSeat().getStoreSeatInfo().getSeat_row();
         seat_state=new int[st_num];
@@ -192,9 +191,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                                 orderAndSeatApi.getResult(list).enqueue(new Callback<OrderAndSeatResult>() {
                                                     @Override
                                                     public void onResponse(Call<OrderAndSeatResult> call, Response<OrderAndSeatResult> response) {
-                                                        Log.d("respone", "respone");
                                                         if (response.isSuccessful()) {
-                                                            Log.d("respone is successful", "respone is successful");
                                                             OrderAndSeatResult orderAndSeatResult = response.body();
                                                             switch (orderAndSeatResult.getResult()) {
                                                                 case 1:
@@ -214,9 +211,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                                                     } else {//두곳 다 아니면
                                                                         CurrentUsingSeatInfo.setSeat_id(select_id);
                                                                     }
-                                                                    Log.d("beacon", "test 전");
                                                                     ((NavigationnActivity) NavigationnActivity.mContext).onBeaconServiceConnect();
-                                                                    Log.d("beacon", "test 성공");
                                                                     ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(1);
                                                                     break;
                                                                 case 0:
@@ -252,7 +247,6 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                                 input.put("menu_count", menu_count);
                                                 input.put("seat_id", seat_id);
                                                 input.put("used_mileage", String.valueOf(used_mileage));
-                                                Log.d("order", "input= " + input);
 
                                                 Retrofit retrofit = new Retrofit.Builder()
                                                         .baseUrl(url)
@@ -263,7 +257,6 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                                     @Override
                                                     public void onResponse(Call<OrderAndSeatResult> call, Response<OrderAndSeatResult> response) {
                                                         if (response.isSuccessful()) {
-                                                            Log.d("respone is successful", "respone is successful");
                                                             OrderAndSeatResult orderAndSeatResult = response.body();
                                                             switch (orderAndSeatResult.getResult()) {
                                                                 case 1:
@@ -283,9 +276,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                                                     } else {//두곳 다 아니면
                                                                         CurrentUsingSeatInfo.setSeat_id(select_id);
                                                                     }
-                                                                    Log.d("beacon", "test 전");
                                                                     ((NavigationnActivity) NavigationnActivity.mContext).onBeaconServiceConnect();
-                                                                    Log.d("beacon", "test 성공");
                                                                     ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(1);
                                                                     break;
                                                                 case 0:
@@ -351,7 +342,6 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        Log.d("click",""+v.getId());
         int id=v.getId();//현재 1번을 누르면 seat_checked[1]이 true가 되는 상태
         if(checked_count<max_count) {
 

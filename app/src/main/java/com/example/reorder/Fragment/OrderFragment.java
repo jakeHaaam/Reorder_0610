@@ -174,10 +174,6 @@ public class OrderFragment extends Fragment {
 
         bt_mileage_ok=view.findViewById(R.id.bt_mileage_ok);
 
-
-        Log.d("mile","체크박스 false라고");
-        Log.d("mile","1:"+used_mileage);
-
         rv_item = view.findViewById(R.id.rv_order);
         rv_item.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         currentSelectCartInfo = CurrentSelectCartInfo.getCart().getCartInfoList();
@@ -240,7 +236,6 @@ public class OrderFragment extends Fragment {
                                 object.put("menu_count", menu_count);
                                 object.put("used_mileage",String.valueOf(used_mileage));
                                 list.add(object);
-                                //Log.d("list",list.toString());
                             }
                             try {
                                 Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
@@ -248,12 +243,9 @@ public class OrderFragment extends Fragment {
                                 orderApi.getResult(list).enqueue(new Callback<OrderResult>() {
                                     @Override
                                     public void onResponse(Call<OrderResult> call, Response<OrderResult> response) {
-                                        Log.d("respone", "respone");
                                         if (response.isSuccessful()) {
-                                            Log.d("respone is successful", "respone is successful");
                                             OrderResult map = response.body();
                                             if (map != null) {
-                                                Log.d("body is not null", "body is not null");
                                                 switch (map.getResult()) {
                                                     case 1://성공
                                                         OrderState.setOrder_id(map.getOrder_serial());
@@ -274,12 +266,10 @@ public class OrderFragment extends Fragment {
                                     @Override
                                     public void onFailure(Call<OrderResult> call, Throwable t) {
                                         t.printStackTrace();
-                                        Log.d("order", "fail");
                                     }
                                 });
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                Log.d("order", "catch");
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -300,19 +290,15 @@ public class OrderFragment extends Fragment {
                                 input.put("menu_name", menu_name);
                                 input.put("menu_price", menu_price);
                                 input.put("menu_count", menu_count);
-                                input.put("used_mileage", String.valueOf(used_mileage));//
-                                Log.d("order", "input= " + input);
+                                input.put("used_mileage", String.valueOf(used_mileage));
                                 Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
                                 OrderApi orderApi = retrofit.create(OrderApi.class);
                                 orderApi.getResult(input).enqueue(new Callback<OrderResult>() {
                                     @Override
                                     public void onResponse(Call<OrderResult> call, Response<OrderResult> response) {
-                                        Log.d("respone", "respone");
                                         if (response.isSuccessful()) {
-                                            Log.d("respone is successful", "respone is successful");
                                             OrderResult map = response.body();
                                             if (map != null) {
-                                                Log.d("body is not null", "body is not null");
                                                 switch (map.getResult()) {
                                                     case 1://성공
                                                         OrderState.setOrder_id(map.getOrder_serial());
@@ -333,12 +319,10 @@ public class OrderFragment extends Fragment {
                                     @Override
                                     public void onFailure(Call<OrderResult> call, Throwable t) {
                                         t.printStackTrace();
-                                        Log.d("order", "fail");
                                     }
                                 });
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                Log.d("order", "catch");
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -358,20 +342,14 @@ public class OrderFragment extends Fragment {
                                 .enqueue(new Callback<StoreSeatResult>() {
                                     @Override
                                     public void onResponse(Call<StoreSeatResult> call, Response<StoreSeatResult> response) {
-                                        Log.d("store_seat", "respone");
-                                        Log.d("store_seat", "" + response.body());
                                         if (response.isSuccessful()) {
-                                            Log.d("store_seat", "respone성공");
                                             StoreSeatResult storeSeatResult = response.body();
                                             switch (storeSeatResult.getResult()) {
                                                 case 1://성공
-                                                    Log.d("store_seat", "body성공");
-                                                    Log.d("store_seat", storeSeatResult.toString());
                                                     List<SeatInfo> seatInfos = storeSeatResult.getSeatInfos();//좌석 상태받는 애
                                                     StoreSeatInfo storeSeatInfo = storeSeatResult.getStoreSeatInfo();
                                                     CurrentStoreSeatInfo.getStoreSeat().setStoreSeatInfo(storeSeatInfo);
                                                     CurrentSeatInfo.getSeat().setSeatInfoList(seatInfos);
-                                                    Log.d("seat", "" + seatInfos);
                                                     ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(6);
                                                     cb_mileage.setChecked(false);
                                                     rb_take_out.setChecked(true);
@@ -385,13 +363,10 @@ public class OrderFragment extends Fragment {
                                     @Override
                                     public void onFailure(Call<StoreSeatResult> call, Throwable t) {
                                         t.printStackTrace();
-                                        Log.d("store_seat", String.valueOf(call));
-                                        Log.d("store_seat", "fail");
                                     }
                                 });
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Log.d("bt_bookmark", "excep");
                     }
                 }
 
@@ -411,7 +386,6 @@ public class OrderFragment extends Fragment {
                     et_use_mileage.setText(Integer.toString(used_mileage));
                     used_mileage=0;
                     // bt_order.setClickable(false);
-                    Log.d("mile","used_mileage 체크시:"+used_mileage);
                 }else{
                     tv_my_mileage.setVisibility(View.GONE);
                     tv_minus.setVisibility(View.GONE);
@@ -420,7 +394,6 @@ public class OrderFragment extends Fragment {
                     //  bt_order.setClickable(true);
                     used_mileage=0;
                     et_use_mileage.setText(Integer.toString(used_mileage));
-                    Log.d("mile","used_mileage 체크해제시:"+used_mileage);
                 }
             }
         });
@@ -428,7 +401,6 @@ public class OrderFragment extends Fragment {
         bt_mileage_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("mile",et_use_mileage.getText()+"");
 
                 try {
                     if (Integer.parseInt(et_use_mileage.getText().toString()) > CurrentUserInfo.getUser().getUserInfo().getClient_mileage()) {
@@ -436,7 +408,6 @@ public class OrderFragment extends Fragment {
                     } else if (Integer.parseInt(et_use_mileage.getText().toString()) % 100 != 0) {
                         Toast.makeText(getContext(), "마일리지는 100원 단위로 사용할 수 있습니다", Toast.LENGTH_SHORT).show();
                     } else if ((Integer.parseInt(et_use_mileage.getText().toString()) == 0) || (et_use_mileage.getText().toString().equals(""))) {
-                        Log.d("mile", et_use_mileage.getText() + "사용할마일리지를입력하여주십시오");
                         Toast.makeText(getContext(), "사용할 마일리지를 입력하여 주십시오", Toast.LENGTH_SHORT).show();
                     }
                     else {
@@ -446,8 +417,6 @@ public class OrderFragment extends Fragment {
                         save_mileage= (int)(mg_after_price*0.01);
 
                         tv_save_mileage.setText(Integer.toString(save_mileage));
-                        Log.d("mile","used_mileage:"+used_mileage);
-
                     }
                 }catch(NumberFormatException e){
                     Toast.makeText(getContext(), "사용할 마일리지를 입력하여 주십시오.", Toast.LENGTH_SHORT).show();

@@ -124,8 +124,6 @@ public class GoogleMapActivity extends FragmentActivity implements
         for(int i=0;i<count;i++){
             st_lat=Double.parseDouble(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_lat());
             st_lng=Double.parseDouble(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_lng());
-            Log.d("map", CurrentStoreInfo.getStore().getStoreInfoList()
-                    .get(i).getStore_name());
             LatLng stPoint=new LatLng(st_lat,st_lng);
             /*MarkerOptions marker=new MarkerOptions();
             marker.position(stPoint).title(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_name());

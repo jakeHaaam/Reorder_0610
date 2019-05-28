@@ -66,28 +66,24 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         Location mylocation=new Location("mylocation");
         mylocation.setLatitude(CurrentLocation.getLat());
         mylocation.setLongitude(CurrentLocation.getLng());
-        Log.d("my location",""+mylocation.getLatitude()+"//"+mylocation.getLongitude());
 
+        viewHolder.card.setVisibility(View.VISIBLE);
+        //거리 계산
+        Location st_location=new Location("st_location");
+        st_location.setLatitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lat()));
+        st_location.setLongitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lng()));
+        double distance=Math.round((mylocation.distanceTo(st_location)/10));
+        if(distance>1000) {
+            viewHolder.st_dis.setText(String.valueOf(Math.round(distance)/1000.0) + "km");
+        }else {
+            viewHolder.st_dis.setText(String.valueOf(distance) + "m");
+        }
 
-
-//        if(CurrentSelectCategory.getSt_category()=="") {
-            viewHolder.card.setVisibility(View.VISIBLE);
-            //거리 계산
-            Location st_location=new Location("st_location");
-            st_location.setLatitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lat()));
-            st_location.setLongitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lng()));
-            double distance=Math.round((mylocation.distanceTo(st_location)/10));
-            if(distance>1000) {
-                viewHolder.st_dis.setText(String.valueOf(Math.round(distance)/1000.0) + "km");
-            }else {
-                viewHolder.st_dis.setText(String.valueOf(distance) + "m");
-            }
-
-            //각 뷰에 연결
-            viewHolder.id.setText(Integer.toString(currentStoreInfo.get(i).getId()));
-            viewHolder.st_id.setText(Integer.toString(currentStoreInfo.get(i).getStore_id()));
-            viewHolder.st_name.setText(currentStoreInfo.get(i).getStore_name());
-            viewHolder.st_category.setText(currentStoreInfo.get(i).getStore_category());
+        //각 뷰에 연결
+        viewHolder.id.setText(Integer.toString(currentStoreInfo.get(i).getId()));
+        viewHolder.st_id.setText(Integer.toString(currentStoreInfo.get(i).getStore_id()));
+        viewHolder.st_name.setText(currentStoreInfo.get(i).getStore_name());
+        viewHolder.st_category.setText(currentStoreInfo.get(i).getStore_category());
 
         // list item click
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -98,41 +94,37 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
                 CurrentSelectStore.setSt_name(viewHolder.st_name.getText().toString());
                 CurrentSelectStore.setSt_category(viewHolder.st_category.getText().toString());
                 storeinfo_id=viewHolder.st_id.getText().toString();
-                Log.d("storeadapter","!@#!#!@#!@ " + storeinfo_id);
 
                 try{
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(url)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                StoreIdApi storeIdApi= retrofit.create(StoreIdApi.class);
-                storeIdApi.getStore_id(storeinfo_id).enqueue(new Callback<StoreIdResult>() {
-                    @Override
-                    public void onResponse(Call<StoreIdResult> call, Response<StoreIdResult> response) {
-                        Log.d("storeadapter",response.message()+"*^^* "+response.toString());
-                        if (response.isSuccessful()){
-                            StoreIdResult storeIdResult=response.body();
-                            if(storeIdResult!=null) {
-                                switch (storeIdResult.getResult()) {
-                                    case 1://성공
-                                        Log.d("storeadapter", "store 받아오기 성공");
-                                        List<StoreMenuInfo> storeMenuInfo= storeIdResult.getStoreMenuInfo();
-                                        CurrentStoreMenuInfo.getStoreMenu().setStoreMenuInfoList(storeMenuInfo);
-                                        ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(2);
-                                        break;
-                                    case 0://실패
-                                        Log.d("storeadapter", "store 받아오기 실패");
-                                        break;
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl(url)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    StoreIdApi storeIdApi= retrofit.create(StoreIdApi.class);
+                    storeIdApi.getStore_id(storeinfo_id).enqueue(new Callback<StoreIdResult>() {
+                        @Override
+                        public void onResponse(Call<StoreIdResult> call, Response<StoreIdResult> response) {
+                            if (response.isSuccessful()){
+                                StoreIdResult storeIdResult=response.body();
+                                if(storeIdResult!=null) {
+                                    switch (storeIdResult.getResult()) {
+                                        case 1://성공
+                                            List<StoreMenuInfo> storeMenuInfo= storeIdResult.getStoreMenuInfo();
+                                            CurrentStoreMenuInfo.getStoreMenu().setStoreMenuInfoList(storeMenuInfo);
+                                            ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(2);
+                                            break;
+                                        case 0://실패
+                                            break;
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<StoreIdResult> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<StoreIdResult> call, Throwable t) {
 
-                    }
-                });
+                        }
+                    });
                 }
                 catch (Exception e){
                     e.printStackTrace();

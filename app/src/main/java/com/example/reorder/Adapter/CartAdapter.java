@@ -61,8 +61,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final CartAdapter.ViewHolder viewHolder, final int i) {
-        Log.d("cart","?"+CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_name());
-        Log.d("cart","?"+currentCartInfo.get(i).getMenu_price());
         viewHolder.tv_menu_name.setText(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_name());
         viewHolder.tv_menu_price.setText(Integer.toString(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_price()));
         viewHolder.tv_menu_count.setText(Integer.toString(CurrentCartInfo.getCart().getCartInfoList().get(i).getMenu_count()));
@@ -77,7 +75,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("cb","list");
 
                 if(!selected[i]) {
                     viewHolder.itemView.setBackgroundColor(Color.GRAY);

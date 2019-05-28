@@ -131,8 +131,6 @@ public class HomeFragment extends Fragment implements LocationListener {
             public void onLocationChanged(Location location) {
                 double lat=location.getLatitude();
                 double lng=location.getLongitude();
-                Log.d("location",""+lat);
-                Log.d("location",""+lng);
                 Toast.makeText(getContext(),"위치: " +lat+"/"+lng,Toast.LENGTH_SHORT).show();
             }
 
@@ -153,7 +151,6 @@ public class HomeFragment extends Fragment implements LocationListener {
         };
 
         Location userlocation=getMyLocation();
-        Log.d("my location",""+userlocation);
         if(userlocation!=null){
             double lat=userlocation.getLatitude();
             double lng=userlocation.getLongitude();
@@ -173,11 +170,8 @@ public class HomeFragment extends Fragment implements LocationListener {
         bt_near_store.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("11111","왜 안 돼?");
                 lv_bookmark_store.setVisibility(View.INVISIBLE);
                 lv_near_store.setVisibility(View.VISIBLE);
-                Log.d("11111","왜 안 돼");
-
             }
         });
 
@@ -233,24 +227,18 @@ public class HomeFragment extends Fragment implements LocationListener {
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
                     final String id=String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
-                    Log.d("bt_bookmark",id);
                     GetBookMarkApi getBookMarkApi = retrofit.create(GetBookMarkApi.class);
                     getBookMarkApi.getid(id)
                             .enqueue(new Callback<GetBookMarkResult>() {
                                 @Override
                                 public void onResponse(Call<GetBookMarkResult> call, Response<GetBookMarkResult> response) {
-                                    Log.d("bt_bookmark","respone");
-                                    Log.d("bt_bookmark",""+response.body());
                                     if(response.isSuccessful())
                                     {
-                                        Log.d("bt_bookmark","respone성공");
                                         GetBookMarkResult getBookMarkResult=response.body();
                                         switch (getBookMarkResult.getResult()){
                                             case 1://성공
-                                                Log.d("bt_bookmark","body성공");
                                                 lv_bookmark_store.setVisibility(View.VISIBLE);
                                                 lv_near_store.setVisibility(View.INVISIBLE);
-                                                Log.d("bt_bookmark","2");
                                                 List<BookMarkStoreInfo> bookMarkStoreInfoList=getBookMarkResult.getBookMarkStoreInfoList();
                                                 CurrentBookMarkStoreInfo.getBookMarkStore().setBookMarkStoreInfoList(bookMarkStoreInfoList);
                                                 lv_bookmark_store.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
@@ -266,13 +254,10 @@ public class HomeFragment extends Fragment implements LocationListener {
                                 @Override
                                 public void onFailure(Call<GetBookMarkResult> call, Throwable t) {
                                     t.printStackTrace();
-                                    Log.d("bt_bookmark", String.valueOf(call));
-                                    Log.d("bt_bookmark","fail");
                                 }
                             });
                 }catch (Exception e){
                     e.printStackTrace();
-                    Log.d("bt_bookmark","excep");
                 }
 
             }
@@ -316,16 +301,12 @@ public class HomeFragment extends Fragment implements LocationListener {
         }
         else {
             String locationProvider=LocationManager.GPS_PROVIDER;
-            //Toast.makeText(getContext(),"권한 요청 안 해도 돼.",Toast.LENGTH_SHORT).show();
             currentlocation=locationManager.getLastKnownLocation(locationProvider);
             if(currentlocation!=null){
                 double lat=currentlocation.getLatitude();
-                Log.d("location_lat",""+lat);
                 double lng=currentlocation.getLongitude();
-                Log.d("location_lng",""+lng);
                 CurrentLocation.setLat(lat);
                 CurrentLocation.setLng(lng);
-                //Toast.makeText(getContext(),"권한 요청"+lat+"/"+lng,Toast.LENGTH_SHORT).show();
             }
         }
         return currentlocation;
@@ -353,6 +334,5 @@ public class HomeFragment extends Fragment implements LocationListener {
     public void categoryChanged(List<StoreInfo> storeInfos){
         store_adapter = new StoreAdapter(storeInfos,getLayoutInflater().getContext());
         lv_near_store.setAdapter(store_adapter);
-        Log.d("category","fm");
     }
 }

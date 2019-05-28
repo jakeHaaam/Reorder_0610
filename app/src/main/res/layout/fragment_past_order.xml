@@ -17,7 +17,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lv_past"
         android:layout_width="match_parent"
-        android:layout_height="482dp"
+        android:layout_height="550dp"
         android:layout_marginTop="110dp"></android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

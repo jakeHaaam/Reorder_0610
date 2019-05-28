@@ -118,35 +118,27 @@ public class StoreFragment extends Fragment {
                     seeTableApi.gettable(store_id).enqueue(new Callback<SeeTableResult>(){
                         @Override
                         public void onResponse(Call<SeeTableResult> call, Response<SeeTableResult> response) {
-                            Log.d("See table Retrofit 통과:","Retrofit 통과");
                             if(response.isSuccessful()){
-                                Log.d("See table Retrofit 통과2:","Retrofit 통과2");
                                 SeeTableResult seeTableResult=response.body();
-                                Log.d("see table body 부분",response.body()+"");
                                 switch (seeTableResult.getResult()){
                                     case 1://성공
-                                        Log.d("See table Retrofit 마지막:","Retrofit 통과마지막");
                                         StoreSeatInfo storeSeatInfo=seeTableResult.getStoreSeatInfo();
                                         CurrentSeeTableInfo.getStoreSeat().setStoreSeatInfo(storeSeatInfo);
-                                        //getStoreSeat이용해도 되는건지 잘 모름 일단 사용
                                         List<SeatInfo> seatInfos=seeTableResult.getSeatInfos();//좌석 상태받는 애
                                         CurrentSeatInfo.getSeat().setSeatInfoList(seatInfos);
                                         ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(3);
                                         break;
                                     case 0://실패
-                                        Log.d("see table result","result=0");
                                         break;
                                 }
                             }
                         }
                         @Override
                         public void onFailure(Call<SeeTableResult> call, Throwable t) {
-                            Log.d("See table Retrofit실패","Retrofit 실패");
                             t.printStackTrace();
                         }
                     });
                 }catch (Exception e){
-                    Log.d("See table실패catch","Retrofit 실패catch");
                     e.printStackTrace();
                 }
             }
@@ -193,9 +185,6 @@ public class StoreFragment extends Fragment {
                 }
             }
         });
-
         return view;
     }
-
-
 }

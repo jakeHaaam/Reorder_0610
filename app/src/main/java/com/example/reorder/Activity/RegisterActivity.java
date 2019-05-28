@@ -55,12 +55,10 @@ public class RegisterActivity extends AppCompatActivity {
                 {
                     Toast.makeText(getApplicationContext(),"ID를 입력해 주세요.",Toast.LENGTH_SHORT).show();
                     bt_sign_up_ok.setClickable(false);
-                    Log.d("11111",client_id+"1");
                 }
 
                 else
                     try {
-                        Log.d("11111",client_id+" ");
                         Retrofit retrofit = new Retrofit.Builder()
                                 .baseUrl("http://34.85.56.49:4000")
                                 .addConverterFactory(GsonConverterFactory.create())
@@ -70,8 +68,6 @@ public class RegisterActivity extends AppCompatActivity {
                         idCheckAPI.getClient_id(client_id).enqueue(new Callback<IdCheckResult>() {
                             @Override
                             public void onResponse(Call<IdCheckResult> call, Response<IdCheckResult> response) {
-                                Log.d("11111","응답은 : "+response.message()+" "+response.toString());
-                                //JsonObject post= new JsonObject().get(response.body().toString()).getAsJsonObject();
                                 if (response.isSuccessful()) {
                                     IdCheckResult idCheckResult = response.body();
                                     switch (idCheckResult.getResult()) {
@@ -133,12 +129,10 @@ public class RegisterActivity extends AppCompatActivity {
                                 public void onResponse(Call<JoinResult> call, Response<JoinResult> response) {
                                     if (response.isSuccessful()) {
                                         JoinResult map = response.body();
-//                                Log.d("12321",response.headers().toString());
                                         if (map != null) {
                                             switch (map.getResult()) {
                                                 case 1:
                                                     Toast.makeText(RegisterActivity.this, "회원 가입이 되었습니다~!", Toast.LENGTH_SHORT).show();
-//                                            Log.d("12321","ok");
                                                     finish();
                                                     break;
                                                 case 0:

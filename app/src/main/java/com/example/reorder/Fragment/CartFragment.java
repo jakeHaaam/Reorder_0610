@@ -118,12 +118,10 @@ public class CartFragment extends Fragment {
                                 if (deleteCartResult != null) {
                                     switch (deleteCartResult.getResult()) {
                                         case 1:
-                                            Log.d("delete", "카트 삭제 성공");
                                             Toast.makeText(getContext(),"장바구니의 모든 제품이 삭제 되었습니다.",Toast.LENGTH_SHORT).show();
                                             ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(1);
                                             break;
                                         case 0:
-                                            Log.d("delete", "fail");
                                             break;
                                     }
                                 }

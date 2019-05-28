@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
@@ -89,6 +90,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NavigationnActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentReplaceable, BeaconConsumer {
 
+    private Vibrator vibrator;
     public static boolean cantu_seat_check;
     public static boolean jad_seat_check;
     public static int seat_count=0;
@@ -112,10 +114,8 @@ public class NavigationnActivity extends AppCompatActivity
 
 
     public void categoryChanged(List<StoreInfo> storeInfos){
-        //homeFragment.getActivity().
         HomeFragment hf = (HomeFragment)getSupportFragmentManager().findFragmentById(R.id.container);
         hf.categoryChanged(storeInfos);
-        Log.d("category","activity");
     }
 
 
@@ -140,16 +140,13 @@ public class NavigationnActivity extends AppCompatActivity
             onBeaconServiceConnect();
         }
 
-        Log.d("beacon",""+bool_beacon);
-
         // 실제로 비콘을 탐지하기 위한 비콘매니저 객체를 초기화
         beaconManager = BeaconManager.getInstanceForApplication(getApplication());
-        // 여기가 중요한데, 기기에 따라서 setBeaconLayout 안의 내용을 바꿔줘야 하는듯 싶다.
+        //기기에 따라서 setBeaconLayout 안의 내용을 바꿔야 함.
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
 
-        // 비콘 탐지를 시작한다. 실제로는 서비스를 시작하는것.
+        // 비콘 탐지 시작. 실제로는 서비스를 시작하는것.
         beaconManager.bind(this);
-        Log.d("7","7");
 
         //구글맵에서 받아온 st_name를 현재 스토어에 저장되어있는 st_name들과 비교해서 해당 store로 이동 구현
         Intent intent=getIntent();
@@ -174,19 +171,16 @@ public class NavigationnActivity extends AppCompatActivity
                         storeIdApi.getStore_id(st_id).enqueue(new Callback<StoreIdResult>() {
                             @Override
                             public void onResponse(Call<StoreIdResult> call, Response<StoreIdResult> response) {
-                                Log.d("storeadapter",response.message()+"*^^* "+response.toString());
                                 if (response.isSuccessful()){
                                     StoreIdResult storeIdResult=response.body();
                                     if(storeIdResult!=null) {
                                         switch (storeIdResult.getResult()) {
                                             case 1://성공
-                                                Log.d("storeadapter", "store 받아오기 성공");
                                                 List<StoreMenuInfo> storeMenuInfo= storeIdResult.getStoreMenuInfo();
                                                 CurrentStoreMenuInfo.getStoreMenu().setStoreMenuInfoList(storeMenuInfo);
                                                 replaceFragment(2);
                                                 break;
                                             case 0://실패
-                                                Log.d("storeadapter", "store 받아오기 실패");
                                                 break;
                                         }
                                     }
@@ -212,8 +206,6 @@ public class NavigationnActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 final int id= CurrentUserInfo.getUser().getUserInfo().getId();
-                Log.d("cart", "id: "+CurrentUserInfo.getUser().getUserInfo().getId());
-                Log.d("cart", "client_id : "+CurrentUserInfo.getUser().getUserInfo().getClient_id());
                 try {
                     Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
                     CartSetApi cartSetApi = retrofit.create(CartSetApi.class);
@@ -225,14 +217,11 @@ public class NavigationnActivity extends AppCompatActivity
                                 if (cartResult != null) {
                                     switch (cartResult.getResult()) {
                                         case 1:
-                                            Log.d("cart", "카트 받아오기 성공");
                                             List<CartInfo> cartInfo = cartResult.getCartInfo();
                                             CurrentCartInfo.getCart().setCartInfoList(cartInfo);//저장
-                                            Log.d("cart", ""+response.body());
                                             replaceFragment(4);
                                             break;
                                         case 0:
-                                            Log.d("cart", "fail");
                                             break;
                                     }
                                 }
@@ -283,19 +272,15 @@ public class NavigationnActivity extends AppCompatActivity
                         public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
                             if (response.isSuccessful()) {
                                 LoginResult map = response.body();
-                                Log.d("11111",map.getResult() +"");
                                 if (map != null) {
                                     switch (map.getResult()) {
                                         case -1:
                                             Toast.makeText(mContext,"잘못된 비밀번호 입니다.",Toast.LENGTH_SHORT).show();
-                                            Log.d("mileage", "잘못된 비밀번호입니다");
                                             break;
                                         case 0:
                                             Toast.makeText(mContext,"가입되지 않은 이메일입니다.",Toast.LENGTH_SHORT).show();
-                                            Log.d("mileage", "가입되지 않은 이메일입니다");
                                             break;
                                         case 1:
-                                            Log.d("mileage", "마일리지 새로고침 성공");
                                             UserInfo userinfo = map.getUser();
                                             CurrentUserInfo.getUser().setUserInfo(userinfo);
                                             tv_mileage.setText(CurrentUserInfo.getUser().getUserInfo().getClient_mileage()+"");
@@ -363,15 +348,10 @@ public class NavigationnActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
         int id = item.getItemId();
-        Log.d("11111",item+" ");
 
         if (id == R.id.nav_home) {
-            Log.d("11111","된다 ");
             replaceFragment(1);
-            Toast.makeText(this, "홈이다", Toast.LENGTH_SHORT).show();
-
         }
-//            // Handle the camera action
         else if(id==R.id.nav_table_out){//테이블 사용 안함 클릭시
             if(CurrentUsingSeatInfo.getSeat_id()!=0) {//좌석 다 이용시 0으로 초기화해야함
                 AlertDialog.Builder builder = new AlertDialog.Builder(NavigationnActivity.this);
@@ -380,6 +360,9 @@ public class NavigationnActivity extends AppCompatActivity
                         .setPositiveButton("네", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                if(CurrentUsingSeatInfo.getSeat_id()==0){
+                                    Toast.makeText(getApplication(),"사용중이신 좌석이 없습니다.",Toast.LENGTH_SHORT).show();
+                                }
                                 try {
                                     String seat_id = String.valueOf(SeatOrderState.getId());
                                     Retrofit retrofit = new Retrofit.Builder()
@@ -391,31 +374,26 @@ public class NavigationnActivity extends AppCompatActivity
                                         @Override
                                         public void onResponse(Call<SeatResult> call, Response<SeatResult> response) {
                                             if (response.isSuccessful()) {
-                                                Log.d("ttt","1");
                                                 SeatResult seatResult = response.body();
                                                 switch (seatResult.getResult()) {
                                                     case 1://성공
                                                         CurrentUsingSeatInfo.setSeat_id(0);
                                                         bool_beacon=false;
                                                         Toast.makeText(getApplication(), "사용중인 테이블을 비움처리 하였습니다.", Toast.LENGTH_SHORT).show();
-                                                        Log.d("ttt","2");
                                                         break;
                                                     case 0://실패
                                                         Toast.makeText(getApplication(), "사용중인 테이블 비움처리 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
-                                                        Log.d("ttt","3");
                                                         break;
                                                 }
                                             }
                                         }
                                         @Override
                                         public void onFailure(Call<SeatResult> call, Throwable t) {
-                                            Log.d("ttt","fail!!!");
                                             t.printStackTrace();
                                         }
                                     });
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    Log.d("ttt","exxxx");
                                 }
                             }
                         })
@@ -424,6 +402,13 @@ public class NavigationnActivity extends AppCompatActivity
             }else {
                 Toast.makeText(getApplication(),"사용중이신 좌석이 없습니다.",Toast.LENGTH_SHORT).show();
             }
+        } else if (id == R.id.nav_logout) {//로그아웃 버튼 클릭시
+            CurrentUserInfo.getUser().getUserInfo().setId(0);
+            CurrentUserInfo.getUser().getUserInfo().setClientId(null);
+            CurrentUserInfo.getUser().getUserInfo().setClient_mileage(0);
+            CurrentUserInfo.getUser().getUserInfo().setClient_password(null);
+            Toast.makeText(this,"로그아웃 되었습니다",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent (NavigationnActivity.this,LoginActivity.class));
         }
 
         else if(id==R.id.nav_live_order_state){//실시간 주문 현황 버튼 클릭시
@@ -433,24 +418,20 @@ public class NavigationnActivity extends AppCompatActivity
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 LiveOrderStateApi liveOrderStateApi = retrofit.create(LiveOrderStateApi.class);
-                Log.d("LiveOrderState","시작");
                 liveOrderStateApi.getLiveOrderState(String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()))
                         .enqueue(new Callback<LiveOrderStateResult>() {
                             @Override
                             public void onResponse(Call<LiveOrderStateResult> call, Response<LiveOrderStateResult> response) {
-                                Log.d("LiveOrderState","respone");
                                 if(response.isSuccessful()){
                                     LiveOrderStateResult liveOrderStateResult=response.body();
                                     switch (liveOrderStateResult.getResult()){
                                         case 1://성공
                                             List<LiveOrderStateInfo> liveOrderStateInfos=liveOrderStateResult.getLiveOrderStateInfoList();
                                             CurrentLiveOrderStateInfo.getLiveOrderState().setLiveOrderStateInfos(liveOrderStateInfos);
-                                            Log.d("LiveOrderState","case1");
                                             replaceFragment(8);
                                             break;
                                         case 0://실패or 내역 없음
                                             Toast.makeText(getApplication(),"현재 준비중인 제품이 없습니다.주문 내역을 확인해 보세요.",Toast.LENGTH_SHORT).show();
-                                            Log.d("LiveOrderState","case0");
                                             break;
                                     }
                                 }
@@ -459,12 +440,10 @@ public class NavigationnActivity extends AppCompatActivity
                             @Override
                             public void onFailure(Call<LiveOrderStateResult> call, Throwable t) {
                                 t.printStackTrace();
-                                Log.d("LiveOrderState","fail");
                             }
                         });
             }catch (Exception e){
                 e.printStackTrace();
-                Log.d("LiveOrderState","catch");
             }
         }
         else if(id==R.id.nav_past_order){//과거 주문내역 버튼 클릭시
@@ -475,12 +454,10 @@ public class NavigationnActivity extends AppCompatActivity
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 PastOrderApi pastOrderApi = retrofit.create(PastOrderApi.class);
-                Log.d("PastOrderApi","시작");
                 pastOrderApi.getPastOrder(String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()))
                         .enqueue(new Callback<PastOrderResult>() {
                             @Override
                             public void onResponse(Call<PastOrderResult> call, Response<PastOrderResult> response) {
-                                Log.d("PastOrderApi","respone");
                                 if(response.isSuccessful()){
                                     PastOrderResult pastOrderResult=response.body();
                                     switch (pastOrderResult.getResult()){
@@ -501,7 +478,6 @@ public class NavigationnActivity extends AppCompatActivity
                                                     mileage=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getUsed_mileage();//한 order당 1개만 담음
                                                     allprice+=Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_count()) *
                                                             Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_price());
-                                                    Log.d("past1",orTime+"/"+comTime+"/"+name+"/"+count+"/"+mileage+"/"+allprice);
                                                     if(pastOrderInfos.size()==1){//지금까지 주문 내역이 1개만 있으면 이걸 달아줘야 해){//다음 주문번호랑 다르면 뷰에 달고
                                                         RenewPastOrderInfo.getRenewPast().getList().get(i).setOrder_serial(or_serial);
                                                         RenewPastOrderInfo.getRenewPast().getList().get(i).setOrder_date(orTime);
@@ -510,7 +486,6 @@ public class NavigationnActivity extends AppCompatActivity
                                                         RenewPastOrderInfo.getRenewPast().getList().get(i).setUsed_mileage(mileage);
                                                         RenewPastOrderInfo.getRenewPast().getList().get(i).setMenu_price(String.valueOf(allprice));
                                                         where++;
-                                                        Log.d("past2",orTime+"/"+comTime+"/"+name+"/"+count+"/"+mileage+"/"+allprice);
                                                     }else if(!or_serial.equals(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i+1).getOrder_date())) {
 
                                                         RenewPastOrderInfo.getRenewPast().getList().get(where).setOrder_serial(or_serial);
@@ -527,7 +502,6 @@ public class NavigationnActivity extends AppCompatActivity
                                                         or_serial="";
                                                         allprice = 0;//초기화
                                                         where++;
-                                                        Log.d("past2123",orTime+"/"+comTime+"/"+name+"/"+count+"/"+mileage+"/"+allprice);
                                                     }else {//뒤에 있는 아이템이랑 같은 주문이다
                                                         where=i;
                                                     }
@@ -559,7 +533,6 @@ public class NavigationnActivity extends AppCompatActivity
                                                                 RenewPastOrderInfo.getRenewPast().getList().get(where).setMenu_count(count);
                                                                 RenewPastOrderInfo.getRenewPast().getList().get(where).setUsed_mileage(mileage);
                                                                 RenewPastOrderInfo.getRenewPast().getList().get(where).setMenu_price(String.valueOf(allprice));
-                                                                Log.d("past55",orTime+"/"+comTime+"/"+name+"/"+count+"/"+mileage+"/"+allprice);
                                                                 orTime = "";
                                                                 comTime = "";
                                                                 name = "";
@@ -578,7 +551,6 @@ public class NavigationnActivity extends AppCompatActivity
                                                         count+="\n" + CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_count();
                                                         allprice+=Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_count()) *
                                                                 Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_price());
-                                                        Log.d("past55",orTime+"/"+comTime+"/"+name+"/"+count+"/"+mileage+"/"+allprice);
                                                     }else {//혼자만의 주문이면
                                                         or_serial=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getOrder_serial();//한 order당 1개만 담음
                                                         orTime=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getOrder_date();//한 order당 1개만 담음
@@ -600,12 +572,10 @@ public class NavigationnActivity extends AppCompatActivity
                                             for(int j=where+1;j<pastOrderInfos.size();j++){
                                                 RenewPastOrderInfo.getRenewPast().getList().remove(j);
                                             }
-                                            Log.d("PastOrderApi","case1");
                                             replaceFragment(9);
                                             break;
                                         case 0://실패or 내역 없음
                                             Toast.makeText(getApplication(),"과거 주문하신 내역이 없습니다.",Toast.LENGTH_SHORT).show();
-                                            Log.d("PastOrderApi","case0");
                                             break;
                                     }
                                 }
@@ -614,12 +584,10 @@ public class NavigationnActivity extends AppCompatActivity
                             @Override
                             public void onFailure(Call<PastOrderResult> call, Throwable t) {
                                 t.printStackTrace();
-                                Log.d("PastOrderResult","fail");
                             }
                         });
             }catch (Exception e) {
                 e.printStackTrace();
-                Log.d("PastOrderResult", "catch");
             }
         }
 
@@ -669,7 +637,6 @@ public class NavigationnActivity extends AppCompatActivity
     public void onDestroy() {
         super.onDestroy();
         beaconManager.unbind(this);
-        Log.d("6","6");
     }
 
     @Override
@@ -682,15 +649,13 @@ public class NavigationnActivity extends AppCompatActivity
 
                 if(bool_beacon) {
                     if (beacons.size() > 0) {
-                        Log.d("5", "5");
                         beaconList.clear();
                         for (Beacon beacon : beacons) {
                             beaconList.add(beacon);
-                            Log.d("beacon",beacon.getId3().toString());
                             if(bea_st_id==1) {
                                 if (beacon.getId3().toString().equals("24000")) {
-                                    Log.d("beacon", "깐뚜");
-                                    //Toast.makeText(getApplication(), "깐뚜", Toast.LENGTH_SHORT).show();
+                                    vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                                    vibrator.vibrate(1000);
                                     AlertDialog.Builder builder=new AlertDialog.Builder(NavigationnActivity.this);
                                     builder.setTitle("테이블 예약 확정")
                                             .setMessage("깐뚜치오에서 예약하신 테이블을 확정 지으시겠습니까?")
@@ -748,6 +713,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                                     SeatResult seatResult=response.body();
                                                                     switch (seatResult.getResult()){
                                                                         case 1://성공
+                                                                            CurrentUsingSeatInfo.setSeat_id(0);
                                                                             Toast.makeText(getApplication(),"예약을 취소하였습니다.",Toast.LENGTH_SHORT).show();
                                                                             break;
                                                                         case 0://실패
@@ -772,8 +738,8 @@ public class NavigationnActivity extends AppCompatActivity
                                 }
                             }else if(bea_st_id==2){
                                 if (beacon.getId3().toString().equals("23999")){
-                                    Log.d("beacon","자드");
-                                    //Toast.makeText(getApplication(),"자드",Toast.LENGTH_SHORT).show();
+                                    vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                                    vibrator.vibrate(1000);
                                     AlertDialog.Builder builder=new AlertDialog.Builder(NavigationnActivity.this);
                                     builder.setTitle("테이블 예약 확정")
                                             .setMessage("자연드림에서 예약하신 테이블을 확정 지으시겠습니까?")
@@ -832,6 +798,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                                     switch (seatResult.getResult()){
                                                                         case 1://성공
                                                                             bool_beacon=false;
+                                                                            CurrentUsingSeatInfo.setSeat_id(0);
                                                                             Toast.makeText(getApplication(),"예약을 취소하였습니다.",Toast.LENGTH_SHORT).show();
                                                                             break;
                                                                         case 0://실패
@@ -856,7 +823,6 @@ public class NavigationnActivity extends AppCompatActivity
                                 }
                             }
                         }
-                        Log.d("11", beaconList.toString());
                     }
                 }
 
@@ -868,7 +834,7 @@ public class NavigationnActivity extends AppCompatActivity
                     boolean check=false;
                     if(beaconList.size()==0) {
                         seat_count++;
-                        if(seat_count>=10) {
+                        if(seat_count>=30) {// 1초에 2번 탐색함
                             cantu_seat_check = false;//좌석 사용이 끝났으니 false
                             try {
                                 String seat_id = String.valueOf(SeatOrderState.getId());
@@ -885,8 +851,10 @@ public class NavigationnActivity extends AppCompatActivity
                                             SeatResult seatResult = response.body();
                                             switch (seatResult.getResult()) {
                                                 case 1://성공
-                                                    Log.d("out","case1");
+                                                    vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                                                    vibrator.vibrate(1000);
                                                     bool_beacon=false;
+                                                    CurrentUsingSeatInfo.setSeat_id(0);//자리 사용중이지 않게 초기화
                                                     AlertDialog.Builder builder = new AlertDialog.Builder(NavigationnActivity.this);
                                                     builder.setTitle("테이블 비움 처리")
                                                             .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")
@@ -921,9 +889,8 @@ public class NavigationnActivity extends AppCompatActivity
                         }
                         if (check) {
                             seat_count = 0;
-
                         } else {
-                            if (seat_count >= 10) {//비콘감지가 안된게 1시간이 지나면
+                            if (seat_count >= 30) {//비콘감지가 안된게 1시간이 지나면
                                 //자리 없애기 retofit
                                 try {
                                     String seat_id = String.valueOf(SeatOrderState.getId());
@@ -940,6 +907,9 @@ public class NavigationnActivity extends AppCompatActivity
                                                 SeatResult seatResult = response.body();
                                                 switch (seatResult.getResult()) {
                                                     case 1://성공
+                                                        vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                                                        vibrator.vibrate(1000);
+                                                        CurrentUsingSeatInfo.setSeat_id(0);//자리 사용중이지 않게 초기화
                                                         AlertDialog.Builder builder = new AlertDialog.Builder(NavigationnActivity.this);
                                                         builder.setTitle("테이블 비움 처리")
                                                                 .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")
@@ -965,6 +935,7 @@ public class NavigationnActivity extends AppCompatActivity
                                 }
                             } else {
                                 seat_count++;
+                                Toast.makeText(getApplication(),"step2  "+seat_count,Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -973,7 +944,7 @@ public class NavigationnActivity extends AppCompatActivity
                     boolean check=false;
                     if(beaconList.size()==0) {
                         seat_count++;
-                        if(seat_count>=10) {
+                        if(seat_count>=30) {
                             jad_seat_check = false;//좌석 사용이 끝났으니 false
                             try {
                                 String seat_id = String.valueOf(SeatOrderState.getId());
@@ -990,6 +961,10 @@ public class NavigationnActivity extends AppCompatActivity
                                             SeatResult seatResult = response.body();
                                             switch (seatResult.getResult()) {
                                                 case 1://성공
+                                                    bool_beacon=false;
+                                                    vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                                                    vibrator.vibrate(1000);
+                                                    CurrentUsingSeatInfo.setSeat_id(0);//자리 사용중이지 않게 초기화
                                                     AlertDialog.Builder builder = new AlertDialog.Builder(NavigationnActivity.this);
                                                     builder.setTitle("테이블 비움 처리")
                                                             .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")
@@ -1025,7 +1000,7 @@ public class NavigationnActivity extends AppCompatActivity
                         if (check) {
                             seat_count = 0;
                         } else {
-                            if (seat_count >= 10) {//비콘감지가 안된게 1시간이 지나면
+                            if (seat_count >= 30) {//비콘감지가 안된게 1시간이 지나면
                                 //자리 없애기 retofit
                                 try {
                                     String seat_id = String.valueOf(SeatOrderState.getId());
@@ -1043,6 +1018,9 @@ public class NavigationnActivity extends AppCompatActivity
                                                 switch (seatResult.getResult()) {
                                                     case 1://성공
                                                         bool_beacon=false;
+                                                        vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+                                                        vibrator.vibrate(1000);
+                                                        CurrentUsingSeatInfo.setSeat_id(0);//자리 사용중이지 않게 초기화
                                                         AlertDialog.Builder builder = new AlertDialog.Builder(NavigationnActivity.this);
                                                         builder.setTitle("테이블 비움 처리")
                                                                 .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")

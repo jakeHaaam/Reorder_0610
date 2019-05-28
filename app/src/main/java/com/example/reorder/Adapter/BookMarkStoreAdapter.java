@@ -63,7 +63,6 @@ public class BookMarkStoreAdapter extends RecyclerView.Adapter<BookMarkStoreAdap
                 CurrentSelectStore.setSt_name(viewHolder.st_name.getText().toString());
                 CurrentSelectStore.setSt_category(viewHolder.st_category.getText().toString());
                 storeinfo_id=viewHolder.st_id.getText().toString();
-                Log.d("storeadapter","!@#!#!@#!@ " + storeinfo_id);
 
                 try{
                     Retrofit retrofit = new Retrofit.Builder()
@@ -74,20 +73,17 @@ public class BookMarkStoreAdapter extends RecyclerView.Adapter<BookMarkStoreAdap
                     storeIdApi.getStore_id(storeinfo_id).enqueue(new Callback<StoreIdResult>() {
                         @Override
                         public void onResponse(Call<StoreIdResult> call, Response<StoreIdResult> response) {
-                            Log.d("storeadapter",response.message()+"*^^* "+response.toString());
                             if (response.isSuccessful()){
                                 StoreIdResult storeIdResult=response.body();
                                 if(storeIdResult!=null) {
                                     switch (storeIdResult.getResult()) {
                                         case 1://성공
                                             String store_name=viewHolder.st_name.getText().toString();
-                                            Log.d("storeadapter", "store 받아오기 성공");
                                             List<StoreMenuInfo> storeMenuInfo= storeIdResult.getStoreMenuInfo();
                                             CurrentStoreMenuInfo.getStoreMenu().setStoreMenuInfoList(storeMenuInfo);
                                             ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(2);
                                             break;
                                         case 0://실패
-                                            Log.d("storeadapter", "store 받아오기 실패");
                                             break;
                                     }
                                 }

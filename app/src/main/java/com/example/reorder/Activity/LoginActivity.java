@@ -40,9 +40,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
 
 //        if(!mBlueAdapter.isEnabled()){//켜져있지 않으면
-//            Intent intent=new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivityForResult(intent,REQUEST_BLUE);
-//        }
+        //    Intent intent=new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+          //  startActivityForResult(intent,REQUEST_BLUE);
+        //}
 
     }
 
@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        mBlueAdapter=BluetoothAdapter.getDefaultAdapter(); // Vitual 로 돌릴때 에러 안나도록 주석처리 핸드폰할때는 풀어야함
+        //mBlueAdapter=BluetoothAdapter.getDefaultAdapter(); // Virtual 로 돌릴때 에러 안나도록 주석처리 핸드폰할때는 풀어야함
 
         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.LOLLIPOP){
             getWindow().setStatusBarColor(Color.parseColor("#2f2f30"));
@@ -92,7 +92,6 @@ public class LoginActivity extends AppCompatActivity {
                 if(coarse&&fine) {
                     if (et_login_id.getText().toString().equals("") || et_login_password.getText().toString().equals("")) {
                         Toast.makeText(LoginActivity.this, "이메일 또는 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
-                        Log.d("11111", "입력해");
                     } else {
                         UserLogin userLogin = new UserLogin();
                         userLogin.Login(et_login_id.getText().toString(), et_login_password.getText().toString(), new Intent(LoginActivity.this, NavigationnActivity.class), LoginActivity.this);

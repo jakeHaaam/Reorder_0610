@@ -48,12 +48,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
             public void onClick(View v) {
                 //해당 메뉴의 수량을 고르게 되는 페이지로 이동 구현
                 //동시에 해당 메뉴의 menu_id,price,name을 같이 전달
-                Log.d("menuadapter","current test:"+menu_name);
                 CurrentMenuInfo.setMenu_id(menu_id);
                 CurrentMenuInfo.setMenu_name(menu_name);
                 CurrentMenuInfo.setMenu_price(Integer.parseInt(menu_price));
-                CurrentMenuInfo.setMenu_count(1);//이거 맞음?
-                Log.d("menuadapter","값: "+CurrentMenuInfo.getMenu_name());
+                CurrentMenuInfo.setMenu_count(1);
                 ((NavigationnActivity)NavigationnActivity.mContext).replaceFragment(7);
             }
         });

@@ -161,8 +161,6 @@ public class MenuFragment extends Fragment {
         bt_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("menuadapter",""+CurrentMenuInfo.getMenu_id()+" /"+CurrentMenuInfo.getMenu_name()+" /"+CurrentMenuInfo.getMenu_price()+" /"+CurrentMenuInfo.getMenu_count());
-
                 int id = CurrentUserInfo.getUser().getUserInfo().getId();
                 int menu_id=CurrentMenuInfo.getMenu_id();
                 final String menu_name=CurrentMenuInfo.getMenu_name();
