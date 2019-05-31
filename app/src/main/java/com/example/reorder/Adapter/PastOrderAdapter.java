@@ -42,8 +42,7 @@ public class PastOrderAdapter  extends RecyclerView.Adapter<PastOrderAdapter.Vie
         viewHolder.menu_count.setText(RenewPastOrderInfo.getRenewPast().getList().get(i).getMenu_count());
         viewHolder.used_mileage.setText(RenewPastOrderInfo.getRenewPast().getList().get(i).getUsed_mileage());//이제 allprice도 계산 해야해
         viewHolder.all_price.setText(String.valueOf(RenewPastOrderInfo.getRenewPast().getList().get(i).getMenu_price())+"원");
-
-
+        viewHolder.st_name.setText(RenewPastOrderInfo.getRenewPast().getList().get(i).getStore_name());
     }
 
     @Override
@@ -53,7 +52,7 @@ public class PastOrderAdapter  extends RecyclerView.Adapter<PastOrderAdapter.Vie
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView order_time,tv_past_order_serial,menu_name,menu_count
-                ,used_mileage,all_price;
+                ,used_mileage,all_price, st_name;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             order_time=itemView.findViewById(R.id.tv_past_order_time);
@@ -62,6 +61,7 @@ public class PastOrderAdapter  extends RecyclerView.Adapter<PastOrderAdapter.Vie
             menu_count=itemView.findViewById(R.id.tv_past_menu_count);
             used_mileage=itemView.findViewById(R.id.tv_past_used_mileage);
             all_price=itemView.findViewById(R.id.tv_past_all_price);
+            st_name=itemView.findViewById(R.id.tv_st_name);
         }
     }
 }

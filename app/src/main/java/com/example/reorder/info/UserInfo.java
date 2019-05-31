@@ -9,16 +9,7 @@ public class UserInfo  {
     String client_id;
     String client_password;
     int client_mileage;
-
-
-
-    public UserInfo(int id,String client_id, String client_password,int client_mileage) {
-        this.id=id;
-        this.client_id=client_id;
-        this.client_password = client_password;
-        this.client_mileage=client_mileage;
-
-    }
+    int client_seat_id;
 
     public int getId() {
         return id;
@@ -32,7 +23,7 @@ public class UserInfo  {
         return client_id;
     }
 
-    public void setClientId(String client_id) {
+    public void setClient_id(String client_id) {
         this.client_id = client_id;
     }
 
@@ -40,7 +31,9 @@ public class UserInfo  {
         return client_password;
     }
 
-    public void setClient_password(String client_password) {this.client_password = client_password; }
+    public void setClient_password(String client_password) {
+        this.client_password = client_password;
+    }
 
     public int getClient_mileage() {
         return client_mileage;
@@ -50,5 +43,19 @@ public class UserInfo  {
         this.client_mileage = client_mileage;
     }
 
+    public int getClient_seat_id() {
+        return client_seat_id;
+    }
 
+    public void setClient_seat_id(int client_seat_id) {
+        this.client_seat_id = client_seat_id;
+    }
+
+    public UserInfo(int id, String client_id, String client_password, int client_mileage, int client_seat_id) {
+        this.id = id;
+        this.client_id = client_id;
+        this.client_password = client_password;
+        this.client_mileage = client_mileage;
+        this.client_seat_id = client_seat_id;
+    }
 }

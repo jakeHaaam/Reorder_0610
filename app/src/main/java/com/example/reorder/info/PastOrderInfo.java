@@ -8,6 +8,7 @@ public class PastOrderInfo {//주문한 날짜(+시간),주문완성 시각, 주
     String menu_price;
     String used_mileage;
     String order_serial;
+    String store_name;
 
     public String getOrder_date() {
         return order_date;
@@ -65,7 +66,15 @@ public class PastOrderInfo {//주문한 날짜(+시간),주문완성 시각, 주
         this.order_serial = order_serial;
     }
 
-    public PastOrderInfo(String order_date, String complate_time, String menu_name, String menu_count, String menu_price, String used_mileage, String order_serial) {
+    public String getStore_name() {
+        return store_name;
+    }
+
+    public void setStore_name(String store_name) {
+        this.store_name = store_name;
+    }
+
+    public PastOrderInfo(String order_date, String complate_time, String menu_name, String menu_count, String menu_price, String used_mileage, String order_serial, String store_name) {
         this.order_date = order_date;
         this.complate_time = complate_time;
         this.menu_name = menu_name;
@@ -73,5 +82,6 @@ public class PastOrderInfo {//주문한 날짜(+시간),주문완성 시각, 주
         this.menu_price = menu_price;
         this.used_mileage = used_mileage;
         this.order_serial = order_serial;
+        this.store_name = store_name;
     }
 }

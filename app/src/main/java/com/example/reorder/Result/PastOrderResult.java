@@ -8,6 +8,7 @@ public class PastOrderResult {
     int result;
     List<PastOrderInfo> pastOrderInfos;
 
+
     public PastOrderResult(int result, List<PastOrderInfo> pastOrderInfos) {
         this.result = result;
         this.pastOrderInfos = pastOrderInfos;

@@ -211,7 +211,6 @@ public class OrderFragment extends Fragment {
                     Toast.makeText(getContext(), "사용할 마일리지를 입력하고 OK 버튼을 눌러주십시오", Toast.LENGTH_SHORT).show();
                 }
 
-
                 List<JSONObject> list = new ArrayList<>();
                 if(!bt_order.isClickable()){
                     Toast.makeText(getContext(), "사용할 마일리지를 입력 후 OK버튼을 눌러주시기 바랍니다", Toast.LENGTH_SHORT).show();
@@ -226,6 +225,7 @@ public class OrderFragment extends Fragment {
                                 String menu_name = CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_name();
                                 String menu_price = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
                                 String menu_count = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
+                                String store_name = CurrentCartInfo.getCart().getCartInfoList().get(i).getStore_name();
 
                                 JSONObject object = new JSONObject();
                                 object.put("id", id);
@@ -235,6 +235,7 @@ public class OrderFragment extends Fragment {
                                 object.put("menu_price", menu_price);
                                 object.put("menu_count", menu_count);
                                 object.put("used_mileage",String.valueOf(used_mileage));
+                                object.put("store_name",store_name);
                                 list.add(object);
                             }
                             try {
@@ -282,6 +283,7 @@ public class OrderFragment extends Fragment {
                             String menu_name = CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_name();
                             String menu_price = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_price());
                             String menu_count = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getMenu_count());
+                            String store_name = CurrentCartInfo.getCart().getCartInfoList().get(0).getStore_name();
                             try {
                                 HashMap<String, String> input = new HashMap<>();
                                 input.put("id", id);
@@ -291,6 +293,7 @@ public class OrderFragment extends Fragment {
                                 input.put("menu_price", menu_price);
                                 input.put("menu_count", menu_count);
                                 input.put("used_mileage", String.valueOf(used_mileage));
+                                input.put("store_name",store_name);
                                 Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
                                 OrderApi orderApi = retrofit.create(OrderApi.class);
                                 orderApi.getResult(input).enqueue(new Callback<OrderResult>() {

@@ -19,6 +19,7 @@ import com.example.reorder.Activity.NavigationnActivity;
 import com.example.reorder.R;
 import com.example.reorder.Api.OrderAndSeatApi;
 import com.example.reorder.Result.OrderAndSeatResult;
+import com.example.reorder.globalVariables.CurrentCartInfo;
 import com.example.reorder.globalVariables.CurrentSeatInfo;
 import com.example.reorder.globalVariables.CurrentSelectCartInfo;
 import com.example.reorder.globalVariables.CurrentStoreSeatInfo;
@@ -170,6 +171,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                                     String menu_price = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_price());
                                                     String menu_count = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(i).getMenu_count());
                                                     String seat_id = String.valueOf(select_id);
+                                                    String store_name= CurrentCartInfo.getCart().getCartInfoList().get(i).getStore_name();
 
                                                     JSONObject object = new JSONObject();
                                                     object.put("id", id);
@@ -180,6 +182,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                                     object.put("menu_count", menu_count);
                                                     object.put("seat_id", seat_id);
                                                     object.put("used_mileage", Integer.toString(used_mileage));
+                                                    object.put("store_name",store_name);
                                                     list.add(object);
                                                 }
                                                 //메뉴아이디, 메뉴 수량 넣어야 해
@@ -238,6 +241,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                                 String menu_price = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getMenu_price());
                                                 String menu_count = String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getMenu_count());
                                                 String seat_id = String.valueOf(select_id);
+                                                String store_name=CurrentCartInfo.getCart().getCartInfoList().get(0).getStore_name();
                                                 HashMap<String, String> input = new HashMap<>();
                                                 input.put("id", id);
                                                 input.put("store_id", store_id);
@@ -247,6 +251,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                                 input.put("menu_count", menu_count);
                                                 input.put("seat_id", seat_id);
                                                 input.put("used_mileage", String.valueOf(used_mileage));
+                                                input.put("store_name",store_name);
 
                                                 Retrofit retrofit = new Retrofit.Builder()
                                                         .baseUrl(url)

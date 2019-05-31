@@ -1,8 +1,15 @@
 package com.example.reorder.info;
 
-public class LiveOrderStateInfo {//오더 시간,+몇번째 순서인지 이거되면 좋아
+public class LiveOrderStateInfo {
     int order_serial;
     int order_state;
+    String store_name;
+
+    public LiveOrderStateInfo(int order_serial, int order_state, String store_name) {
+        this.order_serial = order_serial;
+        this.order_state = order_state;
+        this.store_name = store_name;
+    }
 
     public int getOrder_serial() {
         return order_serial;
@@ -20,8 +27,11 @@ public class LiveOrderStateInfo {//오더 시간,+몇번째 순서인지 이거�
         this.order_state = order_state;
     }
 
-    public LiveOrderStateInfo(int order_serial, int order_state) {
-        this.order_serial = order_serial;
-        this.order_state = order_state;
+    public String getStore_name() {
+        return store_name;
+    }
+
+    public void setStore_name(String store_name) {
+        this.store_name = store_name;
     }
 }

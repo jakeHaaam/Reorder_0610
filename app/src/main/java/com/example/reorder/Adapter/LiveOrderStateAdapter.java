@@ -35,7 +35,7 @@ public class LiveOrderStateAdapter extends RecyclerView.Adapter<LiveOrderStateAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.order_state.setText("순번이 들어갈 에정.");
+        viewHolder.store_name.setText(CurrentLiveOrderStateInfo.getLiveOrderState().getLiveOrderStateInfos().get(i).getStore_name());
         viewHolder.order_serial.setText(String.valueOf(CurrentLiveOrderStateInfo.getLiveOrderState().getLiveOrderStateInfos().get(i).getOrder_serial()));
     }
 
@@ -46,12 +46,13 @@ public class LiveOrderStateAdapter extends RecyclerView.Adapter<LiveOrderStateAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView order_state,order_serial;
+        private TextView order_state,order_serial,store_name;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             order_serial=itemView.findViewById(R.id.tv_order_serial);
             order_state=itemView.findViewById(R.id.tv_state);
+            store_name=itemView.findViewById(R.id.tv_live_store);
         }
     }
 }

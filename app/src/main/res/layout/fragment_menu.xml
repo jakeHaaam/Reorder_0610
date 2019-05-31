@@ -6,6 +6,15 @@
     tools:context=".Activity.MenuFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:id="@+id/menu_image"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:adjustViewBounds="true"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

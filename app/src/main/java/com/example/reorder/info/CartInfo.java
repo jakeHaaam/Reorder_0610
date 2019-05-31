@@ -6,6 +6,7 @@ public class CartInfo {
     int menu_price;
     int menu_count;
     int store_id;
+    String store_name;
 
     public int getMenu_id() {
         return menu_id;
@@ -47,11 +48,20 @@ public class CartInfo {
         this.store_id = store_id;
     }
 
-    public CartInfo(int menu_id, String menu_name, int menu_price, int menu_count, int store_id) {
+    public String getStore_name() {
+        return store_name;
+    }
+
+    public void setStore_name(String store_name) {
+        this.store_name = store_name;
+    }
+
+    public CartInfo(int menu_id, String menu_name, int menu_price, int menu_count, int store_id, String store_name) {
         this.menu_id = menu_id;
         this.menu_name = menu_name;
         this.menu_price = menu_price;
         this.menu_count = menu_count;
         this.store_id = store_id;
+        this.store_name = store_name;
     }
 }

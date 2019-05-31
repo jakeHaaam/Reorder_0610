@@ -9,6 +9,7 @@ import com.example.reorder.Result.LoginResult;
 import com.example.reorder.Api.RetrofitApi;
 import com.example.reorder.globalVariables.CurrentStoreInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
+import com.example.reorder.globalVariables.CurrentUsingSeatInfo;
 import com.example.reorder.globalVariables.IsLogin;
 import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.StoreInfo;
@@ -60,8 +61,8 @@ public class UserLogin {
                                     List<StoreInfo> storeInfo=map.getStore();
                                     CurrentUserInfo.getUser().setUserInfo(userinfo);
                                     CurrentStoreInfo.getStore().setStoreInfoList(storeInfo);
-                                    //List<BookMarkStoreInfo> bookMarkStoreInfos=map.getBookMarkStore();
-                                    //CurrentBookMarkStoreInfo.getBookMarkStore().setBookMarkStoreInfoList(bookMarkStoreInfos);
+                                    CurrentUsingSeatInfo.setSeat_id(userinfo.getClient_seat_id());
+                                    Log.d("login",""+CurrentUsingSeatInfo.getSeat_id());
                                     IsLogin.setIsLogin(true);
                                     activity.startActivity(intent);
                                     activity.finish();
