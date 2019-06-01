@@ -4,11 +4,13 @@ public class LiveOrderStateInfo {
     int order_serial;
     int order_state;
     String store_name;
+    int sequence;
 
-    public LiveOrderStateInfo(int order_serial, int order_state, String store_name) {
+    public LiveOrderStateInfo(int order_serial, int order_state, String store_name, int sequence) {
         this.order_serial = order_serial;
         this.order_state = order_state;
         this.store_name = store_name;
+        this.sequence = sequence;
     }
 
     public int getOrder_serial() {
@@ -33,5 +35,13 @@ public class LiveOrderStateInfo {
 
     public void setStore_name(String store_name) {
         this.store_name = store_name;
+    }
+
+    public int getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(int sequence) {
+        this.sequence = sequence;
     }
 }

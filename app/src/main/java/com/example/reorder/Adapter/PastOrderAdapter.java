@@ -43,6 +43,7 @@ public class PastOrderAdapter  extends RecyclerView.Adapter<PastOrderAdapter.Vie
         viewHolder.used_mileage.setText(RenewPastOrderInfo.getRenewPast().getList().get(i).getUsed_mileage());//이제 allprice도 계산 해야해
         viewHolder.all_price.setText(String.valueOf(RenewPastOrderInfo.getRenewPast().getList().get(i).getMenu_price())+"원");
         viewHolder.st_name.setText(RenewPastOrderInfo.getRenewPast().getList().get(i).getStore_name());
+
     }
 
     @Override

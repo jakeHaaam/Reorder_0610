@@ -37,6 +37,7 @@ public class LiveOrderStateAdapter extends RecyclerView.Adapter<LiveOrderStateAd
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.store_name.setText(CurrentLiveOrderStateInfo.getLiveOrderState().getLiveOrderStateInfos().get(i).getStore_name());
         viewHolder.order_serial.setText(String.valueOf(CurrentLiveOrderStateInfo.getLiveOrderState().getLiveOrderStateInfos().get(i).getOrder_serial()));
+        viewHolder.sequence.setText(String.valueOf(CurrentLiveOrderStateInfo.getLiveOrderState().getLiveOrderStateInfos().get(i).getSequence()));
     }
 
     @Override
@@ -46,13 +47,14 @@ public class LiveOrderStateAdapter extends RecyclerView.Adapter<LiveOrderStateAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView order_state,order_serial,store_name;
+        private TextView order_state,order_serial,store_name,sequence;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             order_serial=itemView.findViewById(R.id.tv_order_serial);
             order_state=itemView.findViewById(R.id.tv_state);
             store_name=itemView.findViewById(R.id.tv_live_store);
+            sequence = itemView.findViewById(R.id.tv_state);
         }
     }
 }

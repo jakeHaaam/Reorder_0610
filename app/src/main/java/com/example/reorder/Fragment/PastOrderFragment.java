@@ -80,8 +80,11 @@ public class PastOrderFragment extends Fragment {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_past_order, container, false);
 
+        LinearLayoutManager manager=new LinearLayoutManager(getActivity());
+        manager.setReverseLayout(true);
+        manager.setStackFromEnd(true);
         lv_past=view.findViewById(R.id.lv_past);
-        lv_past.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
+        lv_past.setLayoutManager(manager);
         pastOrderInfos= CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList();
         past_order_state_adapter=new PastOrderAdapter(pastOrderInfos,inflater.getContext());
         lv_past.setAdapter(past_order_state_adapter);

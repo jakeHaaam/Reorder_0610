@@ -6,7 +6,7 @@
     <group android:checkableBehavior="single">
 
         <item android:id="@+id/nav_logout"
-            android:title="Log out"
+            android:title="로그아웃"
             android:visible="true"/>
 
         <item
@@ -17,7 +17,7 @@
         <item
             android:id="@+id/nav_table_out"
             android:icon="@drawable/ic_seat"
-            android:title="Using Table Out" />
+            android:title="테이블 비움" />
 
         <item
             android:id="@+id/nav_live_order_state"
@@ -26,7 +26,7 @@
         <item
             android:id="@+id/nav_past_order"
             android:icon="@drawable/past"
-            android:title="과거 주문내역" />
+            android:title="이전 주문내역" />
     </group>
 
 </menu>

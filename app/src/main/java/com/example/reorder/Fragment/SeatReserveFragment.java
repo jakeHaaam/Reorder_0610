@@ -151,6 +151,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
         bt_order_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("table",""+CurrentUsingSeatInfo.getSeat_id());
                 if(CurrentUsingSeatInfo.getSeat_id()==0) {//좌석을 사용중이지 않으면
                     if (select_id != -1) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

@@ -476,23 +476,27 @@ public class NavigationnActivity extends AppCompatActivity
                                                     name=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_name();
                                                     count=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_count();
                                                     mileage=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getUsed_mileage();//한 order당 1개만 담음
+                                                    st_name=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getStore_name();
                                                     allprice+=Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_count()) *
                                                             Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_price());
-                                                    if(pastOrderInfos.size()==1){//지금까지 주문 내역이 1개만 있으면 이걸 달아줘야 해){//다음 주문번호랑 다르면 뷰에 달고
+                                                    if(pastOrderInfos.size()==1){//지금까지 주문 내역이 1개만 있으면 이걸 달아줘야 해
                                                         RenewPastOrderInfo.getRenewPast().getList().get(i).setOrder_serial(or_serial);
                                                         RenewPastOrderInfo.getRenewPast().getList().get(i).setOrder_date(orTime);
                                                         RenewPastOrderInfo.getRenewPast().getList().get(i).setMenu_name(name);
                                                         RenewPastOrderInfo.getRenewPast().getList().get(i).setMenu_count(count);
                                                         RenewPastOrderInfo.getRenewPast().getList().get(i).setUsed_mileage(mileage);
+                                                        RenewPastOrderInfo.getRenewPast().getList().get(i).setStore_name(st_name);
                                                         RenewPastOrderInfo.getRenewPast().getList().get(i).setMenu_price(String.valueOf(allprice));
-                                                        where++;
-                                                    }else if(!or_serial.equals(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i+1).getOrder_date())) {
-
+                                                        //where++;
+                                                    }else if(pastOrderInfos.size()!=1&&
+                                                            !or_serial.equals(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i+1).getOrder_serial())) {
+                                                        //다음 주문번호랑 다르면 뷰에 달고
                                                         RenewPastOrderInfo.getRenewPast().getList().get(where).setOrder_serial(or_serial);
                                                         RenewPastOrderInfo.getRenewPast().getList().get(where).setOrder_date(orTime);
                                                         RenewPastOrderInfo.getRenewPast().getList().get(where).setMenu_name(name);
                                                         RenewPastOrderInfo.getRenewPast().getList().get(where).setMenu_count(count);
                                                         RenewPastOrderInfo.getRenewPast().getList().get(where).setUsed_mileage(mileage);
+                                                        RenewPastOrderInfo.getRenewPast().getList().get(where).setStore_name(st_name);
                                                         RenewPastOrderInfo.getRenewPast().getList().get(where).setMenu_price(String.valueOf(allprice));
                                                         orTime = "";
                                                         name = "";
@@ -502,7 +506,8 @@ public class NavigationnActivity extends AppCompatActivity
                                                         st_name="";
                                                         allprice = 0;//초기화
                                                         where++;
-                                                    }else {//뒤에 있는 아이템이랑 같은 주문이다
+                                                    }else if(pastOrderInfos.size()!=1&&
+                                                            or_serial.equals(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i+1).getOrder_serial())){//뒤에 있는 아이템이랑 같은 주문이다
                                                         where=i;
                                                     }
                                                 } else if(0<i&&i<pastOrderInfos.size()-1){//인덱스 1부터 마지막 인덱스 전까지
@@ -524,7 +529,6 @@ public class NavigationnActivity extends AppCompatActivity
                                                         allprice+=Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_count()) *
                                                                 Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_price());
 
-                                                        if(i<pastOrderInfos.size()-1) {//뒤에 비교할 대상 item이 있으면
                                                             //뒤랑 비교했는데 오더 serial이 다르면
                                                             if (!or_serial.equals(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i + 1).getOrder_serial())) {
                                                                 RenewPastOrderInfo.getRenewPast().getList().get(where).setOrder_serial(or_serial);
@@ -543,8 +547,29 @@ public class NavigationnActivity extends AppCompatActivity
                                                                 allprice = 0;//초기화
                                                                 where++;
                                                             }
-                                                        }
+                                                    }else if(!or_serial.equals(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getOrder_serial())){
+                                                        //담겨져있는거랑 현재 오더랑 다른거면
+                                                        RenewPastOrderInfo.getRenewPast().getList().get(where).setOrder_serial(or_serial);
+                                                        RenewPastOrderInfo.getRenewPast().getList().get(where).setOrder_date(orTime);
+                                                        RenewPastOrderInfo.getRenewPast().getList().get(where).setMenu_name(name);
+                                                        RenewPastOrderInfo.getRenewPast().getList().get(where).setMenu_count(count);
+                                                        RenewPastOrderInfo.getRenewPast().getList().get(where).setUsed_mileage(mileage);
+                                                        RenewPastOrderInfo.getRenewPast().getList().get(where).setMenu_price(String.valueOf(allprice));
+                                                        RenewPastOrderInfo.getRenewPast().getList().get(where).setStore_name(st_name);
+                                                        where++;
+                                                        allprice=0;
+
+                                                        or_serial=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getOrder_serial();//한 order당 1개만 담음
+                                                        orTime=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getOrder_date();//한 order당 1개만 담음
+                                                        name=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_name();
+                                                        count=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_count();
+                                                        mileage=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getUsed_mileage();//한 order당 1개만 담음
+                                                        st_name=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getStore_name();
+                                                        allprice+=Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_count()) *
+                                                                Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_price());
+
                                                     }
+
                                                 }else if(i!=0&&i==pastOrderInfos.size()-1){//마지막 순서이면
                                                     if(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getOrder_serial()
                                                             .equals(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i-1).getOrder_serial())){//이전 아이템이랑 같은 주문이면
@@ -553,6 +578,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                         allprice+=Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_count()) *
                                                                 Integer.parseInt(CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_price());
                                                     }else {//혼자만의 주문이면
+                                                        allprice=0;
                                                         or_serial=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getOrder_serial();//한 order당 1개만 담음
                                                         orTime=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getOrder_date();//한 order당 1개만 담음
                                                         name=CurrentPastOrderInfo.getPastOrder().getPastOrderInfoList().get(i).getMenu_name();
@@ -571,8 +597,8 @@ public class NavigationnActivity extends AppCompatActivity
                                                     RenewPastOrderInfo.getRenewPast().getList().get(where).setStore_name(st_name);
                                                 }
                                             }
-                                            for(int j=where+1;j<pastOrderInfos.size();j++){
-                                                RenewPastOrderInfo.getRenewPast().getList().remove(j);
+                                            while (where+1!=pastOrderInfos.size()){
+                                                RenewPastOrderInfo.getRenewPast().getList().remove(where+1);
                                             }
                                             replaceFragment(9);
                                             break;
