@@ -597,13 +597,15 @@ public class NavigationnActivity extends AppCompatActivity
                                                     RenewPastOrderInfo.getRenewPast().getList().get(where).setStore_name(st_name);
                                                 }
                                             }
-                                            while (where+1!=pastOrderInfos.size()){
-                                                RenewPastOrderInfo.getRenewPast().getList().remove(where+1);
+                                            if(pastOrderInfos.size()>1) {
+                                                while (where + 1 != pastOrderInfos.size()) {
+                                                    RenewPastOrderInfo.getRenewPast().getList().remove(where + 1);
+                                                }
                                             }
                                             replaceFragment(9);
                                             break;
                                         case 0://실패or 내역 없음
-                                            Toast.makeText(getApplication(),"과거 주문하신 내역이 없습니다.",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplication(),"이전 주문내역을 받아오지 못했습니다.",Toast.LENGTH_SHORT).show();
                                             break;
                                     }
                                 }

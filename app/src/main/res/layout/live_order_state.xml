@@ -28,7 +28,7 @@
                 android:id="@+id/tv_live_store"
                 android:text="Store"
                 android:textColor="#715c4b"
-                android:textSize="30dp"
+                android:textSize="24dp"
                 android:textStyle="bold"
                 android:gravity="center"/>
         </LinearLayout>
