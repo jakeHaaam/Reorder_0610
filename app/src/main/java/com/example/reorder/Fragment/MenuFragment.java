@@ -128,6 +128,9 @@ public class MenuFragment extends Fragment {
             case 915://야채피자
                 menu_image.setImageResource(R.drawable.vegipizza);
                 break;
+            case 625://콤비네이션피자
+                menu_image.setImageResource(R.drawable.combipizza);
+                break;
             case 253://포테이토피자
                 menu_image.setImageResource(R.drawable.potatopizza);
                 break;
@@ -194,6 +197,9 @@ public class MenuFragment extends Fragment {
                 break;
             case 463://짜장면
                 menu_image.setImageResource(R.drawable.jjajang);
+                break;
+            case 856://군만두
+                menu_image.setImageResource(R.drawable.gunmandu);
                 break;
             case 713://IMF=이미지 없음
                 menu_image.setImageResource(R.drawable.jjajang);
