@@ -56,6 +56,7 @@ import com.example.reorder.globalVariables.CurrentPastOrderInfo;
 import com.example.reorder.globalVariables.CurrentSelectStore;
 import com.example.reorder.globalVariables.CurrentStoreInfo;
 import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
+import com.example.reorder.globalVariables.CurrentTableStoreId;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.CurrentUsingSeatInfo;
 import com.example.reorder.info.RenewPast;
@@ -365,13 +366,17 @@ public class NavigationnActivity extends AppCompatActivity
                                     Toast.makeText(getApplication(),"사용중이신 좌석이 없습니다.",Toast.LENGTH_SHORT).show();
                                 }
                                 try {
-                                    String seat_id = String.valueOf(SeatOrderState.getId());
+                                    String seat_id= String.valueOf(SeatOrderState.getId());
+                                    HashMap<String,String> input= new HashMap<>();
+                                    input.put("client_id",String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()));
+                                    input.put("seat_id",seat_id);
+                                    input.put("store_id", CurrentTableStoreId.getStore_id());
                                     Retrofit retrofit = new Retrofit.Builder()
                                             .baseUrl(url)
                                             .addConverterFactory(GsonConverterFactory.create())
                                             .build();
                                     SeatApi seatApi = retrofit.create(SeatApi.class);
-                                    seatApi.setUserCancle(seat_id).enqueue(new Callback<SeatResult>() {
+                                    seatApi.setUserCancle(input).enqueue(new Callback<SeatResult>() {
                                         @Override
                                         public void onResponse(Call<SeatResult> call, Response<SeatResult> response) {
                                             if (response.isSuccessful()) {
@@ -731,12 +736,16 @@ public class NavigationnActivity extends AppCompatActivity
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     try {
                                                         String seat_id= String.valueOf(SeatOrderState.getId());
+                                                        HashMap<String,String> input= new HashMap<>();
+                                                        input.put("client_id",String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()));
+                                                        input.put("seat_id",seat_id);
+                                                        input.put("store_id", CurrentTableStoreId.getStore_id());
                                                         Retrofit retrofit = new Retrofit.Builder()
                                                                 .baseUrl(url)
                                                                 .addConverterFactory(GsonConverterFactory.create())
                                                                 .build();
                                                         SeatApi seatApi=retrofit.create(SeatApi.class);
-                                                        seatApi.setCancle(seat_id).enqueue(new Callback<SeatResult>() {
+                                                        seatApi.setCancle(input).enqueue(new Callback<SeatResult>() {
                                                             @Override
                                                             public void onResponse(Call<SeatResult> call, Response<SeatResult> response) {
                                                                 if(response.isSuccessful()){
@@ -815,12 +824,16 @@ public class NavigationnActivity extends AppCompatActivity
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     try {
                                                         String seat_id= String.valueOf(SeatOrderState.getId());
+                                                        HashMap<String,String> input= new HashMap<>();
+                                                        input.put("client_id",String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()));
+                                                        input.put("seat_id",seat_id);
+                                                        input.put("store_id", CurrentTableStoreId.getStore_id());
                                                         Retrofit retrofit = new Retrofit.Builder()
                                                                 .baseUrl(url)
                                                                 .addConverterFactory(GsonConverterFactory.create())
                                                                 .build();
                                                         SeatApi seatApi=retrofit.create(SeatApi.class);
-                                                        seatApi.setCancle(seat_id).enqueue(new Callback<SeatResult>() {
+                                                        seatApi.setCancle(input).enqueue(new Callback<SeatResult>() {
                                                             @Override
                                                             public void onResponse(Call<SeatResult> call, Response<SeatResult> response) {
                                                                 if(response.isSuccessful()){
@@ -867,13 +880,17 @@ public class NavigationnActivity extends AppCompatActivity
                         if(seat_count>=30) {// 1초에 2번 탐색함
                             cantu_seat_check = false;//좌석 사용이 끝났으니 false
                             try {
-                                String seat_id = String.valueOf(SeatOrderState.getId());
+                                String seat_id= String.valueOf(SeatOrderState.getId());
+                                HashMap<String,String> input= new HashMap<>();
+                                input.put("client_id",String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()));
+                                input.put("seat_id",seat_id);
+                                input.put("store_id", CurrentTableStoreId.getStore_id());
                                 Retrofit retrofit = new Retrofit.Builder()
                                         .baseUrl(url)
                                         .addConverterFactory(GsonConverterFactory.create())
                                         .build();
                                 SeatApi seatApi = retrofit.create(SeatApi.class);
-                                seatApi.setAutoCancle(seat_id).enqueue(new Callback<SeatResult>() {
+                                seatApi.setAutoCancle(input).enqueue(new Callback<SeatResult>() {
 
                                     @Override
                                     public void onResponse(Call<SeatResult> call, Response<SeatResult> response) {
@@ -923,13 +940,17 @@ public class NavigationnActivity extends AppCompatActivity
                             if (seat_count >= 30) {//비콘감지가 안된게 1시간이 지나면
                                 //자리 없애기 retofit
                                 try {
-                                    String seat_id = String.valueOf(SeatOrderState.getId());
+                                    String seat_id= String.valueOf(SeatOrderState.getId());
+                                    HashMap<String,String> input= new HashMap<>();
+                                    input.put("client_id",String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()));
+                                    input.put("seat_id",seat_id);
+                                    input.put("store_id", CurrentTableStoreId.getStore_id());
                                     Retrofit retrofit = new Retrofit.Builder()
                                             .baseUrl(url)
                                             .addConverterFactory(GsonConverterFactory.create())
                                             .build();
                                     SeatApi seatApi = retrofit.create(SeatApi.class);
-                                    seatApi.setAutoCancle(seat_id).enqueue(new Callback<SeatResult>() {
+                                    seatApi.setAutoCancle(input).enqueue(new Callback<SeatResult>() {
 
                                         @Override
                                         public void onResponse(Call<SeatResult> call, Response<SeatResult> response) {
@@ -977,13 +998,17 @@ public class NavigationnActivity extends AppCompatActivity
                         if(seat_count>=30) {
                             jad_seat_check = false;//좌석 사용이 끝났으니 false
                             try {
-                                String seat_id = String.valueOf(SeatOrderState.getId());
+                                String seat_id= String.valueOf(SeatOrderState.getId());
+                                HashMap<String,String> input= new HashMap<>();
+                                input.put("client_id",String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()));
+                                input.put("seat_id",seat_id);
+                                input.put("store_id", CurrentTableStoreId.getStore_id());
                                 Retrofit retrofit = new Retrofit.Builder()
                                         .baseUrl(url)
                                         .addConverterFactory(GsonConverterFactory.create())
                                         .build();
                                 SeatApi seatApi = retrofit.create(SeatApi.class);
-                                seatApi.setAutoCancle(seat_id).enqueue(new Callback<SeatResult>() {
+                                seatApi.setAutoCancle(input).enqueue(new Callback<SeatResult>() {
 
                                     @Override
                                     public void onResponse(Call<SeatResult> call, Response<SeatResult> response) {
@@ -1033,13 +1058,17 @@ public class NavigationnActivity extends AppCompatActivity
                             if (seat_count >= 30) {//비콘감지가 안된게 1시간이 지나면
                                 //자리 없애기 retofit
                                 try {
-                                    String seat_id = String.valueOf(SeatOrderState.getId());
+                                    String seat_id= String.valueOf(SeatOrderState.getId());
+                                    HashMap<String,String> input= new HashMap<>();
+                                    input.put("client_id",String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()));
+                                    input.put("seat_id",seat_id);
+                                    input.put("store_id", CurrentTableStoreId.getStore_id());
                                     Retrofit retrofit = new Retrofit.Builder()
                                             .baseUrl(url)
                                             .addConverterFactory(GsonConverterFactory.create())
                                             .build();
                                     SeatApi seatApi = retrofit.create(SeatApi.class);
-                                    seatApi.setAutoCancle(seat_id).enqueue(new Callback<SeatResult>() {
+                                    seatApi.setAutoCancle(input).enqueue(new Callback<SeatResult>() {
 
                                         @Override
                                         public void onResponse(Call<SeatResult> call, Response<SeatResult> response) {

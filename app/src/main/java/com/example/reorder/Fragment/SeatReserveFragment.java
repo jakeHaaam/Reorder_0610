@@ -23,6 +23,7 @@ import com.example.reorder.globalVariables.CurrentCartInfo;
 import com.example.reorder.globalVariables.CurrentSeatInfo;
 import com.example.reorder.globalVariables.CurrentSelectCartInfo;
 import com.example.reorder.globalVariables.CurrentStoreSeatInfo;
+import com.example.reorder.globalVariables.CurrentTableStoreId;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.CurrentUsingSeatInfo;
 import com.example.reorder.globalVariables.SeatOrderState;
@@ -204,6 +205,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                                                     SeatOrderState.setId(orderAndSeatResult.getId());//좌석 고유번호
                                                                     Toast.makeText(getContext(), "주문이 전송되었습니다. 주문 번호는 " + orderAndSeatResult.getOrder_serial() + "입니다.", Toast.LENGTH_SHORT).show();
                                                                     CurrentUsingSeatInfo.setSeat_id(999);//999는 예약중인 상태
+                                                                    CurrentTableStoreId.setStore_id(String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()));
                                                                     if (CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id() == 1)//깐뚜이면
                                                                     {
                                                                         NavigationnActivity.bool_beacon = true;
@@ -271,6 +273,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                                                     SeatOrderState.setId(orderAndSeatResult.getId());//좌석 고유번호
                                                                     Toast.makeText(getContext(), "주문이 전송되었습니다. 주문 번호는 " + orderAndSeatResult.getOrder_serial() + "입니다.", Toast.LENGTH_SHORT).show();
                                                                     CurrentUsingSeatInfo.setSeat_id(999);//999는 예약중인 상태
+                                                                    CurrentTableStoreId.setStore_id(String.valueOf(CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id()));
                                                                     if (CurrentSelectCartInfo.getCart().getCartInfoList().get(0).getStore_id() == 1)//깐뚜이면
                                                                     {
                                                                         NavigationnActivity.bool_beacon = true;
@@ -279,8 +282,8 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                                                                     {
                                                                         NavigationnActivity.bool_beacon = true;
                                                                         NavigationnActivity.bea_st_id = 2;
-                                                                    } else {//두곳 다 아니면
-                                                                        CurrentUsingSeatInfo.setSeat_id(select_id);
+                                                                    } else {//두곳 다 아니면=비콘을 사용하지 않는 매장이면
+                                                                        CurrentUsingSeatInfo.setSeat_id(select_id);//고유번호 아님
                                                                     }
                                                                     ((NavigationnActivity) NavigationnActivity.mContext).onBeaconServiceConnect();
                                                                     ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(1);
