@@ -364,7 +364,7 @@ public class MenuFragment extends Fragment {
                 menu_image.setImageResource(R.drawable.bakencheesebaygle);
                 break;
             case 884://햄치즈 토스트
-                menu_image.setImageResource(R.drawable.mintchocochino);
+                menu_image.setImageResource(R.drawable.toast);
                 break;
             case 44://스테이크 햄 vip
                 menu_image.setImageResource(R.drawable.steakhamvip);
