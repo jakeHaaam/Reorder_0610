@@ -58,8 +58,9 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="65dp"
                 android:background="@drawable/button_style"
+                android:textColor="#715c4b"
                 android:text="I D check"
-                android:textColor="#715c4b" />
+                />
 
             <EditText
                 android:id="@+id/et_sign_up_password"

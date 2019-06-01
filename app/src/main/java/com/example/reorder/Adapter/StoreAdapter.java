@@ -72,7 +72,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         Location st_location=new Location("st_location");
         st_location.setLatitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lat()));
         st_location.setLongitude(Double.parseDouble(currentStoreInfo.get(i).getStore_lng()));
-        double distance=Math.round((mylocation.distanceTo(st_location)/10));
+        double distance=Math.round((mylocation.distanceTo(st_location)/1));
         if(distance>1000) {
             viewHolder.st_dis.setText(String.valueOf(Math.round(distance)/1000.0) + "km");
         }else {
