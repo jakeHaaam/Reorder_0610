@@ -604,8 +604,8 @@ public class NavigationnActivity extends AppCompatActivity
                                             }
                                             replaceFragment(9);
                                             break;
-                                        case 0://실패or 내역 없음
-                                            Toast.makeText(getApplication(),"이전 주문내역을 받아오지 못했습니다.",Toast.LENGTH_SHORT).show();
+                                        case 0://실패or 내역 없음(1번도 주문 안 했을 때)
+                                            Toast.makeText(getApplication(),"주문하신 내역이 없습니다.",Toast.LENGTH_SHORT).show();
                                             break;
                                     }
                                 }
