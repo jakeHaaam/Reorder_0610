@@ -19,9 +19,11 @@ import com.example.reorder.Activity.NavigationnActivity;
 import com.example.reorder.Adapter.CartAdapter;
 import com.example.reorder.Api.CartSetApi;
 import com.example.reorder.Api.DeleteCartApi;
+import com.example.reorder.Api.GetMileageApi;
 import com.example.reorder.R;
 import com.example.reorder.Result.CartResult;
 import com.example.reorder.Result.DeleteCartResult;
+import com.example.reorder.Result.MileageResult;
 import com.example.reorder.globalVariables.CurrentCartInfo;
 import com.example.reorder.globalVariables.CurrentSelectCartInfo;
 import com.example.reorder.globalVariables.CurrentUserInfo;
@@ -148,16 +150,43 @@ public class CartFragment extends Fragment {
                         count++;
                     }
                 }
-
                 if(CurrentCartInfo.getCart().getCartInfoList().size()==0){
                     Toast.makeText(getContext(), "장바구니에 담은 제품이 없습니다.", Toast.LENGTH_SHORT).show();
                 }
                 else if(count==0) {
                     Toast.makeText(getContext(), "선택된 제품이 없습니다.", Toast.LENGTH_SHORT).show();
                 }else {
-                    CurrentSelectCartInfo.getCart().setCartInfoList(CartAdapter.cartInfoList);
-                    ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(5);
-                    used_mileage=0;
+                    try {
+                        String id= String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId());
+                        Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
+                        GetMileageApi getMileageApi = retrofit.create(GetMileageApi.class);
+                        getMileageApi.getMileage(id).enqueue(new Callback<MileageResult>() {
+                            @Override
+                            public void onResponse(Call<MileageResult> call, Response<MileageResult> response) {
+                                if (response.isSuccessful()) {
+                                    MileageResult mileageResult = response.body();
+                                    if (mileageResult != null) {
+                                        switch (mileageResult.getResult()) {
+                                            case 1:
+                                                CurrentSelectCartInfo.getCart().setCartInfoList(CartAdapter.cartInfoList);
+                                                CurrentUserInfo.getUser().getUserInfo().setClient_mileage(mileageResult.getMileage());
+                                                ((NavigationnActivity) NavigationnActivity.mContext).replaceFragment(5);
+                                                used_mileage=0;
+                                                break;
+                                            case 0:
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<MileageResult> call, Throwable t) {
+                                t.printStackTrace();
+                            }
+                        });
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         });

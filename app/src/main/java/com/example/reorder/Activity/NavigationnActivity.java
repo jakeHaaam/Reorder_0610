@@ -406,7 +406,7 @@ public class NavigationnActivity extends AppCompatActivity
                         .setNegativeButton("아니오", null);
                 builder.show();
             }else {
-                Toast.makeText(getApplication(),"사용중이신 좌석이 없습니다.",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(),"사용중이신 테이블이 없습니다.",Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.nav_logout) {//로그아웃 버튼 클릭시
             CurrentUserInfo.getUser().getUserInfo().setId(0);
@@ -693,7 +693,7 @@ public class NavigationnActivity extends AppCompatActivity
                                     vibrator.vibrate(1000);
                                     AlertDialog.Builder builder=new AlertDialog.Builder(NavigationnActivity.this);
                                     builder.setTitle("테이블 예약 확정")
-                                            .setMessage("깐뚜치오에서 예약하신 테이블을 확정 지으시겠습니까?")
+                                            .setMessage("온수 떡볶이에서 예약하신 테이블을 확정 지으시겠습니까?")
                                             .setPositiveButton("예약 확정", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
@@ -781,7 +781,7 @@ public class NavigationnActivity extends AppCompatActivity
                                     vibrator.vibrate(1000);
                                     AlertDialog.Builder builder=new AlertDialog.Builder(NavigationnActivity.this);
                                     builder.setTitle("테이블 예약 확정")
-                                            .setMessage("자연드림에서 예약하신 테이블을 확정 지으시겠습니까?")
+                                            .setMessage("이삭토스트에서 예약하신 테이블을 확정 지으시겠습니까?")
                                             .setPositiveButton("예약 확정", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {

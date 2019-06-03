@@ -48,9 +48,8 @@ public class Dialog extends AppCompatDialogFragment {
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
         LayoutInflater inflater=getActivity().getLayoutInflater();
         View view=inflater.inflate(R.layout.layout_dialog,null);
-        builder.setView(view)
-                .setTitle("원하는 카테고리를 선택하세요.");
-
+        builder.setView(view);
+        //.setTitle("원하는 카테고리를 선택하세요.")
         bt_cafe=view.findViewById(R.id.bt_cafe);
         bt_west=view.findViewById(R.id.bt_west);
         bt_korean=view.findViewById(R.id.bt_korean);
