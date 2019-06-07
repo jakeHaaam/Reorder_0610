@@ -75,9 +75,9 @@ public class Dialog extends AppCompatDialogFragment {
         bt_snack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CurrentSelectCategory.setSt_category("스낵");
+                CurrentSelectCategory.setSt_category("분식");
                 Log.d("category",CurrentSelectCategory.getSt_category());
-                categorychange("스낵");
+                categorychange("분식");
                 //((NavigationnActivity)NavigationnActivity.mContext).categoryChanged();
 //                NavigationnActivity navigationnActivity = (NavigationnActivity)getContext();
 //                navigationnActivity.categoryChanged();
