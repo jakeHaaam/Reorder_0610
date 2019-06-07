@@ -118,7 +118,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
         seat_state=new int[st_num];
         seat_checked=new boolean[st_num+1];//seat갯수 만큼 불린형 생성
         Arrays.fill(seat_checked,false);//불린형 false로 초기화
-        grid.setColumnCount(st_row);//<-여기에 받아오는 행렬의 행값 입력 해주면 해당 행까지만 나오고 자동으로 다음 열로 이동해서 생성 됨
+        grid.setColumnCount(st_row);//<-행 값 입력/ 해당 행까지만 나오고 자동으로 다음 열로 이동해서 생성
         for(int j=0;j<st_num;j++)//버튼 동적 생성 부분
         {
             seat_state[j]= CurrentSeatInfo.getSeat().getSeatInfoList().get(j).getSeat_statement();//db에서 받아온 seat_state를 seat_id에 맞춰 집어넣어줘야 함

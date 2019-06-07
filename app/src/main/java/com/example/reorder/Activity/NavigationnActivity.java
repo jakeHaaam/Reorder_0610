@@ -96,7 +96,7 @@ public class NavigationnActivity extends AppCompatActivity
     public static boolean cantu_seat_check;
     public static boolean jad_seat_check;
     public static int seat_count=0;
-    public static int bea_st_id;//깐뚜1번 자드 2번
+    public static int bea_st_id;//온수떡볶이1번 이삭 2번
     public static boolean bool_beacon;
     private BeaconManager beaconManager;
     private List<Beacon> beaconList=new ArrayList<>();
