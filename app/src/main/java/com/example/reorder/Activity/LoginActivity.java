@@ -39,10 +39,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if(!mBlueAdapter.isEnabled()){//켜져있지 않으면
-            Intent intent=new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(intent,REQUEST_BLUE);
-        }
+//        if(!mBlueAdapter.isEnabled()){//켜져있지 않으면
+//            Intent intent=new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//            startActivityForResult(intent,REQUEST_BLUE);
+//        }
 
     }
 
@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mBlueAdapter=BluetoothAdapter.getDefaultAdapter(); // Virtual 로 돌릴때 에러 안나도록 주석처리 핸드폰할때는 풀어야함
+        //mBlueAdapter=BluetoothAdapter.getDefaultAdapter(); // Virtual 로 돌릴때 에러 안나도록 주석처리 핸드폰할때는 풀어야함
 
         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.LOLLIPOP){
             getWindow().setStatusBarColor(Color.parseColor("#2f2f30"));

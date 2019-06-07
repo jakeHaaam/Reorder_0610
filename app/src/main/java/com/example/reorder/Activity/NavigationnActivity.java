@@ -982,7 +982,6 @@ public class NavigationnActivity extends AppCompatActivity
                                 }
                             } else {
                                 seat_count++;
-                                Toast.makeText(getApplication(),"step2  "+seat_count,Toast.LENGTH_SHORT).show();
                             }
                         }
                     }

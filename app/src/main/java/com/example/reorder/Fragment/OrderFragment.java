@@ -335,7 +335,6 @@ public class OrderFragment extends Fragment {
 
                     try {
                         String st_id = String.valueOf(CurrentCartInfo.getCart().getCartInfoList().get(0).getStore_id());
-                        //이거는 0해도됨->이유: 장바구니에는 어차피 같은 스토어만 저장 할 것이니깐
                         Retrofit retrofit = new Retrofit.Builder()
                                 .baseUrl(url)
                                 .addConverterFactory(GsonConverterFactory.create())
@@ -358,7 +357,6 @@ public class OrderFragment extends Fragment {
                                                     rb_take_out.setChecked(true);
                                                     break;
                                                 case 0://실패
-//                                                    Toast.makeText(getContext(),"등록된 매장이 없습니다.",Toast.LENGTH_SHORT).show();
                                                     break;
                                             }
                                         }
@@ -388,13 +386,11 @@ public class OrderFragment extends Fragment {
                     bt_mileage_ok.setVisibility(View.VISIBLE);
                     et_use_mileage.setText(Integer.toString(used_mileage));
                     used_mileage=0;
-                    // bt_order.setClickable(false);
                 }else{
                     tv_my_mileage.setVisibility(View.GONE);
                     tv_minus.setVisibility(View.GONE);
                     et_use_mileage.setVisibility(View.GONE);
                     bt_mileage_ok.setVisibility(View.GONE);
-                    //  bt_order.setClickable(true);
                     used_mileage=0;
                     et_use_mileage.setText(Integer.toString(used_mileage));
                 }
