@@ -924,7 +924,6 @@ public class NavigationnActivity extends AppCompatActivity
                     }else {
                         for (int i = 0; i < beaconList.size(); i++) {
                             if (beaconList.get(i).getId3().toString().equals("24000")) {//감지된 비콘리스트에서 해당매장의 비콘의id3가 있으면
-                                seat_count = 0;
                                 check = true;
                                 break;
                             } else {//감지된 비콘 리스트에서 해당 매장의 비콘의id3가 없으면
@@ -1042,7 +1041,6 @@ public class NavigationnActivity extends AppCompatActivity
                     }else {
                         for (int i = 0; i < beaconList.size(); i++) {
                             if (beaconList.get(i).getId3().toString().equals("23999")) {
-                                seat_count = 0;
                                 check = true;
                                 break;
                             } else {//감지된 비콘 리스트에서 해당 매장의 비콘의id3가 없으면
