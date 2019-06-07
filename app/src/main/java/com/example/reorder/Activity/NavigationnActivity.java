@@ -12,7 +12,6 @@ import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -59,14 +58,12 @@ import com.example.reorder.globalVariables.CurrentStoreMenuInfo;
 import com.example.reorder.globalVariables.CurrentTableStoreId;
 import com.example.reorder.globalVariables.CurrentUserInfo;
 import com.example.reorder.globalVariables.CurrentUsingSeatInfo;
-import com.example.reorder.info.RenewPast;
 import com.example.reorder.info.RenewPastOrderInfo;
 import com.example.reorder.globalVariables.SeatOrderState;
 import com.example.reorder.globalVariables.serverURL;
 import com.example.reorder.info.CartInfo;
 import com.example.reorder.info.LiveOrderStateInfo;
 import com.example.reorder.info.PastOrderInfo;
-import com.example.reorder.info.RenewPastOrderInfo;
 import com.example.reorder.info.StoreInfo;
 import com.example.reorder.info.StoreMenuInfo;
 import com.example.reorder.info.UserInfo;
@@ -93,8 +90,8 @@ public class NavigationnActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentReplaceable, BeaconConsumer {
 
     private Vibrator vibrator;
-    public static boolean cantu_seat_check;
-    public static boolean jad_seat_check;
+    public static boolean onsu_ddokbokki_seat_check;
+    public static boolean isac_seat_check;
     public static int seat_count=0;
     public static int bea_st_id;//온수떡볶이1번 이삭 2번
     public static boolean bool_beacon;
@@ -713,7 +710,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                                         case 1://성공
                                                                             CurrentUsingSeatInfo.setSeat_id(SeatOrderState.getId());
                                                                             Toast.makeText(getApplication(),"테이블을 확정지으셨습니다.",Toast.LENGTH_SHORT).show();
-                                                                            cantu_seat_check=true;
+                                                                            onsu_ddokbokki_seat_check =true;
                                                                             break;
                                                                         case 0://실패
                                                                             Toast.makeText(getApplication(),"확정오류가 발생하였습니다.",Toast.LENGTH_SHORT).show();
@@ -801,7 +798,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                                         case 1://성공
                                                                             CurrentUsingSeatInfo.setSeat_id(SeatOrderState.getId());
                                                                             Toast.makeText(getApplication(),"테이블을 확정지으셨습니다.",Toast.LENGTH_SHORT).show();
-                                                                            jad_seat_check=true;
+                                                                            isac_seat_check =true;
                                                                             break;
                                                                         case 0://실패
                                                                             Toast.makeText(getApplication(),"확정오류가 발생하였습니다.",Toast.LENGTH_SHORT).show();
@@ -873,12 +870,12 @@ public class NavigationnActivity extends AppCompatActivity
                 for (Beacon beacon : beacons) {
                     beaconList.add(beacon);
                 }
-                if(cantu_seat_check){//깐뚜를 사용중인거면
+                if(onsu_ddokbokki_seat_check){//온수떡볶이를 사용중인거면
                     boolean check=false;
                     if(beaconList.size()==0) {
                         seat_count++;
                         if(seat_count>=30) {// 1초에 2번 탐색함
-                            cantu_seat_check = false;//좌석 사용이 끝났으니 false
+                            onsu_ddokbokki_seat_check = false;//좌석 사용이 끝났으니 false
                             try {
                                 String seat_id= String.valueOf(SeatOrderState.getId());
                                 HashMap<String,String> input= new HashMap<>();
@@ -967,7 +964,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                                 .setPositiveButton("확인", null);
                                                         builder.show();
                                                         bool_beacon=false;
-                                                        cantu_seat_check = false;//좌석 사용이 끝났으니 false
+                                                        onsu_ddokbokki_seat_check = false;//좌석 사용이 끝났으니 false
                                                         break;
                                                     case 0://실패
                                                         Toast.makeText(getApplication(), "테이블 자동 취소오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
@@ -991,12 +988,12 @@ public class NavigationnActivity extends AppCompatActivity
                         }
                     }
                 }
-                if(jad_seat_check){//자드를 사용중인거면
+                if(isac_seat_check){//이삭을 사용중인거면
                     boolean check=false;
                     if(beaconList.size()==0) {
                         seat_count++;
                         if(seat_count>=30) {
-                            jad_seat_check = false;//좌석 사용이 끝났으니 false
+                            isac_seat_check = false;//좌석 사용이 끝났으니 false
                             try {
                                 String seat_id= String.valueOf(SeatOrderState.getId());
                                 HashMap<String,String> input= new HashMap<>();
@@ -1085,7 +1082,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                                 .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")
                                                                 .setPositiveButton("확인", null);
                                                         builder.show();
-                                                        cantu_seat_check = false;//좌석 사용이 끝났으니 false
+                                                        onsu_ddokbokki_seat_check = false;//좌석 사용이 끝났으니 false
                                                         break;
                                                     case 0://실패
                                                         Toast.makeText(getApplication(), "테이블 자동 취소오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
