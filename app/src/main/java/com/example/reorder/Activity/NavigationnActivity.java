@@ -874,7 +874,7 @@ public class NavigationnActivity extends AppCompatActivity
                     boolean check=false;
                     if(beaconList.size()==0) {
                         seat_count++;
-                        if(seat_count>=30) {// 1초에 2번 탐색함
+                        if(seat_count>=60) {// 1초에 2번 탐색함
                             onsu_ddokbokki_seat_check = false;//좌석 사용이 끝났으니 false
                             try {
                                 String seat_id= String.valueOf(SeatOrderState.getId());
@@ -933,7 +933,7 @@ public class NavigationnActivity extends AppCompatActivity
                         if (check) {
                             seat_count = 0;
                         } else {
-                            if (seat_count >= 30) {//비콘감지가 안된게 1시간이 지나면
+                            if (seat_count >= 60) {//비콘감지가 안된게 1시간이 지나면
                                 //자리 없애기 retofit
                                 try {
                                     String seat_id= String.valueOf(SeatOrderState.getId());
@@ -990,7 +990,7 @@ public class NavigationnActivity extends AppCompatActivity
                     boolean check=false;
                     if(beaconList.size()==0) {
                         seat_count++;
-                        if(seat_count>=30) {
+                        if(seat_count>=60) {
                             isac_seat_check = false;//좌석 사용이 끝났으니 false
                             try {
                                 String seat_id= String.valueOf(SeatOrderState.getId());
@@ -1049,7 +1049,7 @@ public class NavigationnActivity extends AppCompatActivity
                         if (check) {
                             seat_count = 0;
                         } else {
-                            if (seat_count >= 30) {//비콘감지가 안된게 1시간이 지나면
+                            if (seat_count >= 60) {//비콘감지가 안된게 1시간이 지나면
                                 //자리 없애기 retofit
                                 try {
                                     String seat_id= String.valueOf(SeatOrderState.getId());
