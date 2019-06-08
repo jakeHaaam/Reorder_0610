@@ -157,8 +157,7 @@ public class SeatReserveFragment extends Fragment implements View.OnClickListene
                     if (select_id != -1) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         builder.setTitle("테이블 예약 안내")
-                                .setMessage("30분 이내에 매장에 방문을 하시지 않으면 예약이 취소 됩니다.\n" +
-                                        "또한 매장 방문시 블루투스를 켜져 있어야 예약을 확정 지으실 수 있습니다.")
+                                .setMessage("매장 방문시 블루투스가 켜져 있어야 예약을 확정 지으실 수 있습니다.")
                                 .setPositiveButton("예", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {

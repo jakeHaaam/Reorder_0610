@@ -385,8 +385,9 @@ public class MenuFragment extends Fragment {
                 menu_image.setImageResource(R.drawable.lemonade);
                 break;
             //이삭
+
             default:
-                menu_image.setImageResource(R.drawable.chicken);
+                menu_image.setImageResource(R.drawable.yeonsusi);
         }
 
         bt_up=view.findViewById(R.id.bt_up);
