@@ -56,7 +56,6 @@ public class GoogleMapActivity extends FragmentActivity implements
         count=intent.getExtras().getInt("count");
         bt_current=(Button)findViewById(R.id.bt_current);
 
-        //tv_location = (TextView)findViewById(R.id.tv_location);
         //현재위치 설정
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
