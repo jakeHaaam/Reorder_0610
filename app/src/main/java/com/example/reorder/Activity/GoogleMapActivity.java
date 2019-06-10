@@ -29,6 +29,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -82,13 +83,20 @@ public class GoogleMapActivity extends FragmentActivity implements
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_PERMISSIONS);
             return;
         }
-        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                minTime,
-                minDistance,
-                new LocationListener() {
+        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
                         map.clear();
+                        double st_lat=0,st_lng = 0;
+                        //store marker
+                        for(int i=0;i<count;i++){
+                            st_lat=Double.parseDouble(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_lat());
+                            st_lng=Double.parseDouble(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_lng());
+                            LatLng stPoint=new LatLng(st_lat,st_lng);
+                            map.addMarker(new MarkerOptions().position(stPoint)
+                                    .title(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_name()));
+                        }
+                        map.setOnInfoWindowClickListener(infoWindowClickListener);
                         showCurrentLocation(location);
                     }
 
@@ -118,24 +126,15 @@ public class GoogleMapActivity extends FragmentActivity implements
         //지도 시작위도,경도 설정/초기 카메라 위치 설정
         LatLng start=new LatLng(37.48713123599517 ,126.82648816388149 );
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(start,17.0f));
-
+        onLastLocationButtonClicked(getCurrentFocus());
         //store marker
         for(int i=0;i<count;i++){
             st_lat=Double.parseDouble(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_lat());
             st_lng=Double.parseDouble(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_lng());
             LatLng stPoint=new LatLng(st_lat,st_lng);
-            /*MarkerOptions marker=new MarkerOptions();
-            marker.position(stPoint).title(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_name());
-            map.addMarker(marker).showInfoWindow();
-            if(!map.addMarker(marker).isInfoWindowShown())
-            {
-                map.addMarker(marker).showInfoWindow();
-            }*/
             map.addMarker(new MarkerOptions().position(stPoint)
                     .title(CurrentStoreInfo.getStore().getStoreInfoList().get(i).getStore_name()));
-
         }
-        map.setOnMarkerClickListener(this);
         map.setOnInfoWindowClickListener(infoWindowClickListener);
     }
 
@@ -176,11 +175,7 @@ public class GoogleMapActivity extends FragmentActivity implements
     public void showCurrentLocation(Location location)
     {
         LatLng curPoint=new LatLng(location.getLatitude(),location.getLongitude());
-
-        Double myLat=location.getLatitude();
-        Double myLot=location.getLongitude();
-        map.addMarker(new MarkerOptions().position(curPoint).title("현재 위치"));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 16));
+        map.addMarker(new MarkerOptions().position(curPoint).title("현재 위치")).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
     }
 
     public void onLastLocationButtonClicked(View view) {
@@ -200,9 +195,7 @@ public class GoogleMapActivity extends FragmentActivity implements
                 {
                     startLocationService();
                     final LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    Double myLat=location.getLatitude();
-                    Double myLot=location.getLongitude();
-                    map.addMarker(new MarkerOptions().position(myLocation).title("현재 위치"));
+                    map.addMarker(new MarkerOptions().position(myLocation).title("현재 위치")).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 17));
                 }
                 else {
@@ -255,10 +248,12 @@ public class GoogleMapActivity extends FragmentActivity implements
         @Override
         public void onInfoWindowClick(Marker marker) {
 
-            String st_name = marker.getTitle();
-            Intent HomeIntent = new Intent(getApplicationContext(), NavigationnActivity.class); //this 대신 getActivity() : 현재의 context받아올 수 있음
-            HomeIntent.putExtra("map", st_name);
-            startActivity(HomeIntent);
+            if(!marker.getTitle().equals("현재 위치")) {
+                String st_name = marker.getTitle();
+                Intent HomeIntent = new Intent(getApplicationContext(), NavigationnActivity.class); //this 대신 getActivity() : 현재의 context받아올 수 있음
+                HomeIntent.putExtra("map", st_name);
+                startActivity(HomeIntent);
+            }
         }
     };
 }

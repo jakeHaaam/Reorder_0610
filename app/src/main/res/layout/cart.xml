@@ -24,7 +24,7 @@
 
             <TextView
                 android:id="@+id/tv_menu_name"
-                android:layout_width="180dp"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:includeFontPadding="true"
@@ -35,7 +35,7 @@
 
             <TextView
                 android:id="@+id/tv_menu_price"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:text="menu_price"

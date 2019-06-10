@@ -767,7 +767,8 @@ public class NavigationnActivity extends AppCompatActivity
                                                         e.printStackTrace();
                                                     }
                                                 }
-                                            });
+                                            })
+                                    .setCancelable(false);
                                     builder.show();
                                     bool_beacon = false;
                                     break;
@@ -856,7 +857,8 @@ public class NavigationnActivity extends AppCompatActivity
                                                         e.printStackTrace();
                                                     }
                                                 }
-                                            });
+                                            })
+                                            .setCancelable(false);;
                                     builder.show();
                                     bool_beacon=false;
                                     break;
