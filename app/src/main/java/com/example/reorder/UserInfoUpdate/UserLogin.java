@@ -61,8 +61,7 @@ public class UserLogin {
                                     List<StoreInfo> storeInfo=map.getStore();
                                     CurrentUserInfo.getUser().setUserInfo(userinfo);
                                     CurrentStoreInfo.getStore().setStoreInfoList(storeInfo);
-                                    CurrentUsingSeatInfo.setSeat_id(userinfo.getClient_seat_id());
-                                    Log.d("login",""+CurrentUsingSeatInfo.getSeat_id());
+                                    CurrentUsingSeatInfo.setSeat_id(userinfo.getClient_seat_id());//고유번호가아닌거임
                                     IsLogin.setIsLogin(true);
                                     activity.startActivity(intent);
                                     activity.finish();
@@ -76,10 +75,12 @@ public class UserLogin {
                 @Override
                 public void onFailure(Call<LoginResult> call, Throwable t) {
                     t.printStackTrace();
+                    Log.d("login fail","");
                 }
             });
         }catch (Exception e){
             e.printStackTrace();
+            Log.d("login catch","");
         }
     }
 }

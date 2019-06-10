@@ -10,6 +10,7 @@ public class UserInfo  {
     String client_password;
     int client_mileage;
     int client_seat_id;
+    String client_store_id;//현재 사용중인 테이블의 스토어id/없으면 0값
 
     public int getId() {
         return id;
@@ -51,11 +52,20 @@ public class UserInfo  {
         this.client_seat_id = client_seat_id;
     }
 
-    public UserInfo(int id, String client_id, String client_password, int client_mileage, int client_seat_id) {
+    public String getClient_store_id() {
+        return client_store_id;
+    }
+
+    public void setClient_store_id(String client_store_id) {
+        this.client_store_id = client_store_id;
+    }
+
+    public UserInfo(int id, String client_id, String client_password, int client_mileage, int client_seat_id, String client_store_id) {
         this.id = id;
         this.client_id = client_id;
         this.client_password = client_password;
         this.client_mileage = client_mileage;
         this.client_seat_id = client_seat_id;
+        this.client_store_id = client_store_id;
     }
 }

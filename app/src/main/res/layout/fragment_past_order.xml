@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"
-        android:text="과거 주문내역"
+        android:text="이전 주문내역"
         android:textSize="35dp" />
 
     <android.support.v7.widget.RecyclerView

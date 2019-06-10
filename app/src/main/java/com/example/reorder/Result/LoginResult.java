@@ -10,12 +10,6 @@ public class LoginResult {
     UserInfo user;
     List<StoreInfo> store;
 
-    public LoginResult(int result, UserInfo user, List<StoreInfo> store) {
-        this.result = result;
-        this.user = user;
-        this.store = store;
-    }
-
     public int getResult() {
         return result;
     }
@@ -37,6 +31,12 @@ public class LoginResult {
     }
 
     public void setStore(List<StoreInfo> store) {
+        this.store = store;
+    }
+
+    public LoginResult(int result, UserInfo user, List<StoreInfo> store) {
+        this.result = result;
+        this.user = user;
         this.store = store;
     }
 }
