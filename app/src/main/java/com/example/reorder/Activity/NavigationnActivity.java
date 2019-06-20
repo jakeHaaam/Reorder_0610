@@ -787,7 +787,7 @@ public class NavigationnActivity extends AppCompatActivity
                         if(seat_count>=30) {
                             onsu_ddokbokki_seat_check = false;//좌석 사용이 끝났으니 false
                             try {
-                                String seat_id= String.valueOf(SeatOrderState.getId());
+                                String seat_id= String.valueOf(CurrentUsingSeatInfo.getSeat_id());
                                 HashMap<String,String> input= new HashMap<>();
                                 input.put("client_id",String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()));
                                 input.put("seat_id",seat_id);
@@ -814,6 +814,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                             .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")
                                                             .setPositiveButton("확인", null);
                                                     builder.show();
+                                                    Toast.makeText(getApplication(), "1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.", Toast.LENGTH_SHORT).show();
                                                     break;
                                                 case 0://실패
                                                     Toast.makeText(getApplication(), "테이블 자동 취소오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
@@ -847,7 +848,7 @@ public class NavigationnActivity extends AppCompatActivity
                                 onsu_ddokbokki_seat_check = false;//좌석 사용이 끝났으니 false
                                 //자리 없애기 retofit
                                 try {
-                                    String seat_id= String.valueOf(SeatOrderState.getId());
+                                    String seat_id= String.valueOf(CurrentUsingSeatInfo.getSeat_id());
                                     HashMap<String,String> input= new HashMap<>();
                                     input.put("client_id",String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()));
                                     input.put("seat_id",seat_id);
@@ -873,6 +874,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                                 .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")
                                                                 .setPositiveButton("확인", null);
                                                         builder.show();
+                                                        Toast.makeText(getApplication(), "1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.", Toast.LENGTH_SHORT).show();
                                                         bool_beacon=false;
                                                         onsu_ddokbokki_seat_check = false;//좌석 사용이 끝났으니 false
                                                         break;
@@ -905,7 +907,7 @@ public class NavigationnActivity extends AppCompatActivity
                         if(seat_count>=30) {
                             isac_seat_check = false;//좌석 사용이 끝났으니 false
                             try {
-                                String seat_id= String.valueOf(SeatOrderState.getId());
+                                String seat_id= String.valueOf(CurrentUsingSeatInfo.getSeat_id());
                                 HashMap<String,String> input= new HashMap<>();
                                 input.put("client_id",String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()));
                                 input.put("seat_id",seat_id);
@@ -932,6 +934,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                             .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")
                                                             .setPositiveButton("확인", null);
                                                     builder.show();
+                                                    Toast.makeText(getApplication(), "1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.", Toast.LENGTH_SHORT).show();
                                                     break;
                                                 case 0://실패
                                                     Toast.makeText(getApplication(), "테이블 자동 취소오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
@@ -965,7 +968,7 @@ public class NavigationnActivity extends AppCompatActivity
                                 isac_seat_check = false;//좌석 사용이 끝났으니 false
                                 //자리 없애기 retofit
                                 try {
-                                    String seat_id= String.valueOf(SeatOrderState.getId());
+                                    String seat_id= String.valueOf(CurrentUsingSeatInfo.getSeat_id());//고유아님
                                     HashMap<String,String> input= new HashMap<>();
                                     input.put("client_id",String.valueOf(CurrentUserInfo.getUser().getUserInfo().getId()));
                                     input.put("seat_id",seat_id);
@@ -992,6 +995,7 @@ public class NavigationnActivity extends AppCompatActivity
                                                                 .setMessage("1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.")
                                                                 .setPositiveButton("확인", null);
                                                         builder.show();
+                                                        Toast.makeText(getApplication(), "1시간 동안 감지되지 않아 테이블을 비움처리하였습니다.", Toast.LENGTH_SHORT).show();
                                                         onsu_ddokbokki_seat_check = false;//좌석 사용이 끝났으니 false
                                                         break;
                                                     case 0://실패
